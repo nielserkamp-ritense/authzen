@@ -1,0 +1,43 @@
+# The PIP attributes the AuthZEN *search* endpoints enumerate.
+#
+# Search is not policy enumeration. Per search the PDP reads exactly ONE attribute —
+# `subjects.<subject.type>` for search/subject, `actions.<resource.type>` for search/action,
+# `resources.<resource.type>` for search/resource — splits its comma-separated value into
+# candidates, and evaluates every candidate individually (eam/pdp/controller/search.go:25-59).
+# Callers cannot supply candidates: if the attribute is absent the search *fails*, which the PDP
+# reports as HTTP 200 with an error body and `attribute [subjects.user] not found` in its log.
+#
+# Read at startup from <PDP_PIP_STORE>/attributes. Editing this file is not enough — the PIP's file
+# watch does not see host edits through the bind mount — so run `docker compose restart pdp`.
+#
+# The key's suffix is the type as it appears ON THE WIRE, so it has to match what Valtimo sends:
+# `subjects.user` pairs with valtimo.authorization.authzen.subject-type (default `user`), and the
+# action/resource keys use the logical `resource-types` names — never a Java class name.
+
+# The role universe, for AuthzenAuthorizationService.getAuthorizedRoles: a subject search with
+# subject.type `roles`.
+#
+# Note what that search can and cannot answer. Each candidate is evaluated as a subject whose *id* is
+# the role name, so a policy can match on `input.subject.id` — but the candidates carry no attributes
+# of their own (every one is evaluated with the properties from the request's subject), and no policy
+# in ../../policies-rego matches `input.subject.type == "roles"`, so this search currently returns an
+# empty set rather than failing.
+- key: "subjects.roles"
+  value: "ROLE_USER,ROLE_ADMIN"
+
+# The user universe, for a subject search asking "who may do this?" — pairs with
+# valtimo.authorization.authzen.subject-type (default `user`).
+#
+# A static universe, kept in sync by hand: nothing lets the PDP call back into Valtimo's user store
+# at decision time. These are the logins the policies and AuthzenPdpLiveIT are written around.
+- key: "subjects.user"
+  value: "root,alice,nobody"
+
+# Same shape for the other two dimensions, for whenever something needs them. Commented out rather
+# than left empty — an empty value is indistinguishable from a missing attribute and fails the same
+# way.
+#
+#- key: "resources.object"
+#  value: "..."
+#- key: "actions.object"
+#  value: "view,view_list,create,modify,delete"

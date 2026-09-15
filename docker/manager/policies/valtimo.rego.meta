@@ -1,0 +1,5 @@
+id: "valtimo"
+language: "rego"
+metadata:
+  description: "Scenario 1 (Testcase 1): wie mag een laadpaal-aanvraag indienen"
+  tags: ["valtimo"]

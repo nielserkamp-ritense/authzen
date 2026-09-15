@@ -1,0 +1,4 @@
+- type: "app"
+  id: "1234567890abcdef"
+  attributes:
+    name: "Policy checker"

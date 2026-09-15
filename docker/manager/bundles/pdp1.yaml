@@ -1,0 +1,12 @@
+---
+id: "pdp"
+title: "Outway deployment bundle (pdp)"
+language: "rego"
+tags: ["valtimo"]
+policies: true
+data: true
+version: true
+targets:
+  - uri: "http://pdp:9443/v1/bundle"
+    apikey: ""
+    encoding: "bzip2"

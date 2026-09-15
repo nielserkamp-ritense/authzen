@@ -1,0 +1,154 @@
+services:
+  pdp:
+    build:
+      context: ../open-ftv
+      dockerfile: ./apps/pdp/Dockerfile
+    ports:
+      - "8443:8443"
+      - "8480:8080"
+      - "9104:9443"
+    environment:
+      PDP_BUNDLE_MANAGER: http://manager:9443/v1/bundle/pdp
+      PDP_BUNDLE_ENCODING: bzip2
+      PDP_BUNDLE_TIMEOUT: 30s
+      PDP_BUNDLE_RETRIES: 5
+
+      PDP_PORT: 8443
+      PDP_HEALTH_PORT: 8080
+      #PDP_LOG_LEVEL: debug
+      #PDP_LOG_FORMAT: text
+      PDP_POLICIES_LANGUAGE: REGO
+      PDP_POLICIES_STORE: /etc/pdp/policies-rego
+      PDP_POLICIES_STORE_RECURSE: "true"
+
+      PDP_PIP_STORE: /etc/pdp/pip
+      PDP_PIP_STORE_RECURSE: "true"
+      PDP_LOG_OUTPUT: /dev/null
+      PDP_ADL_MIGRATE_SOURCE: ""
+      PDP_ADL_TYPE: postgresql
+      PDP_ADL_PG_URL: "postgres://user:password@database:5432/openftv_adl?sslmode=disable"
+      PDP_ADL_SERVICE_NAME: manager
+      PDP_MIGRATE_AUTO: true                                     # ADL migrations.
+      PDP_MIGRATE_SOURCE: "*embed*"
+    volumes:
+      - ./pdp/policies:/etc/pdp/policies-rego:ro
+      - ./pdp/pip:/etc/pdp/pip:ro
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O- http://localhost:8080/healthz || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 5s
+    networks:
+      - authzen
+
+  database:
+    image: postgres:15
+    ports:
+      - "5400:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    volumes:
+      - ./database/scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}" ]
+      interval: 4s
+      timeout: 10s
+      retries: 5
+      start_period: 2s
+    networks:
+      - authzen
+
+  dataspace:
+    build:
+      context: ../open-ftv
+      dockerfile: ./mock/datasources/generic/generic.Dockerfile
+    ports:
+      - "9010:8443"
+    environment:
+      - GEN_DS_DATA_PATH=/tmp/data
+    volumes:
+      - ./dataspace:/tmp/data
+    networks:
+      - authzen
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0
+    command: [ "start-dev", "--import-realm" ]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    ports:
+      - "8088:8080"
+    volumes:
+      - ./keycloak:/opt/keycloak/data/import
+    networks:
+      - authzen
+    healthcheck:
+      test: [ "CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && echo ok" ]
+      interval: 5s
+      timeout: 5s
+      retries: 40
+
+  manager:
+    build:
+      context: ../open-ftv
+      dockerfile: ./apps/manager/Dockerfile
+    ports:
+      - "9000:8443"
+      - "9100:9443"
+      - "8100:8080"
+    environment:
+      - MANAGER_PERSIST_TYPE=postgres             # persistent storage for the managed policies and data.
+      - MANAGER_PERSIST_POSTGRES_URL=postgres://user:password@database:5432/openftv?sslmode=disable
+      - MANAGER_MIGRATE_AUTO=true                 # migration setup for the persistent storage.
+      - MANAGER_MIGRATE_SOURCE=*embed*
+      - MANAGER_POLICIES_LANGUAGE=cedar            # default policy language.
+      - MANAGER_POLICIES_STORE=/tmp/data/policies # local policies to evaluate access by the management-interface.
+      - MANAGER_POLICIES_STORE_RECURSE=true
+      - MANAGER_PIP_STORE=/tmp/data/data          # local (design-time) data used by local policies.
+      - MANAGER_PIP_STORE_RECURSE=true
+      - MANAGER_TAGS_PATH=/tmp/data/tags          # tags for the managed policies and data.
+      - MANAGER_AUTHENTICATION_TYPE=none          # local authentication type.
+      - MANAGER_BUNDLE_CONFIGS=/tmp/data/bundles  # bundle management for PDPs.
+      - MANAGER_BUNDLE_RECURSE=true
+      - MANAGER_BUNDLE_SEND_TIMEOUT=60s
+      - MANAGER_ADL_TYPE=postgresql               # ADL.
+      - MANAGER_ADL_PG_URL=postgres://user:password@database:5432/openftv_adl?sslmode=disable
+    depends_on:
+      database:
+        condition: service_healthy
+    volumes:
+      - ./manager:/tmp/data
+    networks:
+      - authzen
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/healthz" ]
+      interval: 4s
+      timeout: 10s
+      retries: 5
+      start_period: 2s
+
+  frontend:
+    build:
+      context: ../open-ftv
+      dockerfile: ./apps/management-interface/Dockerfile
+    environment:
+      VITE_PAP_BASE_URL: "http://localhost:9000"
+      VITE_PIP_BASE_URL: "http://localhost:9000"
+      VITE_OIDC_AUTHORITY: "http://localhost:8088/realms/openftv"
+      VITE_OIDC_CLIENT_ID: "openftv"
+      MANAGER_MAX_LOGO_SIZE: "102400"
+    ports:
+      - "8180:8080"
+    depends_on:
+      manager:
+        condition: service_healthy
+    networks:
+      - authzen
+
+networks:
+  authzen:
+    driver: bridge

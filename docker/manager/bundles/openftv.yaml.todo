@@ -1,0 +1,12 @@
+---
+id: "openftv-manager"
+title: "OpenFTV manager deployment bundle"
+language: "cedar"
+tags: ["openftv"]
+policies: true
+data: true
+version: true
+targets:
+  - uri: "http://manager:9443"
+    apikey: ""
+    encoding: "bzip2"

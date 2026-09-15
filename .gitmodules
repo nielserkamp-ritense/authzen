@@ -1,0 +1,6 @@
+[submodule "valtimo"]
+	path = valtimo
+	url = git@github.com:nielserkamp-ritense/valtimo.git
+[submodule "open-ftv"]
+	path = open-ftv
+	url = git@github.com:nielserkamp-ritense/open-ftv.git

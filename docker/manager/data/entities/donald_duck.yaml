@@ -1,0 +1,4 @@
+- type: "user"
+  id: "donald"
+  attributes:
+    name: "Donald Duck"

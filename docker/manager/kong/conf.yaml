@@ -1,0 +1,29 @@
+_format_version: "3.0"
+services:
+  - name: openftv-manager
+    host: manager
+    port: 8443
+    protocol: http
+    routes:
+      - name: manager-v1
+        paths:
+          - /v1/
+        strip_path: false
+plugins:
+  - name: openftv
+    service: openftv-manager
+    enabled: true
+    protocols: [http, https]
+    config:
+      pdp: "http://manager-pdp:8443/authzen/v1/evaluation"
+      timeout: 30000
+      issuer: "http://keycloak:8080/realms/openftv"
+      jwks_url: "http://keycloak:8080/realms/openftv/protocol/openid-connect/certs"
+      audience: "openftv"
+      roles_claim: "roles"
+  - name: cors
+    config:
+      origins: ["*"]
+      methods: [GET, POST, PUT, DELETE, PATCH, OPTIONS]
+      headers: ["*"]
+      credentials: false

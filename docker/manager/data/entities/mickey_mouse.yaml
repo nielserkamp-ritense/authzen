@@ -1,0 +1,7 @@
+- type: "user"
+  id: "mickey"
+  attributes:
+    name: "Mickey Mouse"
+    # htpasswd -nB mickey
+    password: "$2y$05$f0UG.jtt/UN3cJYe7Ab4ruTI2fIqKkS0mYPuYHPLJSoxHq2ZvtWa."
+    roles: "user"
