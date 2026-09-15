@@ -1,5 +1,8 @@
+name: authzen-docker
+
 services:
-  pdp:
+  openftv-pdp:
+    container_name: authzen_openftv_pdp
     build:
       context: ../open-ftv
       dockerfile: ./apps/pdp/Dockerfile
@@ -8,7 +11,7 @@ services:
       - "8480:8080"
       - "9104:9443"
     environment:
-      PDP_BUNDLE_MANAGER: http://manager:9443/v1/bundle/pdp
+      PDP_BUNDLE_MANAGER: http://openftv-manager:9443/v1/bundle/pdp
       PDP_BUNDLE_ENCODING: bzip2
       PDP_BUNDLE_TIMEOUT: 30s
       PDP_BUNDLE_RETRIES: 5
@@ -26,23 +29,22 @@ services:
       PDP_LOG_OUTPUT: /dev/null
       PDP_ADL_MIGRATE_SOURCE: ""
       PDP_ADL_TYPE: postgresql
-      PDP_ADL_PG_URL: "postgres://user:password@database:5432/openftv_adl?sslmode=disable"
+      PDP_ADL_PG_URL: "postgres://user:password@openftv-database:5432/openftv_adl?sslmode=disable"
       PDP_ADL_SERVICE_NAME: manager
       PDP_MIGRATE_AUTO: true                                     # ADL migrations.
       PDP_MIGRATE_SOURCE: "*embed*"
     volumes:
-      - ./pdp/policies:/etc/pdp/policies-rego:ro
-      - ./pdp/pip:/etc/pdp/pip:ro
+      - ./openftv-imports/pdp/policies:/etc/pdp/policies-rego:ro
+      - ./openftv-imports/pdp/pip:/etc/pdp/pip:ro
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O- http://localhost:8080/healthz || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 30
       start_period: 5s
-    networks:
-      - authzen
 
-  database:
+  openftv-database:
+    container_name: authzen_openftv_database
     image: postgres:15
     ports:
       - "5400:5432"
@@ -51,17 +53,16 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: mydb
     volumes:
-      - ./database/scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      - ./openftv-imports/database/scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}" ]
       interval: 4s
       timeout: 10s
       retries: 5
       start_period: 2s
-    networks:
-      - authzen
 
-  dataspace:
+  openftv-dataspace:
+    container_name: authzen_openftv_dataspace
     build:
       context: ../open-ftv
       dockerfile: ./mock/datasources/generic/generic.Dockerfile
@@ -70,11 +71,10 @@ services:
     environment:
       - GEN_DS_DATA_PATH=/tmp/data
     volumes:
-      - ./dataspace:/tmp/data
-    networks:
-      - authzen
+      - ./openftv-imports/dataspace:/tmp/data
 
-  keycloak:
+  openftv-keycloak:
+    container_name: authzen_openftv_keycloak
     image: quay.io/keycloak/keycloak:26.0
     command: [ "start-dev", "--import-realm" ]
     environment:
@@ -83,16 +83,15 @@ services:
     ports:
       - "8088:8080"
     volumes:
-      - ./keycloak:/opt/keycloak/data/import
-    networks:
-      - authzen
+      - ./openftv-imports/keycloak:/opt/keycloak/data/import
     healthcheck:
       test: [ "CMD-SHELL", "exec 3<>/dev/tcp/localhost/8080 && echo ok" ]
       interval: 5s
       timeout: 5s
       retries: 40
 
-  manager:
+  openftv-manager:
+    container_name: authzen_openftv_manager
     build:
       context: ../open-ftv
       dockerfile: ./apps/manager/Dockerfile
@@ -102,7 +101,7 @@ services:
       - "8100:8080"
     environment:
       - MANAGER_PERSIST_TYPE=postgres             # persistent storage for the managed policies and data.
-      - MANAGER_PERSIST_POSTGRES_URL=postgres://user:password@database:5432/openftv?sslmode=disable
+      - MANAGER_PERSIST_POSTGRES_URL=postgres://user:password@openftv-database:5432/openftv?sslmode=disable
       - MANAGER_MIGRATE_AUTO=true                 # migration setup for the persistent storage.
       - MANAGER_MIGRATE_SOURCE=*embed*
       - MANAGER_POLICIES_LANGUAGE=cedar            # default policy language.
@@ -116,14 +115,12 @@ services:
       - MANAGER_BUNDLE_RECURSE=true
       - MANAGER_BUNDLE_SEND_TIMEOUT=60s
       - MANAGER_ADL_TYPE=postgresql               # ADL.
-      - MANAGER_ADL_PG_URL=postgres://user:password@database:5432/openftv_adl?sslmode=disable
+      - MANAGER_ADL_PG_URL=postgres://user:password@openftv-database:5432/openftv_adl?sslmode=disable
     depends_on:
-      database:
+      openftv-database:
         condition: service_healthy
     volumes:
-      - ./manager:/tmp/data
-    networks:
-      - authzen
+      - ./openftv-imports/manager:/tmp/data
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/healthz" ]
       interval: 4s
@@ -131,7 +128,8 @@ services:
       retries: 5
       start_period: 2s
 
-  frontend:
+  openftv-frontend:
+    container_name: authzen_openftv_frontend
     build:
       context: ../open-ftv
       dockerfile: ./apps/management-interface/Dockerfile
@@ -144,11 +142,504 @@ services:
     ports:
       - "8180:8080"
     depends_on:
-      manager:
+      openftv-manager:
         condition: service_healthy
-    networks:
-      - authzen
+
+  gzac-keycloak:
+    container_name: authzen_gzac_keycloak
+    depends_on:
+      - gzac-keycloak-database
+    image: quay.io/keycloak/keycloak:26.6
+    ports:
+      - "8081:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://gzac-keycloak-database/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+      KC_FEATURES: token-exchange,admin-fine-grained-authz
+      KC_HTTP_RELATIVE_PATH: /auth
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+    volumes:
+      - ./gzac-imports/keycloak:/opt/keycloak/data/import
+    command:
+      - start-dev
+      - --import-realm
+      - --http-enabled=true
+      - --hostname-strict=false
+    healthcheck:
+      test: [ 'CMD-SHELL', '[ -f /tmp/HealthCheck.java ] || echo "public class HealthCheck { public static void main(String[] args) throws java.lang.Throwable { System.exit(((java.net.HttpURLConnection)new java.net.URL(args[0]).openConnection()).getResponseCode() == 200 ? 0 : 1); } }" > /tmp/HealthCheck.java && java /tmp/HealthCheck.java http://localhost:8080/auth' ]
+      interval: 10s
+      timeout: 5s
+      retries: 60
+      start_period: 5s
+
+  gzac-keycloak-database:
+    image: postgres:17.4
+    container_name: authzen-gzac-keycloak-database
+    ports:
+      - "54329:5432"
+    environment:
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+
+  gzac-database:
+    container_name: authzen-gzac-database
+    image: postgres:17.4
+    ports:
+      - "54320:5432"
+    environment:
+      POSTGRES_USER: gzac
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: gzac
+    volumes:
+      - authzen-gzac-database-data:/var/lib/postgres # persist data even if container shuts down
+
+  gzac-opensearch:
+    container_name: autzhen-gzac-opensearch
+    image: opensearchproject/opensearch:2.19.2
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=2cr8zkOoEXQJ3xUk!Aa1
+      - OPENSEARCH_JAVA_OPTS=-Xms256m -Xmx256m
+    volumes:
+      - authzen-gzac-opensearch-data:/usr/share/opensearch/data
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -sf -u admin:2cr8zkOoEXQJ3xUk!Aa1 https://localhost:9200/_cluster/health -k || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  gzac-rabbitmq:
+    image: rabbitmq:4.1.0-management
+    container_name: authzen-gzac-rabbitmq
+    volumes:
+      - ./gzac-imports/gzac-rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./gzac-imports/gzac-rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_CONFIG_FILE: /etc/rabbitmq/rabbitmq.conf
+    command: >
+      bash -c "
+        rabbitmq-plugins enable --offline rabbitmq_stream rabbitmq_stream_management &&
+        rabbitmq-server
+      "
+
+  # Gotenberg (PDF conversion API)
+  gzac-gotenberg:
+    image: gotenberg/gotenberg:8
+    container_name: authzen-gzac-gotenberg-pdf
+    ports:
+      - "3000:3000"
+    environment:
+      API_TIMEOUT: "240s"
+
+  # ZGW
+  gzac-openzaak:
+    image: openzaak/open-zaak:1.23.0
+    container_name: authzen-gzac-openzaak
+    environment:
+      - DB_HOST=gzac-openzaak-database
+      - DB_POST=5433
+      - SECRET_KEY=veryRestrictedSecretKey
+      - DB_USER=openzaak
+      - DB_PASSWORD=openzaak
+      - DB_NAME=openzaak
+      - CACHE_DEFAULT=gzac-openzaak-redis:6379/0
+      - CACHE_AXES=gzac-openzaak-redis:6379/0
+      - DEBUG=true
+      - ALLOWED_HOSTS=localhost,host.docker.internal,172.17.0.1,gzac-openzaak
+      - OPENZAAK_SUPERUSER_USERNAME=admin
+      - OPENZAAK_SUPERUSER_EMAIL=admin@admin.org
+      - DJANGO_SUPERUSER_PASSWORD=admin
+      - SENDFILE_BACKEND=django_sendfile.backends.simple
+      - NOTIFICATIONS_DISABLED=true
+      - DISABLE_2FA=True
+    ports:
+      - "8001:8000"
+    depends_on:
+      - gzac-openzaak-database
+      - gzac-openzaak-redis
+
+  gzac-openzaak-database:
+    image: postgis/postgis:17-3.4
+    container_name: authzen-openzaak-database
+    environment:
+      - POSTGRES_USER=openzaak
+      - POSTGRES_PASSWORD=openzaak
+      - POSTGRES_DB=openzaak
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./gzac-imports/open-zaak:/docker-entrypoint-initdb.d
+
+  gzac-openzaak-redis:
+    image: redis:7.4.3
+    container_name: authzen-gzac-openzaak-redis
+
+  gzac-objecten-api:
+    image: maykinmedia/objects-api:2.4.4
+    container_name: authzen-gzac-objecten-api
+    ports:
+      - "8010:8000"
+    environment: &objects-env
+      - DB_USER=objects
+      - DB_PASSWORD=objects
+      - DB_HOST=gzac-objecten-api-database
+      - DJANGO_SETTINGS_MODULE=objects.conf.docker
+      - SECRET_KEY=${SECRET_KEY:-1(@f(-6s_u(5fd&1sg^uvu2s(c-9sapw)1era8q&)g)h@cwxxg}
+      - IS_HTTPS=no
+      - ALLOWED_HOSTS=*
+      - CACHE_DEFAULT=gzac-objecten-api-redis:6379/0
+      - CACHE_AXES=gzac-objecten-api-redis:6379/0
+      - CELERY_BROKER_URL=redis://gzac-objecten-api-redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://gzac-objecten-api-redis:6379/1
+      - CELERY_LOGLEVEL=DEBUG
+      - DISABLE_2FA=True
+      - OBJECTS_SUPERUSER_EMAIL=admin@example.org
+      - OBJECTS_SUPERUSER_USERNAME=admin
+      - OBJECTS_SUPERUSER_PASSWORD=admin
+      - DEBUG=True
+    depends_on:
+      - gzac-objecten-api-database
+      - gzac-objecten-api-redis
+    healthcheck:
+      test: [ "CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      # This should allow for enough time for migrations to run before the max
+      # retries have passed. This healthcheck in turn allows other containers
+      # to wait for the database migrations.
+      start_period: 30s
+
+  gzac-objecten-api-database:
+    image: postgis/postgis:17-3.4
+    container_name: authzen-gzac-objecten-api-database
+    ports:
+      - "54321:5432"
+    environment:
+      - POSTGRES_USER=objects
+      - POSTGRES_PASSWORD=objects
+      - POSTGRES_DB=objects
+
+  gzac-objecten-api-import:
+    image: maykinmedia/objects-api:2.4.4
+    container_name: authzen-objects-api-import
+    environment: *objects-env
+    # in the current version of django it is not possible to create a new user with password without user interaction by using the createsuperuser command
+    command: sh init/init.sh
+    volumes:
+      - ./gzac-imports/objects-api/fixtures:/app/src/objects/fixtures
+      - ./gzac-imports/objects-api/init:/app/init
+    depends_on:
+      gzac-objecten-api:
+        condition: service_healthy
+
+  gzac-objecten-api-redis:
+    image: redis:7.4.3
+    command: [ "redis-server", "--appendonly", "yes" ]
+    container_name: authzen-objecten-api-redis
+
+  gzac-objecten-api-celery:
+    container_name: authzen-gzac-objecten-api-celery
+    image: maykinmedia/objects-api:2.4.4
+    environment: *objects-env
+    command: /celery_worker.sh
+    healthcheck:
+      test: [ "CMD", "python", "/app/bin/check_celery_worker_liveness.py" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      gzac-objecten-api:
+        condition: service_healthy
+
+
+  gzac-objecttypen-api:
+    image: maykinmedia/objecttypes-api:3.0.2
+    container_name: authzen-objecttypen-api
+    ports:
+      - "8011:8000"
+    environment: &objecttypes-env
+      - DB_HOST=gzac-objecttypen-api-database
+      - DB_USER=objecttypes
+      - DB_PASSWORD=objecttypes
+      - DJANGO_SETTINGS_MODULE=objecttypes.conf.docker
+      - SECRET_KEY=${SECRET_KEY:-fgv=c0hz&tl*8*3m3893@m+1pstrvidc9e^5@fpspmg%cy$$15d}
+      - ALLOWED_HOSTS=*
+      - CACHE_DEFAULT=gzac-objecten-api-redis:6379/0
+      - CACHE_AXES=gzac-objecten-api-redis:6379/0
+      - CELERY_BROKER_URL=redis://gzac-objecten-api-redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://gzac-objecten-api-redis:6379/1
+      - CELERY_LOGLEVEL=DEBUG
+      - DISABLE_2FA=True
+      - OBJECTTYPE_SUPERUSER_EMAIL=admin@example.org
+      - OBJECTTYPE_SUPERUSER_USERNAME=admin
+      - OBJECTTYPE_SUPERUSER_PASSWORD=admin
+      - DEBUG=True
+    depends_on:
+      - gzac-objecttypen-api-database
+    healthcheck:
+      test: [ "CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      # This should allow for enough time for migrations to run before the max
+      # retries have passed. This healthcheck in turn allows other containers
+      # to wait for the database migrations.
+      start_period: 30s
+
+  gzac-objecttypen-api-database:
+    image: postgres:17.4
+    container_name: authzen-objecttypen-api-database
+    ports:
+      - "54324:5432"
+    environment:
+      - POSTGRES_USER=objecttypes
+      - POSTGRES_PASSWORD=objecttypes
+      - POSTGRES_DB=objecttypes
+
+  gzac-objecttypen-api-import:
+    image: maykinmedia/objecttypes-api:3.0.2
+    container_name: authzen-objecttypen-api-import
+    environment: *objecttypes-env
+    command: sh init/init.sh
+    volumes:
+      - ./gzac-imports/objecttypes-api/fixtures:/app/src/objecttypes/fixtures
+      - ./gzac-imports/objecttypes-api/init:/app/init
+    depends_on:
+      gzac-objecttypen-api:
+        condition: service_healthy
+
+  gzac-open-notificaties-rabbitmq:
+    image: rabbitmq:4.1.0-management
+    container_name: authzen-open-notificaties-rabbitmq
+    ports:
+      - "5673:5672"
+      - "15673:15672"
+
+  gzac-open-notificaties-celery:
+    image: openzaak/open-notificaties:1.8.2
+    container_name: authzen-open-notificaties
+    environment: &notificaties-env
+      - DJANGO_SETTINGS_MODULE=nrc.conf.docker
+      - SECRET_KEY=${SECRET_KEY:-4wHY2Cp5`4(q%)]cuWxPQJRp5kN?g+`.Xah>%6Fsq6+)R>p_}
+      - ALLOWED_HOSTS=*
+      - CACHE_DEFAULT=gzac-open-notificaties-redis:6379/0
+      - CACHE_AXES=gzac-open-notificaties-redis:6379/1
+      - DB_PORT=5432
+      - DB_HOST=gzac-open-notificaties-database
+      - DB_NAME=notifications
+      - DB_USER=notifications
+      - DB_PASSWORD=notifications
+      - DEBUG=true
+      - RABBITMQ_HOST=gzac-open-notificaties-rabbitmq
+      - PUBLISH_BROKER_URL=redis://gzac-open-notificaties-redis:6379/0
+      - CELERY_BROKER_URL=redis://gzac-open-notificaties-redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://gzac-open-notificaties-redis:6379/0
+      - CELERY_LOGLEVEL=DEBUG
+      - CELERY_WORKER_CONCURRENCY=${CELERY_WORKER_CONCURRENCY:-4}
+      - SUBPATH=${SUBPATH:-/}
+      - DISABLE_2FA=True
+    command: /celery_worker.sh
+    depends_on:
+      - gzac-open-notificaties-database
+      - gzac-open-notificaties-rabbitmq
+      - gzac-open-notificaties-redis
+
+  gzac-open-notificaties:
+    image: openzaak/open-notificaties:1.8.1
+    container_name: authzen-open-notificaties-celery
+    ports:
+      - "8002:8000"
+    environment: *notificaties-env
+    depends_on:
+      - gzac-open-notificaties-database
+      - gzac-open-notificaties-rabbitmq
+      - gzac-open-notificaties-redis
+
+  gzac-open-notificaties-database:
+    image: postgres:17.4
+    container_name: authzen-open-notificaties-database
+    ports:
+      - "54319:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER:-notifications}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-notifications}
+      - POSTGRES_DB=notifications
+    volumes:
+      - ./gzac-imports/open-notificaties:/docker-entrypoint-initdb.d
+
+  gzac-open-notificaties-redis:
+    image: redis:7.4.3
+    container_name: authzen-open-notificaties-redis
+
+  gzac-iko-haalcentraal-personen:
+    image: ghcr.io/brp-api/personen-mock:2.2.1
+    container_name: authzen-iko-haalcentraal-personen
+    profiles:
+      - iko
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Release
+      - ASPNETCORE_URLS=http://+:5010
+    ports:
+      - "5010:5010"
+
+  gzac-iko-postgres:
+    image: postgres:17.4
+    container_name: authzen-iko-database
+    ports:
+      - "54325:5432"
+    environment:
+      - POSTGRES_USER=iko
+      - POSTGRES_PASSWORD=iko
+      - POSTGRES_DB=iko
+    volumes:
+      - ./gzac-imports/iko:/docker-entrypoint-initdb.d
+
+  gzac-iko-redis:
+    image: redis:8.4.0-alpine
+    ports:
+      - "6379:6379"
+    container_name: authzen-iko-redis
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  gzac-iko:
+    image: ghcr.io/integraal-klant-en-objectbeeld/iko:0.7.0
+    container_name: authzen-iko
+    ports:
+      - "8012:8080"
+    environment:
+      SPRING_CACHE_TYPE: redis
+      SPRING_DATA_REDIS_HOST: iko-redis
+      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_DATASOURCE_URL: jdbc:postgresql://gzac-iko-postgres:5432/iko
+      SPRING_DATASOURCE_USERNAME: iko
+      SPRING_DATASOURCE_PASSWORD: iko
+      IKO_CRYPTO_KEY: MTIzNDU2Nzg5MDEyMzQ1Ng==
+      SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUERURI: http://keycloak.localhost:8081/auth/realms/valtimo
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENTID: iko
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAK_CLIENTSECRET: ThisIsNotASecret
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI: http://keycloak.localhost:8081/auth/realms/valtimo
+      LOGGING_LEVEL_COM_RITENSE_IKO: debug
+      DEBUG: true
+    depends_on:
+      gzac-keycloak:
+        condition: service_healthy
+      gzac-iko-postgres:
+        condition: service_started
+    extra_hosts:
+      - "keycloak.localhost:host-gateway"
+
+  gzac-backend:
+    build:
+      context: ../valtimo/backend/apps/dev
+      dockerfile: ./Dockerfile
+    image: ritense/gzac-backend:13.1.2
+    container_name: authzen-gzac-backend
+    environment:
+      - VALTIMO_DOCKER_FILTER_ENABLED=true
+      - VALTIMO_DOCKER_FILTER_PORTS=8080,8001,8002,8003,8006,8010,8011
+      - VALTIMO_CHANGELOG_PBAC_CLEARTABLES=false
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://gzac-database:5432/gzac
+      - SPRING_DATASOURCE_USERNAME=gzac
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAKAPI_CLIENT-SECRET=6ef6ca16-6b86-482a-a3d9-0561704c1db9
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI=http://keycloak.localhost:8081/auth/realms/valtimo/protocol/openid-connect/certs
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAKJWT_ISSUERURI=http://keycloak.localhost:8081/auth/realms/valtimo
+      - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAKAPI_ISSUERURI=http://keycloak.localhost:8081/auth/realms/valtimo
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAKJWT_CLIENTID=valtimo-console
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_KEYCLOAKAPI_CLIENTID=valtimo-user-m2m-client
+      - SPRING_ACTUATOR_USERNAME=admin
+      - SPRING_ACTUATOR_PASSWORD=password
+      - VALTIMO_WEB_CORS_CORSCONFIGURATION_ALLOWEDORIGINS=*
+      - VALTIMO_WEB_CORS_CORSCONFIGURATION_ALLOWEDHEADERS=*
+      - VALTIMO_WEB_CORS_CORSCONFIGURATION_ALLOWEDMETHODS=*
+      - VALTIMO_WEB_CORS_PATHS=/**
+      - OPERATON_BPM_ADMINUSER_ID=admin
+      - OPERATON_BPM_ADMINUSER_PASSWORD=admin
+      - VALTIMO_API_URL=http://localhost:8080/api/v1/
+      - VALTIMO_ZAKEN_API_URL=http://host.docker.internal:8001/zaken/api/v1/
+      - VALTIMO_BESLUITEN_API_URL=http://host.docker.internal:8001/besluiten/api/v1/
+      - VALTIMO_CATALOGI_API_URL=http://host.docker.internal:8001/catalogi/api/v1/
+      - VALTIMO_DOCUMENTEN_API_URL=http://host.docker.internal:8001/documenten/api/v1/
+      - VALTIMO_NOTIFICATIES_API_URL=http://host.docker.internal:8002/api/v1/
+      - VALTIMO_OBJECTEN_API_URL=http://host.docker.internal:8010/api/v2/
+      - VALTIMO_OBJECTTYPEN_API_URL=http://host.docker.internal:8011/api/v2/
+      - VALTIMO_PDF_CONVERSION_API_URL=http://gzac-gotenberg:3000/
+      - VALTIMO_OPEN_ZAAK_CLIENT_ID=valtimo_client
+      - VALTIMO_OPEN_ZAAK_CLIENT_SECRET=e09b8bc5-5831-4618-ab28-41411304309d
+      - VALTIMO_OPEN_KLANT_CLIENT_ID=valtimo_client
+      - VALTIMO_OPEN_KLANT_TOKEN=5bf819967d9fdd00d326ce20774768b4182285e5
+      - VALTIMO_OPEN_NOTIFICATIES_CLIENT_ID=valtimo
+      - "VALTIMO_OPEN_NOTIFICATIES_CLIENT_SECRET=zZ!xRP&$$qTn4A9ETa^ZMKepDm^8egjPz"
+      - VALTIMO_OBJECTEN_API_TOKEN=182c13e2209161852c53cef53a879f7a2f923430
+      - VALTIMO_OBJECTTYPEN_API_TOKEN=cd63e158f3aca276ef284e3033d020a22899c728
+      - VALTIMO_INFORMATIEOBJECTTYPE=efc332f2-be3b-4bad-9e3c-49a6219c92ad
+      - VALTIMO_SMART_DOCUMENTS_URL=https://example.com/
+      - VALTIMO_SMART_DOCUMENTS_USERNAME=test-user
+      - VALTIMO_SMART_DOCUMENTS_PASSWORD=test-password
+      - VALTIMO_IKO_API_URL=http://gzac-iko:8080/
+      - VALTIMO_OBJECT_MANAGEMENT_AUTHORIZATION_ENABLED=true
+      - SPRING_RABBITMQ_SSL_ENABLED=false
+      - SPRING_RABBITMQ_HOST=gzac-rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=guest
+      - SPRING_RABBITMQ_PASSWORD=guest
+      - VALTIMO_APP_HOSTNAME=http://localhost:80/
+      - VALTIMO_PLUGIN_ENCRYPTIONSECRET=abcdefghijklmnopabcdefghijklmnop
+      - VALTIMO_ZGW_ZAAKDETAILS_LINKTOZAAK_ENABLED=true
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_BEANS=INFO
+      - LOGGING_LEVEL_REACTOR_NETTY_HTTP_CLIENT_HTTPCLIENT=INFO
+      - LOGGING_LEVEL_ORG_JBOSS_RESTEASY=INFO
+      - LOGGING_LEVEL_ORG_POSTGRESQL_JDBC_PGCONNECTION=INFO
+      - VALTIMO_AUTHZEN_URL=http://openftv-pdp:8443
+      - VALTIMO_AUTHZEN_ENABLED=true
+    ports:
+      - 8080:8080
+    depends_on:
+      gzac-keycloak:
+        condition: service_healthy
+    extra_hosts:
+      - "keycloak.localhost:host-gateway"
+
+  gzac-frontend:
+    image: ritense/gzac-frontend:13.45.1
+    container_name: authzen-gzac-frontend
+    environment:
+      - API_URI=http://localhost:8080/api
+      - KEYCLOAK_URL=http://keycloak.localhost:8081/auth
+      - KEYCLOAK_REALM=valtimo
+      - KEYCLOAK_CLIENT_ID=valtimo-console
+      - KEYCLOAK_REDIRECT_URI=http://localhost/keycloak/callback
+      - KEYCLOAK_LOGOUT_REDIRECT_URI=http://localhost
+    ports:
+      - 80:8080
+    depends_on:
+      - gzac-backend
 
 networks:
   authzen:
     driver: bridge
+
+volumes:
+  authzen-gzac-database-data:
+  authzen-gzac-database-data-mysql:
+  authzen-gzac-opensearch-data:

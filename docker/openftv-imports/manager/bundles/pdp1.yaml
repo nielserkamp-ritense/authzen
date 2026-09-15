@@ -7,6 +7,6 @@ policies: true
 data: true
 version: true
 targets:
-  - uri: "http://pdp:9443/v1/bundle"
+  - uri: "http://openftv-pdp:9443/v1/bundle"
     apikey: ""
     encoding: "bzip2"

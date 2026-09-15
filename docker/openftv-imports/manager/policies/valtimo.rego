@@ -219,6 +219,7 @@ document_all_admin if {
 		"view",
 		"view_list",
 	])
+	has_role("ROLE_ADMIN")
 }
 
 allow if document_all_admin
