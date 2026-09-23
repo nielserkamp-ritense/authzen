@@ -147,6 +147,8 @@ services:
 
   gzac-keycloak:
     container_name: authzen_gzac_keycloak
+    profiles:
+      - gzac
     depends_on:
       - gzac-keycloak-database
     image: quay.io/keycloak/keycloak:26.6
@@ -180,6 +182,8 @@ services:
   gzac-keycloak-database:
     image: postgres:17.4
     container_name: authzen-gzac-keycloak-database
+    profiles:
+      - gzac
     ports:
       - "54329:5432"
     environment:
@@ -188,6 +192,8 @@ services:
 
   gzac-database:
     container_name: authzen-gzac-database
+    profiles:
+      - gzac
     image: postgres:17.4
     ports:
       - "54320:5432"
@@ -201,6 +207,8 @@ services:
   gzac-opensearch:
     container_name: autzhen-gzac-opensearch
     image: opensearchproject/opensearch:2.19.2
+    profiles:
+      - gzac
     ports:
       - "9200:9200"
     environment:
@@ -219,6 +227,8 @@ services:
   gzac-rabbitmq:
     image: rabbitmq:4.1.0-management
     container_name: authzen-gzac-rabbitmq
+    profiles:
+      - gzac
     volumes:
       - ./gzac-imports/gzac-rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
       - ./gzac-imports/gzac-rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
@@ -237,6 +247,8 @@ services:
   gzac-gotenberg:
     image: gotenberg/gotenberg:8
     container_name: authzen-gzac-gotenberg-pdf
+    profiles:
+      - gzac
     ports:
       - "3000:3000"
     environment:
@@ -246,6 +258,8 @@ services:
   gzac-openzaak:
     image: openzaak/open-zaak:1.23.0
     container_name: authzen-gzac-openzaak
+    profiles:
+      - gzac
     environment:
       - DB_HOST=gzac-openzaak-database
       - DB_POST=5433
@@ -272,6 +286,8 @@ services:
   gzac-openzaak-database:
     image: postgis/postgis:17-3.4
     container_name: authzen-openzaak-database
+    profiles:
+      - gzac
     environment:
       - POSTGRES_USER=openzaak
       - POSTGRES_PASSWORD=openzaak
@@ -284,10 +300,14 @@ services:
   gzac-openzaak-redis:
     image: redis:7.4.3
     container_name: authzen-gzac-openzaak-redis
+    profiles:
+      - gzac
 
   gzac-objecten-api:
     image: maykinmedia/objects-api:2.4.4
     container_name: authzen-gzac-objecten-api
+    profiles:
+      - gzac
     ports:
       - "8010:8000"
     environment: &objects-env
@@ -324,6 +344,8 @@ services:
   gzac-objecten-api-database:
     image: postgis/postgis:17-3.4
     container_name: authzen-gzac-objecten-api-database
+    profiles:
+      - gzac
     ports:
       - "54321:5432"
     environment:
@@ -334,6 +356,8 @@ services:
   gzac-objecten-api-import:
     image: maykinmedia/objects-api:2.4.4
     container_name: authzen-objects-api-import
+    profiles:
+      - gzac
     environment: *objects-env
     # in the current version of django it is not possible to create a new user with password without user interaction by using the createsuperuser command
     command: sh init/init.sh
@@ -348,9 +372,13 @@ services:
     image: redis:7.4.3
     command: [ "redis-server", "--appendonly", "yes" ]
     container_name: authzen-objecten-api-redis
+    profiles:
+      - gzac
 
   gzac-objecten-api-celery:
     container_name: authzen-gzac-objecten-api-celery
+    profiles:
+      - gzac
     image: maykinmedia/objects-api:2.4.4
     environment: *objects-env
     command: /celery_worker.sh
@@ -368,6 +396,8 @@ services:
   gzac-objecttypen-api:
     image: maykinmedia/objecttypes-api:3.0.2
     container_name: authzen-objecttypen-api
+    profiles:
+      - gzac
     ports:
       - "8011:8000"
     environment: &objecttypes-env
@@ -402,6 +432,8 @@ services:
   gzac-objecttypen-api-database:
     image: postgres:17.4
     container_name: authzen-objecttypen-api-database
+    profiles:
+      - gzac
     ports:
       - "54324:5432"
     environment:
@@ -412,6 +444,8 @@ services:
   gzac-objecttypen-api-import:
     image: maykinmedia/objecttypes-api:3.0.2
     container_name: authzen-objecttypen-api-import
+    profiles:
+      - gzac
     environment: *objecttypes-env
     command: sh init/init.sh
     volumes:
@@ -424,6 +458,8 @@ services:
   gzac-open-notificaties-rabbitmq:
     image: rabbitmq:4.1.0-management
     container_name: authzen-open-notificaties-rabbitmq
+    profiles:
+      - gzac
     ports:
       - "5673:5672"
       - "15673:15672"
@@ -431,6 +467,8 @@ services:
   gzac-open-notificaties-celery:
     image: openzaak/open-notificaties:1.8.2
     container_name: authzen-open-notificaties
+    profiles:
+      - gzac
     environment: &notificaties-env
       - DJANGO_SETTINGS_MODULE=nrc.conf.docker
       - SECRET_KEY=${SECRET_KEY:-4wHY2Cp5`4(q%)]cuWxPQJRp5kN?g+`.Xah>%6Fsq6+)R>p_}
@@ -460,6 +498,8 @@ services:
   gzac-open-notificaties:
     image: openzaak/open-notificaties:1.8.1
     container_name: authzen-open-notificaties-celery
+    profiles:
+      - gzac
     ports:
       - "8002:8000"
     environment: *notificaties-env
@@ -471,6 +511,8 @@ services:
   gzac-open-notificaties-database:
     image: postgres:17.4
     container_name: authzen-open-notificaties-database
+    profiles:
+      - gzac
     ports:
       - "54319:5432"
     environment:
@@ -483,12 +525,15 @@ services:
   gzac-open-notificaties-redis:
     image: redis:7.4.3
     container_name: authzen-open-notificaties-redis
+    profiles:
+      - gzac
+    
 
   gzac-iko-haalcentraal-personen:
     image: ghcr.io/brp-api/personen-mock:2.2.1
     container_name: authzen-iko-haalcentraal-personen
     profiles:
-      - iko
+      - gzac
     environment:
       - ASPNETCORE_ENVIRONMENT=Release
       - ASPNETCORE_URLS=http://+:5010
@@ -498,6 +543,8 @@ services:
   gzac-iko-postgres:
     image: postgres:17.4
     container_name: authzen-iko-database
+    profiles:
+      - gzac
     ports:
       - "54325:5432"
     environment:
@@ -512,6 +559,8 @@ services:
     ports:
       - "6379:6379"
     container_name: authzen-iko-redis
+    profiles:
+      - gzac
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 10s
@@ -539,6 +588,8 @@ services:
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI: http://keycloak.localhost:8081/auth/realms/valtimo
       LOGGING_LEVEL_COM_RITENSE_IKO: debug
       DEBUG: true
+    profiles:
+      - gzac
     depends_on:
       gzac-keycloak:
         condition: service_healthy
@@ -612,6 +663,8 @@ services:
       - LOGGING_LEVEL_ORG_POSTGRESQL_JDBC_PGCONNECTION=INFO
       - VALTIMO_AUTHZEN_URL=http://openftv-pdp:8443
       - VALTIMO_AUTHZEN_ENABLED=true
+    profiles:
+      - gzac
     ports:
       - 8080:8080
     depends_on:
@@ -630,6 +683,8 @@ services:
       - KEYCLOAK_CLIENT_ID=valtimo-console
       - KEYCLOAK_REDIRECT_URI=http://localhost/keycloak/callback
       - KEYCLOAK_LOGOUT_REDIRECT_URI=http://localhost
+    profiles:
+      - gzac
     ports:
       - 80:8080
     depends_on:
