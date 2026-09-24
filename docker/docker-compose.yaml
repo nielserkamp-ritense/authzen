@@ -18,8 +18,8 @@ services:
 
       PDP_PORT: 8443
       PDP_HEALTH_PORT: 8080
-      #PDP_LOG_LEVEL: debug
-      #PDP_LOG_FORMAT: text
+      PDP_LOG_LEVEL: debug
+      PDP_LOG_FORMAT: text
       PDP_POLICIES_LANGUAGE: REGO
       PDP_POLICIES_STORE: /etc/pdp/policies-rego
       PDP_POLICIES_STORE_RECURSE: "true"
@@ -202,7 +202,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: gzac
     volumes:
-      - authzen-gzac-database-data:/var/lib/postgres # persist data even if container shuts down
+      - ./gzac-imports/gzac/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
 
   gzac-opensearch:
     container_name: autzhen-gzac-opensearch
@@ -295,7 +295,8 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - ./gzac-imports/open-zaak:/docker-entrypoint-initdb.d
+      - ./gzac-imports/open-zaak/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      #- ./gzac-imports/open-zaak:/docker-entrypoint-initdb.d
 
   gzac-openzaak-redis:
     image: redis:7.4.3
@@ -600,9 +601,8 @@ services:
 
   gzac-backend:
     build:
-      context: ../valtimo/backend/apps/dev
+      context: ../gzac
       dockerfile: ./Dockerfile
-    image: ritense/gzac-backend:13.1.2
     container_name: authzen-gzac-backend
     environment:
       - VALTIMO_DOCKER_FILTER_ENABLED=true
@@ -661,8 +661,8 @@ services:
       - LOGGING_LEVEL_REACTOR_NETTY_HTTP_CLIENT_HTTPCLIENT=INFO
       - LOGGING_LEVEL_ORG_JBOSS_RESTEASY=INFO
       - LOGGING_LEVEL_ORG_POSTGRESQL_JDBC_PGCONNECTION=INFO
-      - VALTIMO_AUTHZEN_URL=http://openftv-pdp:8443
-      - VALTIMO_AUTHZEN_ENABLED=true
+      - VALTIMO_AUTHORIZATION_AUTHZEN_URL=http://openftv-pdp:8443
+      - VALTIMO_AUTHORIZATION_AUTHZEN_ENABLED=true
     profiles:
       - gzac
     ports:

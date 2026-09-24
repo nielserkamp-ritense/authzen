@@ -1,0 +1,143 @@
+[
+  {
+    "key" : "zaakNumber",
+    "path" : "doc:openZaak.identificatie",
+    "displayType" : {
+      "type" : "string",
+      "displayTypeParameters" : {}
+    },
+    "sortable" : true,
+    "defaultSort" : "DESC",
+    "order" : 0,
+    "exportable" : false
+  },
+  {
+    "key" : "klachtenTeamDienst",
+    "path" : "doc:rapportageCategorieen.toegewezenDienst.dienst.name",
+    "displayType" : {
+      "type" : "string",
+      "displayTypeParameters" : {}
+    },
+    "sortable" : true,
+    "order" : 1,
+    "exportable" : false
+  },
+  {
+    "key" : "datumOntvangst",
+    "path" : "doc:klacht.datumOntvangst",
+    "displayType" : {
+      "type" : "date",
+      "displayTypeParameters" : {
+        "dateFormat" : "DD-MM-yyyy"
+      }
+    },
+    "sortable" : true,
+    "order" : 2,
+    "exportable" : false
+  },
+  {
+    "title" : "Doorlooptijd",
+    "key" : "doorlooptijd",
+    "path" : "template:doorlooptijd",
+    "displayType" : {
+      "type" : "text",
+      "displayTypeParameters" : {}
+    },
+    "sortable" : false,
+    "order" : 3,
+    "exportable" : false
+  },
+  {
+    "key" : "customerLastName",
+    "path" : "doc:melder.personalia.achternaam",
+    "displayType" : {
+      "type" : "string",
+      "displayTypeParameters" : {}
+    },
+    "sortable" : true,
+    "order" : 4,
+    "exportable" : false
+  },
+  {
+    "title" : "Korte omschrijving melding",
+    "key" : "korteOmschrijvingMelding",
+    "path" : "doc:klacht.korteOmschrijvingMelding",
+    "displayType" : {
+      "type" : "string",
+      "displayTypeParameters" : {}
+    },
+    "sortable" : true,
+    "order" : 5,
+    "exportable" : false
+  },
+  {
+    "key" : "status",
+    "path" : "doc:openZaak.statusOmschrijving",
+    "displayType" : {
+      "type" : "string",
+      "displayTypeParameters" : {}
+    },
+    "sortable" : true,
+    "order" : 6,
+    "exportable" : false
+  },
+  {
+    "key" : "assigneeFullName",
+    "path" : "case:assigneeFullName",
+    "displayType" : {
+      "type" : "string",
+      "displayTypeParameters" : {}
+    },
+    "sortable" : true,
+    "order" : 7,
+    "exportable" : false
+  },
+  {
+    "key" : "klachtencoordinator",
+    "path" : "doc:klachtencoordinator",
+    "displayType" : {
+      "type" : "string",
+      "displayTypeParameters" : {}
+    },
+    "sortable" : true,
+    "order" : 8,
+    "exportable" : false
+  },
+  {
+    "title" : "E-mailadres",
+    "key" : "emailadres",
+    "path" : "doc:melder.contactgegevens.email",
+    "displayType" : {
+      "type" : "text",
+      "displayTypeParameters" : {}
+    },
+    "sortable" : true,
+    "order" : 9,
+    "exportable" : false
+  },
+  {
+    "key" : "lastModified",
+    "path" : "case:modifiedOn",
+    "displayType" : {
+      "type" : "date",
+      "displayTypeParameters" : {
+        "dateFormat" : "DD-MM-yyyy HH:mm"
+      }
+    },
+    "sortable" : true,
+    "order" : 10,
+    "exportable" : false
+  },
+  {
+    "title" : "kenmerk Ombudsman",
+    "key" : "Ombudsman",
+    "path" : "doc:ombudsmannummer",
+    "displayType" : {
+      "type" : "text",
+      "displayTypeParameters" : {}
+    },
+    "sortable" : true,
+    "order" : 11,
+    "exportable" : false
+  }
+]

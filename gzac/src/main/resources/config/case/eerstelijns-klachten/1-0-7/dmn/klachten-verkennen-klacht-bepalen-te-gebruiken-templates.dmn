@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:ns0="http://operaton.org/schema/1.0/dmn" camunda:diagramRelationId="ae616be6-6f87-4ab8-9705-fe404af0eba5" exporter="Camunda Modeler" exporterVersion="5.19.0" expressionLanguage="https://www.omg.org/spec/DMN/20191111/FEEL/" id="verkennen-klacht-bepalen-te-gebruiken-templates" name="Klachten: Verkennen klacht bepalen te gebruiken template" namespace="http://camunda.org/schema/1.0/dmn" typeLanguage="https://www.omg.org/spec/DMN/20191111/FEEL/">
+    
+  <decision camunda:versionTag="CD:eerstelijns-klachten:1.0.7" id="klachten-verkennen-klacht-bepalen-te-gebruiken-templates" name="Verkennen klacht bepalen te gebruiken templates">
+        
+    <decisionTable hitPolicy="UNIQUE" id="DecisionTable_0azx1hv" preferredOrientation="Rule-as-Row">
+            
+      <input biodi:width="378" camunda:inputVariable="resultaatVerkenning" id="Input_1" label="Resultaat verkenning">
+                
+        <inputExpression expressionLanguage="feel" id="InputExpression_1" typeRef="string">
+                    
+          <text/>
+                  
+        </inputExpression>
+              
+      </input>
+            
+      <output biodi:width="324" id="Output_1" label="Te gebruiken brief template" name="briefTemplateName" typeRef="string"/>
+            
+      <output biodi:width="475" id="OutputClause_19z2k5q" label="Te gebruiken email template" name="emailTemplateName" typeRef="string"/>
+            
+      <rule id="DecisionRule_1013nvg">
+                
+        <inputEntry id="UnaryTests_0t99egt">
+                    
+          <text>"KLACHT_BETREFT_KLACHT_NIET_OPGELOST"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_16tv26z">
+                    
+          <text>"klacht-in-behandeling-genomen"</text>
+                  
+        </outputEntry>
+                
+        <outputEntry id="LiteralExpression_1v426xt">
+                    
+          <text>"klachtenproces-terugkoppeling-klacht-in-behandeling"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_1r6j4vt">
+                
+        <inputEntry id="UnaryTests_0b7qt7b">
+                    
+          <text>"KLACHT_BETREFT_KLACHT_NIET_ONTVANKELIJK"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_1g5lqmv">
+                    
+          <text>"klacht-niet-ontvankelijk"</text>
+                  
+        </outputEntry>
+                
+        <outputEntry id="LiteralExpression_0trofu8">
+                    
+          <text>"klachtenproces-klacht-niet-ontvankelijk"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_0iq7mlq">
+                
+        <inputEntry id="UnaryTests_0rjhurk">
+                    
+          <text>"KLACHT_BETREFT_KLACHT_OPGELOST"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_00pn4yx">
+                    
+          <text>"klacht-opgelost"</text>
+                  
+        </outputEntry>
+                
+        <outputEntry id="LiteralExpression_12mb6rd">
+                    
+          <text>"klachtenproces-terugkoppeling-klacht-opgelost"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_0ri6vf7">
+                
+        <inputEntry id="UnaryTests_1b031wy">
+                    
+          <text>"KLACHT_IS_INGETROKKEN"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_164mtpn">
+                    
+          <text>"klacht-ingetrokken"</text>
+                  
+        </outputEntry>
+                
+        <outputEntry id="LiteralExpression_1m9fixd">
+                    
+          <text>"klachtenproces-terugkoppeling-klacht-ingetrokken"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_0sjhbjc">
+                
+        <inputEntry id="UnaryTests_0taksy0">
+                    
+          <text>"KLACHT_BEHANDELEN"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_1e659u3">
+                    
+          <text>"klacht-in-behandeling-genomen"</text>
+                  
+        </outputEntry>
+                
+        <outputEntry id="LiteralExpression_0xsj2yd">
+                    
+          <text>"klachtenproces-terugkoppeling-klacht-in-behandeling"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_1yh6hlr">
+                
+        <inputEntry id="UnaryTests_0te487s">
+                    
+          <text>"KLACHT_IS_NIET_ONTVANKELIJK"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_0lvfbo7">
+                    
+          <text>"klacht-niet-ontvankelijk"</text>
+                  
+        </outputEntry>
+                
+        <outputEntry id="LiteralExpression_1fwjn81">
+                    
+          <text>"klachtenproces-klacht-niet-ontvankelijk"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_1651yam">
+                
+        <inputEntry id="UnaryTests_0hmq34d">
+                    
+          <text>"KLACHT_BETREFT_GEEN_KLACHT"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_0a2b08s">
+                    
+          <text>"klacht-doorgestuurd"</text>
+                  
+        </outputEntry>
+                
+        <outputEntry id="LiteralExpression_0dk5cb9">
+                    
+          <text>"klachtenproces-klacht-doorgestuurd"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_13epfk6">
+                
+        <inputEntry id="UnaryTests_16a8l1j">
+                    
+          <text>"GEEN_KLACHT_LEVERANCIER"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_0x3rcnd">
+                    
+          <text>"klacht-doorgestuurd"</text>
+                  
+        </outputEntry>
+                
+        <outputEntry id="LiteralExpression_0336h4e">
+                    
+          <text>"klachtenproces-klacht-doorgestuurd"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_01k6yp9">
+                
+        <inputEntry id="UnaryTests_07aeivy">
+                    
+          <text>"GEEN_KLACHT_BELEID"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_1w5h9kv">
+                    
+          <text>"klacht-doorgestuurd"</text>
+                  
+        </outputEntry>
+                
+        <outputEntry id="LiteralExpression_19tu5wn">
+                    
+          <text>"klachtenproces-klacht-doorgestuurd"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_09q645f">
+                
+        <inputEntry id="UnaryTests_13yt0cb">
+                    
+          <text>"GEEN_KLACHT_MELDING_OPENBARE_RUIMTE"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_0qlb62a">
+                    
+          <text>"klacht-doorgestuurd"</text>
+                  
+        </outputEntry>
+                
+        <outputEntry id="LiteralExpression_0jzd41s">
+                    
+          <text>"klachtenproces-klacht-doorgestuurd"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_1p6wouy">
+                
+        <inputEntry id="UnaryTests_09g1l6c">
+                    
+          <text>"GEEN_KLACHT_MELDING"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_012hlyg">
+                    
+          <text>"klacht-doorgestuurd"</text>
+                  
+        </outputEntry>
+                
+        <outputEntry id="LiteralExpression_06nwtgy">
+                    
+          <text>"klachtenproces-klacht-doorgestuurd"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_0hrmy1s">
+                
+        <inputEntry id="UnaryTests_0xdfgiz">
+                    
+          <text>"GEEN_KLACHT_ALGEMEEN"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_14wdfst">
+                    
+          <text>"klacht-doorgestuurd"</text>
+                  
+        </outputEntry>
+                
+        <outputEntry id="LiteralExpression_047z7d6">
+                    
+          <text>"klachtenproces-klacht-doorgestuurd"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+          
+    </decisionTable>
+      
+  </decision>
+    
+  <dmndi:DMNDI>
+        
+    <dmndi:DMNDiagram>
+            
+      <dmndi:DMNShape dmnElementRef="klachten-verkennen-klacht-bepalen-te-gebruiken-templates" isCollapsed="false">
+                
+        <dc:Bounds height="80" width="180" x="160" y="100"/>
+              
+      </dmndi:DMNShape>
+          
+    </dmndi:DMNDiagram>
+      
+  </dmndi:DMNDI>
+  
+</definitions>

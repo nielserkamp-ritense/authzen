@@ -1,0 +1,5 @@
+id: "klachten-eerstlijnsklachten-klachtenbehandelaar-dbv"
+language: "rego"
+metadata:
+  description: "eerstelijnsklachten-klachtenbehandelaar-dbv-permission-v4"
+  tags: ["klachten"]

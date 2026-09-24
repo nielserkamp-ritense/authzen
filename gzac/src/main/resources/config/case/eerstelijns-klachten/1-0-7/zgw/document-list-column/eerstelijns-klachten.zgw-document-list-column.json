@@ -1,0 +1,26 @@
+[
+  {
+    "key" : "BESTANDSNAAM",
+    "defaultSort" : null
+  },
+  {
+    "key" : "TITEL",
+    "defaultSort" : null
+  },
+  {
+    "key" : "CREATIEDATUM",
+    "defaultSort" : null
+  },
+  {
+    "key" : "AUTEUR",
+    "defaultSort" : null
+  },
+  {
+    "key" : "BESTANDSOMVANG",
+    "defaultSort" : null
+  },
+  {
+    "key" : "INFORMATIEOBJECTTYPE_OMSCHRIJVING",
+    "defaultSort" : null
+  }
+]

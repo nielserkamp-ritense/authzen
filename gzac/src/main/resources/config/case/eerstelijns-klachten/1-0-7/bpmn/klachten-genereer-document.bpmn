@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="Camunda Modeler" exporterVersion="5.21.0" expressionLanguage="http://www.w3.org/1999/XPath" id="Definitions_0932ye4" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.17.0" targetNamespace="http://bpmn.io/schema/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema">
+      
+  
+  <bpmn:collaboration id="Collaboration_11k79ui" isClosed="false">
+            
+    
+    <bpmn:participant id="GenereerDocumentParticipant" name="Genereer document" processRef="klachten-genereer-document"/>
+          
+  
+  </bpmn:collaboration>
+      
+  
+  <bpmn:process camunda:historyTimeToLive="P3650D" camunda:versionTag="CD:eerstelijns-klachten:1.0.7" id="klachten-genereer-document" isClosed="false" isExecutable="true" name="Klachten: Genereer document" processType="None">
+            
+    
+    <bpmn:sequenceFlow id="Flow_1e8zpw3" sourceRef="StartEvent_1" targetRef="Gateway_1p0kbs2"/>
+            
+    
+    <bpmn:sequenceFlow id="Flow_1jangl9" sourceRef="GenereerDocumentBeoordelenNieuweKlachtTask" targetRef="Gateway_18dgzbu"/>
+            
+    
+    <bpmn:sequenceFlow id="Flow_1wpf0ji" sourceRef="LinkenDocumentAanDeZaakTask" targetRef="Event_1637g5f"/>
+            
+    
+    <bpmn:sequenceFlow id="Flow_1djw4b6" sourceRef="OpslaanDocumentInDocumentenApiTask" targetRef="LinkenDocumentAanDeZaakTask"/>
+            
+    
+    <bpmn:sequenceFlow id="BeoordelenNieuweKlachtSequenceFlow" name="Beoordelen nieuwe klacht" sourceRef="Gateway_1p0kbs2" targetRef="GenereerDocumentBeoordelenNieuweKlachtTask"/>
+            
+    
+    <bpmn:sequenceFlow id="Flow_1xeto0g" sourceRef="Gateway_18dgzbu" targetRef="OpslaanDocumentInDocumentenApiTask"/>
+            
+    
+    <bpmn:sequenceFlow id="VerkennenKlachtSequenceFlow" name="Verkennen klacht" sourceRef="Gateway_1p0kbs2" targetRef="GenereerDocumentVerkennenKlachtTask">
+                  
+      
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${sourceProcess == "klachten-verkennen-klacht"}</bpmn:conditionExpression>
+                
+    
+    </bpmn:sequenceFlow>
+            
+    
+    <bpmn:sequenceFlow id="Flow_045usqa" sourceRef="GenereerDocumentVerkennenKlachtTask" targetRef="Gateway_18dgzbu"/>
+            
+    
+    <bpmn:startEvent id="StartEvent_1" isInterrupting="true" parallelMultiple="false">
+                  
+      
+      <bpmn:outgoing>Flow_1e8zpw3</bpmn:outgoing>
+                
+    
+    </bpmn:startEvent>
+            
+    
+    <bpmn:exclusiveGateway default="BeoordelenNieuweKlachtSequenceFlow" gatewayDirection="Unspecified" id="Gateway_1p0kbs2">
+                  
+      
+      <bpmn:incoming>Flow_1e8zpw3</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>BeoordelenNieuweKlachtSequenceFlow</bpmn:outgoing>
+                  
+      
+      <bpmn:outgoing>VerkennenKlachtSequenceFlow</bpmn:outgoing>
+                
+    
+    </bpmn:exclusiveGateway>
+            
+    
+    <bpmn:serviceTask camunda:asyncAfter="true" camunda:expression="${true}" completionQuantity="1" id="GenereerDocumentBeoordelenNieuweKlachtTask" implementation="##WebService" isForCompensation="false" name="Genereer document: Beoordelen nieuwe klacht" startQuantity="1">
+                  
+      
+      <bpmn:extensionElements/>
+                  
+      
+      <bpmn:incoming>BeoordelenNieuweKlachtSequenceFlow</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_1jangl9</bpmn:outgoing>
+                
+    
+    </bpmn:serviceTask>
+            
+    
+    <bpmn:serviceTask camunda:asyncAfter="true" camunda:expression="${true}" completionQuantity="1" id="GenereerDocumentVerkennenKlachtTask" implementation="##WebService" isForCompensation="false" name="Genereer document: Verkennen klacht" startQuantity="1">
+                  
+      
+      <bpmn:incoming>VerkennenKlachtSequenceFlow</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_045usqa</bpmn:outgoing>
+                
+    
+    </bpmn:serviceTask>
+            
+    
+    <bpmn:serviceTask camunda:asyncAfter="true" camunda:expression="${true}" completionQuantity="1" id="OpslaanDocumentInDocumentenApiTask" implementation="##WebService" isForCompensation="false" name="Opslaan document in documenten api" startQuantity="1">
+                  
+      
+      <bpmn:incoming>Flow_1xeto0g</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_1djw4b6</bpmn:outgoing>
+                
+    
+    </bpmn:serviceTask>
+            
+    
+    <bpmn:serviceTask camunda:asyncAfter="true" camunda:expression="${true}" completionQuantity="1" id="LinkenDocumentAanDeZaakTask" implementation="##WebService" isForCompensation="false" name="Linken document aan de zaak" startQuantity="1">
+                  
+      
+      <bpmn:incoming>Flow_1djw4b6</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_1wpf0ji</bpmn:outgoing>
+                
+    
+    </bpmn:serviceTask>
+            
+    
+    <bpmn:endEvent id="Event_1637g5f">
+                  
+      
+      <bpmn:incoming>Flow_1wpf0ji</bpmn:incoming>
+                
+    
+    </bpmn:endEvent>
+            
+    
+    <bpmn:exclusiveGateway gatewayDirection="Unspecified" id="Gateway_18dgzbu">
+                  
+      
+      <bpmn:incoming>Flow_1jangl9</bpmn:incoming>
+                  
+      
+      <bpmn:incoming>Flow_045usqa</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_1xeto0g</bpmn:outgoing>
+                
+    
+    </bpmn:exclusiveGateway>
+          
+  
+  </bpmn:process>
+      
+  
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+            
+    
+    <bpmndi:BPMNPlane bpmnElement="Collaboration_11k79ui" id="BPMNPlane_1">
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="GenereerDocumentParticipant" id="Participant_0aobzz3_di" isHorizontal="true">
+                        
+        
+        <dc:Bounds height="380" width="910" x="150" y="50"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="StartEvent_1" id="_BPMNShape_StartEvent_2">
+                        
+        
+        <dc:Bounds height="36" width="36" x="202" y="272"/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="Gateway_1p0kbs2" id="Gateway_1p0kbs2_di" isMarkerVisible="true">
+                        
+        
+        <dc:Bounds height="50" width="50" x="285" y="265"/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="GenereerDocumentBeoordelenNieuweKlachtTask" id="Activity_0wh8xl0_di">
+                        
+        
+        <dc:Bounds height="80" width="100" x="400" y="250"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="GenereerDocumentVerkennenKlachtTask" id="BPMNShape_0eck5yp">
+                        
+        
+        <dc:Bounds height="80" width="100" x="400" y="140"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="OpslaanDocumentInDocumentenApiTask" id="BPMNShape_0h0pxjf">
+                        
+        
+        <dc:Bounds height="80" width="100" x="680" y="250"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="LinkenDocumentAanDeZaakTask" id="Activity_0hbk1hw_di">
+                        
+        
+        <dc:Bounds height="80" width="100" x="840" y="250"/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="Event_1637g5f" id="Event_1637g5f_di">
+                        
+        
+        <dc:Bounds height="36" width="36" x="992" y="272"/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="Gateway_18dgzbu" id="Gateway_18dgzbu_di" isMarkerVisible="true">
+                        
+        
+        <dc:Bounds height="50" width="50" x="575" y="265"/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_1e8zpw3" id="Flow_1e8zpw3_di">
+                        
+        
+        <di:waypoint x="238" y="290"/>
+                        
+        
+        <di:waypoint x="285" y="290"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_1jangl9" id="Flow_1jangl9_di">
+                        
+        
+        <di:waypoint x="500" y="290"/>
+                        
+        
+        <di:waypoint x="575" y="290"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_1wpf0ji" id="Flow_1wpf0ji_di">
+                        
+        
+        <di:waypoint x="940" y="290"/>
+                        
+        
+        <di:waypoint x="992" y="290"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_1djw4b6" id="Flow_1djw4b6_di">
+                        
+        
+        <di:waypoint x="780" y="290"/>
+                        
+        
+        <di:waypoint x="840" y="290"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="BeoordelenNieuweKlachtSequenceFlow" id="Flow_0k88p6g_di">
+                        
+        
+        <di:waypoint x="335" y="290"/>
+                        
+        
+        <di:waypoint x="400" y="290"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="27" width="67" x="327" y="246"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_1xeto0g" id="Flow_1xeto0g_di">
+                        
+        
+        <di:waypoint x="625" y="290"/>
+                        
+        
+        <di:waypoint x="680" y="290"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="VerkennenKlachtSequenceFlow" id="Flow_1rzmnj6_di">
+                        
+        
+        <di:waypoint x="310" y="265"/>
+                        
+        
+        <di:waypoint x="310" y="180"/>
+                        
+        
+        <di:waypoint x="400" y="180"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="14" width="85" x="217" y="213"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_045usqa" id="Flow_045usqa_di">
+                        
+        
+        <di:waypoint x="500" y="180"/>
+                        
+        
+        <di:waypoint x="600" y="180"/>
+                        
+        
+        <di:waypoint x="600" y="265"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                
+    
+    </bpmndi:BPMNPlane>
+          
+  
+  </bpmndi:BPMNDiagram>
+    
+
+</bpmn:definitions>

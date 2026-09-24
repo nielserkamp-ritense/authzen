@@ -1,3 +1,5 @@
 ---
 - id: valtimo
   name: Valtimo policies
+- id: klachten
+  name: Klachten policies

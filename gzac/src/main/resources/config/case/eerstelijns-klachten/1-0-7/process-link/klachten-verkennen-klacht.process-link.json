@@ -1,0 +1,12 @@
+[
+  {
+    "activityId" : "VastleggenResultaatVerkenningTask",
+    "activityType" : "bpmn:UserTask:create",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  }
+]

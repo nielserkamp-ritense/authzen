@@ -1,0 +1,5 @@
+id: "klachten"
+language: "rego"
+metadata:
+  description: "Shared context for the klachten policies"
+  tags: ["klachten"]

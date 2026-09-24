@@ -1,0 +1,32 @@
+[
+  {
+    "activityId" : "VastleggenGespreksverslagHoorEnWederhoorTask",
+    "activityType" : "bpmn:UserTask:create",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.bepalen-gespreksvorm",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  },
+  {
+    "activityId" : "VastleggenDefinitiefEindbriefTask",
+    "activityType" : "bpmn:UserTask:create",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.vastleggen-definitief-eindbrief",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  },
+  {
+    "activityId" : "VastleggenOnderzoeksverslagEnofGemotiveerdOordeelTask",
+    "activityType" : "bpmn:UserTask:create",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  }
+]

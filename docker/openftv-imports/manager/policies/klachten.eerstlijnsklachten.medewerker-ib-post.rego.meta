@@ -1,0 +1,5 @@
+id: "klachten-eerstlijnsklachten-medewerker-ib-post"
+language: "rego"
+metadata:
+  description: "eerstelijnsklachten-medewerker-ib-post-permission-v8"
+  tags: ["klachten"]

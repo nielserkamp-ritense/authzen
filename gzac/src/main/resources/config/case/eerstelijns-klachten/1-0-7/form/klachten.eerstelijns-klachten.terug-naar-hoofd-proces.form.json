@@ -1,0 +1,73 @@
+{
+  "title" : "Teruggaan naar hoofdproces",
+  "display" : "form",
+  "components" : [
+    {
+      "key" : "behandelingDoorKlachtencommissie",
+      "type" : "hidden",
+      "input" : false,
+      "label" : "behandelingDoorKlachtencommissie",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.terug-naar-hoofd-proces-behandelingDoorKlachtencommissie"
+      }
+    },
+    {
+      "key" : "openZaak",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "openZaak",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.terug-naar-hoofd-proces-openZaak"
+      }
+    },
+    {
+      "key" : "instructionsForProcessNotAvailable",
+      "tag" : "div",
+      "type" : "htmlelement",
+      "input" : false,
+      "label" : "HTML",
+      "content" : "Deze taak kan op dit moment in het proces niet worden gebruikt.",
+      "tableView" : false,
+      "refreshOnChange" : false,
+      "customConditional" : "show = data.openZaak.statusOmschrijving != 'Overgedragen naar klachtencommissie'"
+    },
+    {
+      "key" : "instructions",
+      "tag" : "div",
+      "type" : "htmlelement",
+      "input" : false,
+      "label" : "HTML",
+      "content" : "Met dit formulier kun je teruggaan naar het hoofdproces. Vul ter registratie in waarom het noodzakelijk is om terug te keren naar het hoofdproces.",
+      "tableView" : false,
+      "refreshOnChange" : false,
+      "customConditional" : "show = data.openZaak.statusOmschrijving == 'Overgedragen naar klachtencommissie';"
+    },
+    {
+      "key" : "behandelingDoorKlachtencommissie.redenTeruggaanNaarHoofdproces",
+      "type" : "textfield",
+      "input" : true,
+      "label" : "Toelichting",
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : true,
+      "applyMaskOn" : "change",
+      "customConditional" : "show = data.openZaak.statusOmschrijving == 'Overgedragen naar klachtencommissie';",
+      "validateWhenHidden" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.terug-naar-hoofd-proces-behandelingDoorKlachtencommissie.redenTeruggaanNaarHoofdproces"
+      }
+    },
+    {
+      "key" : "submit",
+      "type" : "button",
+      "input" : true,
+      "label" : "Submit",
+      "tableView" : false,
+      "disableOnInvalid" : true,
+      "customConditional" : "show = data.openZaak.statusOmschrijving == 'Overgedragen naar klachtencommissie';"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "activityId" : "VastleggenResultaatKlachtencommissieTask",
+    "activityType" : "bpmn:UserTask:create",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  },
+  {
+    "activityId" : "ControleFormulierAfsluitenZaak",
+    "activityType" : "bpmn:UserTask:create",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  },
+  {
+    "activityId" : "VastleggenDefinitiefEindbriefTask",
+    "activityType" : "bpmn:UserTask:create",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-definitief-eindbrief",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  }
+]

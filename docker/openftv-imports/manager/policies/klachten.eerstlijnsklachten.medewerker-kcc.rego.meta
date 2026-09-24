@@ -1,0 +1,5 @@
+id: "klachten-eerstlijnsklachten-medewerker-kcc"
+language: "rego"
+metadata:
+  description: "eerstelijnsklachten-medewerker-kcc-permission-v4"
+  tags: ["klachten"]

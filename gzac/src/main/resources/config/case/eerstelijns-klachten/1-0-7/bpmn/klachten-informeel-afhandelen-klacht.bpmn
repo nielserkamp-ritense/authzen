@@ -1,0 +1,893 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" camunda:diagramRelationId="003b1cb1-b8b0-4fc5-83a9-a8c30989ad3b" exporter="Camunda Modeler" exporterVersion="5.33.1" expressionLanguage="http://www.w3.org/1999/XPath" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema">
+      
+  
+  <bpmn:collaboration id="Collaboration_1ovjupg" isClosed="false">
+            
+    
+    <bpmn:participant id="InformeelAfhandelenKlachtParticipant" name="Informeel afhandelen klacht" processRef="klachten-informeel-afhandelen-klacht"/>
+          
+  
+  </bpmn:collaboration>
+      
+  
+  <bpmn:process camunda:historyTimeToLive="P3650D" camunda:versionTag="CD:eerstelijns-klachten:1.0.7" id="klachten-informeel-afhandelen-klacht" isClosed="false" isExecutable="true" name="Klachten: Informeel afhandelen klacht" processType="None">
+            
+    
+    <bpmn:laneSet id="LaneSet_1fq1onn">
+                  
+      
+      <bpmn:lane id="KlachtencoordinatorLane" name="Klachtencoördinator">
+                        
+        
+        <bpmn:flowNodeRef>ToewijzenZaakAanZaakbehandelaarTask</bpmn:flowNodeRef>
+                        
+        
+        <bpmn:flowNodeRef>Event_16rmpwj</bpmn:flowNodeRef>
+                        
+        
+        <bpmn:flowNodeRef>WelkeRolHeeftDeToegewezenZaakbehandelaarInGzacGateway</bpmn:flowNodeRef>
+                        
+        
+        <bpmn:flowNodeRef>VastleggenZaakbehandelaarTask</bpmn:flowNodeRef>
+                        
+        
+        <bpmn:flowNodeRef>TaaknotificatieZaakbehandelaarEmail</bpmn:flowNodeRef>
+                        
+        
+        <bpmn:flowNodeRef>MelderAkkoordMetOplossingsvoorstelGateway</bpmn:flowNodeRef>
+                        
+        
+        <bpmn:flowNodeRef>VastleggenDefinitiefEindbriefTask</bpmn:flowNodeRef>
+                        
+        
+        <bpmn:flowNodeRef>Gateway_0my9f3f</bpmn:flowNodeRef>
+                        
+        
+        <bpmn:flowNodeRef>MelderAkkoordMetOplossingEndEvent</bpmn:flowNodeRef>
+                        
+        
+        <bpmn:flowNodeRef>AkkoordGateway</bpmn:flowNodeRef>
+                        
+        
+        <bpmn:flowNodeRef>MelderNietAkkoordMetOplossingEndEvent</bpmn:flowNodeRef>
+                        
+        
+        <bpmn:flowNodeRef>VastleggenEindresultaatOnderzoekOplossingsmogelijkhedenTask</bpmn:flowNodeRef>
+                        
+        
+        <bpmn:flowNodeRef>ControlerenAfhandelingEnVastleggenEindresultaatTask</bpmn:flowNodeRef>
+                        
+        
+        <bpmn:flowNodeRef>TaaknotificatieCoordinatorEmail</bpmn:flowNodeRef>
+                      
+      
+      </bpmn:lane>
+                  
+      
+      <bpmn:lane id="KlachtenbehandelaarLane" name="Klachtenbehandelaar">
+                        
+        
+        <bpmn:flowNodeRef>Gateway_0beqa2a</bpmn:flowNodeRef>
+                        
+        
+        <bpmn:flowNodeRef>VastleggenEindresultaatOnderzoekOplossingsmogelijkhedenTask1</bpmn:flowNodeRef>
+                      
+      
+      </bpmn:lane>
+                
+    
+    </bpmn:laneSet>
+            
+    
+    <bpmn:userTask camunda:asyncAfter="true" camunda:candidateGroups="ROLE_ADMIN,ROLE_KLACHTEN_KLACHTENCOORDINATOR,ROLE_KLACHTEN_KLACHTENCOORDINATOR_GGD,ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH" completionQuantity="1" id="ToewijzenZaakAanZaakbehandelaarTask" implementation="##unspecified" isForCompensation="false" name="Toewijzen zaak aan zaak-behandelaar" startQuantity="1">
+                  
+      
+      <bpmn:incoming>Flow_1exl4tf</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_0nn95zu</bpmn:outgoing>
+                
+    
+    </bpmn:userTask>
+            
+    
+    <bpmn:startEvent id="Event_16rmpwj" isInterrupting="true" parallelMultiple="false">
+                  
+      
+      <bpmn:outgoing>Flow_1exl4tf</bpmn:outgoing>
+                
+    
+    </bpmn:startEvent>
+            
+    
+    <bpmn:exclusiveGateway default="KlachtencoordinatorSequenceFlow" gatewayDirection="Unspecified" id="WelkeRolHeeftDeToegewezenZaakbehandelaarInGzacGateway" name="Welke rol heeft de toegewezen zaakbehandelaar in gzac?">
+                  
+      
+      <bpmn:incoming>Flow_19n2qgb</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>KlachtencoordinatorSequenceFlow</bpmn:outgoing>
+                  
+      
+      <bpmn:outgoing>KlachtenbehandelaarSequenceFlow</bpmn:outgoing>
+                
+    
+    </bpmn:exclusiveGateway>
+            
+    
+    <bpmn:serviceTask camunda:asyncAfter="true" camunda:expression="${documentDelegateService.setAssignee(execution, zaakbehandelaarEmail)}" completionQuantity="1" id="VastleggenZaakbehandelaarTask" implementation="##WebService" isForCompensation="false" name="Vastleggen  zaakbehandelaar" startQuantity="1">
+                  
+      
+      <bpmn:incoming>Flow_0nn95zu</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_19n2qgb</bpmn:outgoing>
+                
+    
+    </bpmn:serviceTask>
+            
+    
+    <bpmn:sequenceFlow id="Flow_1exl4tf" sourceRef="Event_16rmpwj" targetRef="ToewijzenZaakAanZaakbehandelaarTask"/>
+            
+    
+    <bpmn:sequenceFlow id="Flow_0nn95zu" sourceRef="ToewijzenZaakAanZaakbehandelaarTask" targetRef="VastleggenZaakbehandelaarTask"/>
+            
+    
+    <bpmn:sequenceFlow id="Flow_19n2qgb" sourceRef="VastleggenZaakbehandelaarTask" targetRef="WelkeRolHeeftDeToegewezenZaakbehandelaarInGzacGateway"/>
+            
+    
+    <bpmn:sequenceFlow id="KlachtencoordinatorSequenceFlow" name="Klachten-coördinator" sourceRef="WelkeRolHeeftDeToegewezenZaakbehandelaarInGzacGateway" targetRef="VastleggenEindresultaatOnderzoekOplossingsmogelijkhedenTask"/>
+            
+    
+    <bpmn:sequenceFlow id="KlachtenbehandelaarSequenceFlow" name="Klachten-behandelaar" sourceRef="WelkeRolHeeftDeToegewezenZaakbehandelaarInGzacGateway" targetRef="TaaknotificatieZaakbehandelaarEmail">
+                  
+      
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${zaakbehandelaarKlacht == "EEN_KLACHTENBEHANDELAAR_VAN_DE_DIENST"}</bpmn:conditionExpression>
+                
+    
+    </bpmn:sequenceFlow>
+            
+    
+    <bpmn:sequenceFlow id="Flow_09egp0h" sourceRef="VastleggenEindresultaatOnderzoekOplossingsmogelijkhedenTask" targetRef="Gateway_0my9f3f"/>
+            
+    
+    <bpmn:sequenceFlow id="Flow_1hzgi0y" sourceRef="Gateway_0my9f3f" targetRef="MelderAkkoordMetOplossingsvoorstelGateway"/>
+            
+    
+    <bpmn:sequenceFlow id="JaSequenceFlow" name="Ja" sourceRef="MelderAkkoordMetOplossingsvoorstelGateway" targetRef="VastleggenDefinitiefEindbriefTask"/>
+            
+    
+    <bpmn:sequenceFlow id="NeeSequenceFlow" name="Nee" sourceRef="MelderAkkoordMetOplossingsvoorstelGateway" targetRef="MelderNietAkkoordMetOplossingEndEvent">
+                  
+      
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${melderAkkoordMetOplossing == false}</bpmn:conditionExpression>
+                
+    
+    </bpmn:sequenceFlow>
+            
+    
+    <bpmn:sequenceFlow id="Flow_1sldg8f" sourceRef="VastleggenDefinitiefEindbriefTask" targetRef="MelderAkkoordMetOplossingEndEvent"/>
+            
+    
+    <bpmn:sequenceFlow id="JaSequenceFlow1" name="Ja" sourceRef="AkkoordGateway" targetRef="Gateway_0my9f3f">
+                  
+      
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${valueResolverDelegateService.resolveValue(execution, "doc:informeleAfhandeling.afhandelingDoorKlachtbehandelaar.akkoordTerugkoppeling")}</bpmn:conditionExpression>
+                
+    
+    </bpmn:sequenceFlow>
+            
+    
+    <bpmn:sequenceFlow id="Flow_0cc7oy5" sourceRef="ControlerenAfhandelingEnVastleggenEindresultaatTask" targetRef="AkkoordGateway"/>
+            
+    
+    <bpmn:sequenceFlow id="NeeSequenceFlow1" name="Nee" sourceRef="AkkoordGateway" targetRef="Gateway_0beqa2a"/>
+            
+    
+    <bpmn:sequenceFlow id="Flow_1qgjl25" sourceRef="Gateway_0beqa2a" targetRef="VastleggenEindresultaatOnderzoekOplossingsmogelijkhedenTask1"/>
+            
+    
+    <bpmn:sequenceFlow id="Flow_1346n3w" sourceRef="VastleggenEindresultaatOnderzoekOplossingsmogelijkhedenTask1" targetRef="TaaknotificatieCoordinatorEmail"/>
+            
+    
+    <bpmn:sequenceFlow id="Flow_1xof0zy" sourceRef="TaaknotificatieCoordinatorEmail" targetRef="ControlerenAfhandelingEnVastleggenEindresultaatTask"/>
+            
+    
+    <bpmn:exclusiveGateway gatewayDirection="Unspecified" id="Gateway_0beqa2a">
+                  
+      
+      <bpmn:incoming>NeeSequenceFlow1</bpmn:incoming>
+                  
+      
+      <bpmn:incoming>Flow_1xr97lm</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_1qgjl25</bpmn:outgoing>
+                
+    
+    </bpmn:exclusiveGateway>
+            
+    
+    <bpmn:serviceTask camunda:expression="${true}" completionQuantity="1" id="TaaknotificatieZaakbehandelaarEmail" implementation="##WebService" isForCompensation="false" name="Taaknotificatie E-mail Behandelaar" startQuantity="1">
+                  
+      
+      <bpmn:incoming>KlachtenbehandelaarSequenceFlow</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_1xr97lm</bpmn:outgoing>
+                
+    
+    </bpmn:serviceTask>
+            
+    
+    <bpmn:sequenceFlow id="Flow_1xr97lm" sourceRef="TaaknotificatieZaakbehandelaarEmail" targetRef="Gateway_0beqa2a"/>
+            
+    
+    <bpmn:exclusiveGateway default="JaSequenceFlow" gatewayDirection="Unspecified" id="MelderAkkoordMetOplossingsvoorstelGateway" name="Melder akkoord met oplossings-voorstel?">
+                  
+      
+      <bpmn:incoming>Flow_1hzgi0y</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>JaSequenceFlow</bpmn:outgoing>
+                  
+      
+      <bpmn:outgoing>NeeSequenceFlow</bpmn:outgoing>
+                
+    
+    </bpmn:exclusiveGateway>
+            
+    
+    <bpmn:userTask camunda:asyncAfter="true" camunda:candidateGroups="ROLE_ADMIN,ROLE_KLACHTEN_KLACHTENCOORDINATOR,ROLE_KLACHTEN_KLACHTENCOORDINATOR_GGD,ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH" completionQuantity="1" id="VastleggenDefinitiefEindbriefTask" implementation="##unspecified" isForCompensation="false" name="Vastleggen definitieve eindbrief" startQuantity="1">
+                  
+      
+      <bpmn:incoming>JaSequenceFlow</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_1sldg8f</bpmn:outgoing>
+                
+    
+    </bpmn:userTask>
+            
+    
+    <bpmn:exclusiveGateway gatewayDirection="Unspecified" id="Gateway_0my9f3f">
+                  
+      
+      <bpmn:incoming>Flow_09egp0h</bpmn:incoming>
+                  
+      
+      <bpmn:incoming>JaSequenceFlow1</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_1hzgi0y</bpmn:outgoing>
+                
+    
+    </bpmn:exclusiveGateway>
+            
+    
+    <bpmn:endEvent id="MelderAkkoordMetOplossingEndEvent" name="Melder akkoord met oplossing">
+                  
+      
+      <bpmn:incoming>Flow_1sldg8f</bpmn:incoming>
+                
+    
+    </bpmn:endEvent>
+            
+    
+    <bpmn:exclusiveGateway default="NeeSequenceFlow1" gatewayDirection="Unspecified" id="AkkoordGateway" name="Akkoord?">
+                  
+      
+      <bpmn:incoming>Flow_0cc7oy5</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>JaSequenceFlow1</bpmn:outgoing>
+                  
+      
+      <bpmn:outgoing>NeeSequenceFlow1</bpmn:outgoing>
+                
+    
+    </bpmn:exclusiveGateway>
+            
+    
+    <bpmn:endEvent id="MelderNietAkkoordMetOplossingEndEvent" name="Melder niet akkoord met oplossing">
+                  
+      
+      <bpmn:incoming>NeeSequenceFlow</bpmn:incoming>
+                
+    
+    </bpmn:endEvent>
+            
+    
+    <bpmn:userTask camunda:asyncAfter="true" camunda:candidateGroups="ROLE_ADMIN,ROLE_KLACHTEN_KLACHTENCOORDINATOR,ROLE_KLACHTEN_KLACHTENCOORDINATOR_GGD,ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH" completionQuantity="1" id="VastleggenEindresultaatOnderzoekOplossingsmogelijkhedenTask" implementation="##unspecified" isForCompensation="false" name="Vastleggen eindresultaat onderzoek oplossings-mogelijkheden" startQuantity="1">
+                  
+      
+      <bpmn:extensionElements/>
+                  
+      
+      <bpmn:incoming>KlachtencoordinatorSequenceFlow</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_09egp0h</bpmn:outgoing>
+                
+    
+    </bpmn:userTask>
+            
+    
+    <bpmn:userTask camunda:asyncAfter="true" camunda:candidateGroups="ROLE_ADMIN,ROLE_KLACHTEN_KLACHTENCOORDINATOR,ROLE_KLACHTEN_KLACHTENCOORDINATOR_GGD,ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH" completionQuantity="1" id="ControlerenAfhandelingEnVastleggenEindresultaatTask" implementation="##unspecified" isForCompensation="false" name="Controleren afhandeling en Vastleggen eindresultaat" startQuantity="1">
+                  
+      
+      <bpmn:incoming>Flow_1xof0zy</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_0cc7oy5</bpmn:outgoing>
+                
+    
+    </bpmn:userTask>
+            
+    
+    <bpmn:userTask camunda:asyncAfter="true" camunda:candidateGroups="ROLE_ADMIN,ROLE_KLACHTEN_KLACHTBEHANDELAAR_BSD_BESTUURSDIENST,ROLE_KLACHTEN_KLACHTBEHANDELAAR_DBV,ROLE_KLACHTEN_KLACHTBEHANDELAAR_DPZ,ROLE_KLACHTEN_KLACHTBEHANDELAAR_DSB_DIENST_STADSBEHEER,ROLE_KLACHTEN_KLACHTBEHANDELAAR_DSO,ROLE_KLACHTEN_KLACHTBEHANDELAAR_OCW_ALGEMEEN,ROLE_KLACHTEN_KLACHTBEHANDELAAR_OCW_JGZ,ROLE_KLACHTEN_KLACHTBEHANDELAAR_OCW_JH,ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW" completionQuantity="1" id="VastleggenEindresultaatOnderzoekOplossingsmogelijkhedenTask1" implementation="##unspecified" isForCompensation="false" name="Vastleggen eindresultaat onderzoek oplossings-mogelijkheden" startQuantity="1">
+                  
+      
+      <bpmn:extensionElements/>
+                  
+      
+      <bpmn:incoming>Flow_1qgjl25</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_1346n3w</bpmn:outgoing>
+                
+    
+    </bpmn:userTask>
+            
+    
+    <bpmn:serviceTask camunda:expression="${true}" completionQuantity="1" id="TaaknotificatieCoordinatorEmail" implementation="##WebService" isForCompensation="false" name="Taaknotificatie E-mail Coordinator" startQuantity="1">
+                  
+      
+      <bpmn:incoming>Flow_1346n3w</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_1xof0zy</bpmn:outgoing>
+                
+    
+    </bpmn:serviceTask>
+          
+  
+  </bpmn:process>
+      
+  
+  <bpmn:signal id="Signal_3fm5iv5" name="klachten-herbeoordelen-klacht-${execution.processBusinessKey}"/>
+      
+  
+  <bpmn:signal id="Signal_0vfl24k" name="klachten-stop-lopende-instantie-${execution.processBusinessKey}"/>
+      
+  
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+            
+    
+    <bpmndi:BPMNPlane bpmnElement="Collaboration_1ovjupg" id="BPMNPlane_1">
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="InformeelAfhandelenKlachtParticipant" id="BPMNShape_19ed77i" isHorizontal="true">
+                        
+        
+        <dc:Bounds height="590" width="1310" x="160" y="100"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="KlachtenbehandelaarLane" id="BPMNShape_1ck5klc" isHorizontal="true">
+                        
+        
+        <dc:Bounds height="150" width="1280" x="190" y="540"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="KlachtencoordinatorLane" id="BPMNShape_1ngjye3" isHorizontal="true">
+                        
+        
+        <dc:Bounds height="440" width="1280" x="190" y="100"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="ToewijzenZaakAanZaakbehandelaarTask" id="BPMNShape_0o36xmg">
+                        
+        
+        <dc:Bounds height="80" width="100" x="310" y="180"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="Event_16rmpwj" id="BPMNShape_1hopeu7">
+                        
+        
+        <dc:Bounds height="36" width="36" x="222" y="202"/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="WelkeRolHeeftDeToegewezenZaakbehandelaarInGzacGateway" id="BPMNShape_0nu0kxi" isMarkerVisible="true">
+                        
+        
+        <dc:Bounds height="50" width="50" x="635" y="195"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="53" width="85" x="618" y="133"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="VastleggenZaakbehandelaarTask" id="BPMNShape_0nlgr4z">
+                        
+        
+        <dc:Bounds height="80" width="100" x="480" y="180"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="Gateway_0beqa2a" id="BPMNShape_1kd4y74" isMarkerVisible="true">
+                        
+        
+        <dc:Bounds height="50" width="50" x="635" y="575"/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="TaaknotificatieZaakbehandelaarEmail" id="BPMNShape_06wq5gr">
+                        
+        
+        <dc:Bounds height="80" width="100" x="610" y="420"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="MelderAkkoordMetOplossingsvoorstelGateway" id="BPMNShape_01g58r6" isMarkerVisible="true">
+                        
+        
+        <dc:Bounds height="50" width="50" x="1115" y="195"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="40" width="78" x="1101" y="145"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="VastleggenDefinitiefEindbriefTask" id="BPMNShape_0exarzc">
+                        
+        
+        <dc:Bounds height="80" width="100" x="1230" y="180"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="Gateway_0my9f3f" id="BPMNShape_1hrwfm5" isMarkerVisible="true">
+                        
+        
+        <dc:Bounds height="50" width="50" x="995" y="195"/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="MelderAkkoordMetOplossingEndEvent" id="BPMNShape_0zf8x3x">
+                        
+        
+        <dc:Bounds height="36" width="36" x="1382" y="202"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="27" width="76" x="1363" y="245"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="AkkoordGateway" id="BPMNShape_099medz" isMarkerVisible="true">
+                        
+        
+        <dc:Bounds height="50" width="50" x="995" y="315"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="14" width="46" x="1056" y="333"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="MelderNietAkkoordMetOplossingEndEvent" id="BPMNShape_1bae5yh">
+                        
+        
+        <dc:Bounds height="36" width="36" x="1382" y="332"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="40" width="61" x="1369" y="380"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="VastleggenEindresultaatOnderzoekOplossingsmogelijkhedenTask" id="BPMNShape_0yga831">
+                        
+        
+        <dc:Bounds height="80" width="100" x="850" y="180"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="ControlerenAfhandelingEnVastleggenEindresultaatTask" id="BPMNShape_1bvkhot">
+                        
+        
+        <dc:Bounds height="80" width="100" x="850" y="300"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="VastleggenEindresultaatOnderzoekOplossingsmogelijkhedenTask1" id="BPMNShape_04cgbxi">
+                        
+        
+        <dc:Bounds height="80" width="100" x="850" y="560"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="TaaknotificatieCoordinatorEmail" id="BPMNShape_0spzbxm">
+                        
+        
+        <dc:Bounds height="80" width="100" x="850" y="420"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_1exl4tf" id="BPMNEdge_0ucumpv">
+                        
+        
+        <di:waypoint x="258" y="220"/>
+                        
+        
+        <di:waypoint x="310" y="220"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_0nn95zu" id="BPMNEdge_0akv5wx">
+                        
+        
+        <di:waypoint x="410" y="220"/>
+                        
+        
+        <di:waypoint x="480" y="220"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_19n2qgb" id="BPMNEdge_0kjmpiz">
+                        
+        
+        <di:waypoint x="580" y="220"/>
+                        
+        
+        <di:waypoint x="635" y="220"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="KlachtencoordinatorSequenceFlow" id="BPMNEdge_1yf5o83">
+                        
+        
+        <di:waypoint x="685" y="220"/>
+                        
+        
+        <di:waypoint x="850" y="220"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="27" width="57" x="739" y="146"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="KlachtenbehandelaarSequenceFlow" id="BPMNEdge_1yqh295">
+                        
+        
+        <di:waypoint x="660" y="245"/>
+                        
+        
+        <di:waypoint x="660" y="420"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="27" width="63" x="669" y="264"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_09egp0h" id="BPMNEdge_060re54">
+                        
+        
+        <di:waypoint x="950" y="220"/>
+                        
+        
+        <di:waypoint x="995" y="220"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_1hzgi0y" id="BPMNEdge_11eav0r">
+                        
+        
+        <di:waypoint x="1045" y="220"/>
+                        
+        
+        <di:waypoint x="1115" y="220"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="JaSequenceFlow" id="BPMNEdge_0hftsvj">
+                        
+        
+        <di:waypoint x="1165" y="220"/>
+                        
+        
+        <di:waypoint x="1230" y="220"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="14" width="13" x="1183" y="202"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="NeeSequenceFlow" id="BPMNEdge_0abwpxi">
+                        
+        
+        <di:waypoint x="1140" y="245"/>
+                        
+        
+        <di:waypoint x="1140" y="350"/>
+                        
+        
+        <di:waypoint x="1382" y="350"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="14" width="21" x="1145" y="250"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_1sldg8f" id="BPMNEdge_0nv81cr">
+                        
+        
+        <di:waypoint x="1330" y="220"/>
+                        
+        
+        <di:waypoint x="1382" y="220"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="JaSequenceFlow1" id="BPMNEdge_0tfs3r5">
+                        
+        
+        <di:waypoint x="1020" y="315"/>
+                        
+        
+        <di:waypoint x="1020" y="245"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="14" width="13" x="1031" y="281"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_0cc7oy5" id="BPMNEdge_0om3ex2">
+                        
+        
+        <di:waypoint x="950" y="340"/>
+                        
+        
+        <di:waypoint x="995" y="340"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="NeeSequenceFlow1" id="BPMNEdge_1x81xhr">
+                        
+        
+        <di:waypoint x="1020" y="365"/>
+                        
+        
+        <di:waypoint x="1020" y="680"/>
+                        
+        
+        <di:waypoint x="660" y="680"/>
+                        
+        
+        <di:waypoint x="660" y="625"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="14" width="21" x="1029" y="374"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_1qgjl25" id="BPMNEdge_1wf1bjn">
+                        
+        
+        <di:waypoint x="685" y="600"/>
+                        
+        
+        <di:waypoint x="850" y="600"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_1346n3w" id="Flow_1346n3w_di">
+                        
+        
+        <di:waypoint x="900" y="560"/>
+                        
+        
+        <di:waypoint x="900" y="500"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_1xof0zy" id="Flow_1xof0zy_di">
+                        
+        
+        <di:waypoint x="900" y="420"/>
+                        
+        
+        <di:waypoint x="900" y="380"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_1xr97lm" id="Flow_1xr97lm_di">
+                        
+        
+        <di:waypoint x="660" y="500"/>
+                        
+        
+        <di:waypoint x="660" y="575"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                
+    
+    </bpmndi:BPMNPlane>
+          
+  
+  </bpmndi:BPMNDiagram>
+    
+
+</bpmn:definitions>

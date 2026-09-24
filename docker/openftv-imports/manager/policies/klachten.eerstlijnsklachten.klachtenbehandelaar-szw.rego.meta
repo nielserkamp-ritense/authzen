@@ -1,0 +1,5 @@
+id: "klachten-eerstlijnsklachten-klachtenbehandelaar-szw"
+language: "rego"
+metadata:
+  description: "eerstelijnsklachten-klachtenbehandelaar-szw-permission-v7"
+  tags: ["klachten"]

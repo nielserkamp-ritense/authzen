@@ -1,0 +1,26 @@
+{
+  "display" : "form",
+  "components" : [
+    {
+      "key" : "html",
+      "tag" : "p",
+      "type" : "htmlelement",
+      "input" : false,
+      "label" : "HTML",
+      "content" : "Het document is gegenereerd. Ga naar tabblad 'Documenten' om het document te openen en af te drukken.",
+      "tableView" : false,
+      "refreshOnChange" : false
+    },
+    {
+      "key" : "submit",
+      "type" : "button",
+      "input" : true,
+      "label" : "Doorgaan",
+      "action" : "custom",
+      "custom" : "component.disabled = true; form.submit();",
+      "tableView" : false,
+      "showValidations" : false,
+      "disableOnInvalid" : true
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "templateKey" : "doorlooptijd",
+  "templateType" : "text",
+  "metadata" : {},
+  "content" : "<#assign openZaakStatusOmschrijving = (doc.openZaak?? && doc.openZaak.statusOmschrijving??)?then(doc.openZaak.statusOmschrijving, \"\")>\n\n<#if doc.klacht?has_content\n&& openZaakStatusOmschrijving?has_content\n&& openZaakStatusOmschrijving?trim != \"\"\n&& openZaakStatusOmschrijving != \"Afgehandeld\">\n\n    <#assign ontvangstDatum = doc.klacht.datumOntvangst>\n\n    <#if ontvangstDatum?matches(\".*Z$\")>\n        <#assign cleaned = ontvangstDatum?replace(\"Z\", \"\")?replace(\"T\", \" \")>\n        <#assign pattern = (cleaned?matches(\".*\\\\.\\\\d{3}$\"))?then(\"yyyy-MM-dd HH:mm:ss.SSS\", \"yyyy-MM-dd HH:mm:ss\")>\n        <#assign startDate = cleaned?datetime(pattern)>\n\n    <#else>\n        <#assign startDate = ontvangstDatum?datetime.iso>\n    </#if>\n\n    <#assign now = .now>\n    <#assign days = ((now?long - startDate?long) / 1000 / 60 / 60 / 24)?floor>\n    <#assign weeks = (days / 7)?floor>\n    <#assign emoji = (weeks >= 6)?then(\"\uD83D\uDD34\", (weeks >= 4)?then(\"\uD83D\uDFE1\", \"\uD83D\uDFE2\"))>\n    ${emoji} ${days} ${(days == 1)?string(\"dag\", \"dagen\")}\n<#else>\n    -\n</#if>",
+  "contentRef" : null
+}

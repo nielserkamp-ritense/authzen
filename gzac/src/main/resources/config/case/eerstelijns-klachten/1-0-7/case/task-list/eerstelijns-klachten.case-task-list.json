@@ -1,0 +1,69 @@
+[
+  {
+    "title" : "Aanmaakdatum",
+    "key" : "createtime",
+    "path" : "task:createTime",
+    "displayType" : {
+      "type" : "date",
+      "displayTypeParameters" : {
+        "dateFormat" : "DD-MM-YYYY HH:mm:ss"
+      }
+    },
+    "sortable" : true,
+    "defaultSort" : "ASC"
+  },
+  {
+    "title" : "Naam",
+    "key" : "naam",
+    "path" : "task:name",
+    "displayType" : {
+      "type" : "text",
+      "displayTypeParameters" : {}
+    },
+    "sortable" : true
+  },
+  {
+    "title" : "Eigenaar",
+    "key" : "eigenaar",
+    "path" : "task:assignee",
+    "displayType" : {
+      "type" : "text",
+      "displayTypeParameters" : {}
+    },
+    "sortable" : true
+  },
+  {
+    "title" : "Opleveringsdatum",
+    "key" : "opleveringsdatum",
+    "path" : "task:dueDate",
+    "displayType" : {
+      "type" : "date",
+      "displayTypeParameters" : {
+        "dateFormat" : "DD-MM-YYYY HH:mm:ss"
+      }
+    },
+    "sortable" : true
+  },
+  {
+    "title" : "Startdatum",
+    "key" : "startdatum",
+    "path" : "case:createdOn",
+    "displayType" : {
+      "type" : "date",
+      "displayTypeParameters" : {
+        "dateFormat" : "DD-MM-YYYY HH:mm:ss"
+      }
+    },
+    "sortable" : true
+  },
+  {
+    "title" : "Achternaam",
+    "key" : "achternaam-melder",
+    "path" : "doc:melder.personalia.achternaam",
+    "displayType" : {
+      "type" : "text",
+      "displayTypeParameters" : {}
+    },
+    "sortable" : false
+  }
+]

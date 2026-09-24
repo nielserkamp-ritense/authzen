@@ -1,0 +1,28 @@
+[
+  {
+    "activityId" : "GetResultaatTypeURLTask",
+    "activityType" : "bpmn:ServiceTask:start",
+    "pluginConfigurationId" : "22c78b91-0b0f-4008-8d8f-c4a84b8e71ec",
+    "pluginActionDefinitionKey" : "get-resultaattype",
+    "actionProperties" : {
+      "resultaattype" : "pv:zaakresultaat",
+      "processVariable" : "resultaatTypeUrl"
+    },
+    "referenceType" : "FIXED",
+    "pluginDefinitionKey" : "catalogiapi",
+    "processLinkType" : "plugin"
+  },
+  {
+    "activityId" : "ZetZaakResultaatTask",
+    "activityType" : "bpmn:ServiceTask:start",
+    "pluginConfigurationId" : "3079d6fe-42e3-4f8f-a9db-52ce2507b7ee",
+    "pluginActionDefinitionKey" : "create-zaakresultaat",
+    "actionProperties" : {
+      "toelichting" : "pv:zaakresultaat",
+      "resultaattypeUrl" : "pv:resultaatTypeUrl"
+    },
+    "referenceType" : "FIXED",
+    "pluginDefinitionKey" : "zakenapi",
+    "processLinkType" : "plugin"
+  }
+]

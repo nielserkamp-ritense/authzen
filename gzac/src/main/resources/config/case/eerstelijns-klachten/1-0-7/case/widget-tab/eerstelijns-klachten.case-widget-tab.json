@@ -1,0 +1,1260 @@
+[
+  {
+    "caseDefinitionKey" : "eerstelijns-klachten",
+    "caseDefinitionVersionTag" : "1.0.7",
+    "key" : "summary-algemeen",
+    "widgets" : [
+      {
+        "type" : "fields",
+        "key" : "klachtgegevens",
+        "title" : "Toelichting klachtgegevens",
+        "icon" : "mdi-clipboard-text",
+        "color" : "WHITE",
+        "width" : 1,
+        "highContrast" : true,
+        "isCompact" : false,
+        "actions" : [],
+        "displayConditions" : [],
+        "properties" : {
+          "columns" : [
+            [
+              {
+                "key" : "korte-omschrijving",
+                "title" : "Korte omschrijving",
+                "value" : "doc:/klacht/korteOmschrijvingMelding",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "toelichting",
+                "title" : "Toelichting",
+                "value" : "doc:/klacht/toelichtingMelding",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "type" : "fields",
+        "key" : "eerste-beoordeling",
+        "title" : "Beoordeling en verkenning",
+        "icon" : "mdi-clipboard-check",
+        "color" : "WHITE",
+        "width" : 2,
+        "highContrast" : false,
+        "isCompact" : false,
+        "actions" : [],
+        "displayConditions" : [],
+        "properties" : {
+          "columns" : [
+            [
+              {
+                "key" : "resultaat-eerste-beoordeling",
+                "title" : "Resultaat eerste beoordeling",
+                "value" : "doc:/eersteBeoordeling/resultaat",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "toelichting-eerste-beoordeling",
+                "title" : "Toelichting eerste beoordeling",
+                "value" : "doc:/eersteBeoordeling/toelichting",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "reden-klacht-niet-ontvankelijk",
+                "title" : "Reden klacht niet ontvankelijk",
+                "value" : "doc:/eersteBeoordeling/redenGeenKlacht",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              }
+            ],
+            [
+              {
+                "key" : "resultaat-verkenning",
+                "title" : "Resultaat verkenning",
+                "value" : "doc:/verkenning/resultaat",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "toelichting-resultaat-verkenning",
+                "title" : "Toelichting resultaat verkenning",
+                "value" : "doc:/verkenning/toelichting",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "klacht-direct-formeel-afhandelen",
+                "title" : "Klacht direct formeel afhandelen",
+                "value" : "doc:/verkenning/formeelAfhandelenKlacht",
+                "displayProperties" : {
+                  "type" : "boolean",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "overeengekomen-oplossing",
+                "title" : "Overeengekomen oplossing",
+                "value" : "doc:/verkenning/oplossing",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "reden-klacht-niet-ontvankelijk",
+                "title" : "Reden klacht niet ontvankelijk",
+                "value" : "doc:/verkenning/redenNietOntvankelijk",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "type" : "fields",
+        "key" : "melder-adresgegevens",
+        "title" : "Melder – adresgegevens",
+        "icon" : "mdi-home",
+        "color" : "WHITE",
+        "width" : 1,
+        "highContrast" : false,
+        "isCompact" : true,
+        "actions" : [],
+        "displayConditions" : [],
+        "properties" : {
+          "columns" : [
+            [
+              {
+                "key" : "straat",
+                "title" : "Straat",
+                "value" : "doc:/melder/adres/straat",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "huisnummer",
+                "title" : "Huisnummer",
+                "value" : "doc:/melder/adres/huisnummer",
+                "displayProperties" : {
+                  "type" : "number",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "huisletter",
+                "title" : "Huisletter",
+                "value" : "doc:/melder/adres/huisletter",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "huisnummertoevoeging",
+                "title" : "Huisnummertoevoeging",
+                "value" : "doc:/melder/adres/huisnummertoevoeging",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "postcode",
+                "title" : "Postcode",
+                "value" : "doc:/melder/adres/postcode",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "woonplaats",
+                "title" : "Woonplaats",
+                "value" : "doc:/melder/adres/woonplaats",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              }
+            ]
+          ]
+        }
+      }
+    ],
+    "widgetLayout" : "MUURI_GAP_FREE"
+  },
+  {
+    "caseDefinitionKey" : "eerstelijns-klachten",
+    "caseDefinitionVersionTag" : "1.0.7",
+    "key" : "summary-informeel",
+    "widgets" : [
+      {
+        "type" : "fields",
+        "key" : "informeel-behandelaar-oordeel",
+        "title" : "Informele afhandeling – behandelaar",
+        "icon" : "mdi-account-check",
+        "color" : "WHITE",
+        "width" : 1,
+        "highContrast" : false,
+        "isCompact" : true,
+        "actions" : [],
+        "displayConditions" : [],
+        "properties" : {
+          "columns" : [
+            [
+              {
+                "key" : "oordeel",
+                "title" : "Oordeel",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtbehandelaar/onderzoek/oordeel/value",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "gemotiveerd-oordeel",
+                "title" : "Gemotiveerd oordeel",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtbehandelaar/onderzoek/gemotiveerdOordeel/omschrijving",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "kernprincipe",
+                "title" : "Kernprincipe",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtbehandelaar/onderzoek/kernprincipe/value",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "kernprincipe-2",
+                "title" : "Kernprincipe 2",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtbehandelaar/onderzoek/kernprincipe2/value",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "kernprincipe-3",
+                "title" : "Kernprincipe 3",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtbehandelaar/onderzoek/kernprincipe3/value",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "geschonden-behoorlijkheidsnormen",
+                "title" : "Geschonden behoorlijkheidsnormen",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtbehandelaar/onderzoek/geschondenBehoorlijkheidsnormen",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "geschonden-behoorlijkheidsnormen-2",
+                "title" : "Geschonden behoorlijkheidsnormen 2",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtbehandelaar/onderzoek/geschondenBehoorlijkheidsnormen2",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "geschonden-behoorlijkheidsnormen-3",
+                "title" : "Geschonden behoorlijkheidsnormen 3",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtbehandelaar/onderzoek/geschondenBehoorlijkheidsnormen3",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "type" : "fields",
+        "key" : "informeel-behandelaar-oplossing",
+        "title" : "Informele oplossing – behandelaar",
+        "icon" : "mdi-handshake",
+        "color" : "WHITE",
+        "width" : 1,
+        "highContrast" : false,
+        "isCompact" : true,
+        "actions" : [],
+        "displayConditions" : [],
+        "properties" : {
+          "columns" : [
+            [
+              {
+                "key" : "oplossingsvoorstel",
+                "title" : "Oplossingsvoorstel",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtbehandelaar/onderzoek/oplossing/voorstel",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "besproken-met-melder-op",
+                "title" : "Besproken met melder op",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtbehandelaar/onderzoek/oplossing/datumBesprokenMetMelder",
+                "displayProperties" : {
+                  "type" : "date",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "melder-akkoord-met-voorstel",
+                "title" : "Melder akkoord met voorstel",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtbehandelaar/onderzoek/oplossing/melderAkkoordMetVoorstel",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "toelichting-terugkoppeling",
+                "title" : "Toelichting terugkoppeling",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtbehandelaar/toelichting",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "type" : "fields",
+        "key" : "informeel-coordinator-oordeel",
+        "title" : "Informele afhandeling – coördinator",
+        "icon" : "mdi-account-supervisor",
+        "color" : "WHITE",
+        "width" : 1,
+        "highContrast" : false,
+        "isCompact" : true,
+        "actions" : [],
+        "displayConditions" : [],
+        "properties" : {
+          "columns" : [
+            [
+              {
+                "key" : "oordeel",
+                "title" : "Oordeel",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtcoordinator/onderzoek/oordeel/value",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "gemotiveerd-oordeel",
+                "title" : "Gemotiveerd oordeel",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtcoordinator/onderzoek/gemotiveerdOordeel/omschrijving",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "overnemen-naar-formele-afhandeling",
+                "title" : "Overnemen naar formele afhandeling",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtcoordinator/onderzoek/gemotiveerdOordeel/overnemenNaarFormeleAfhandeling",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "kernprincipe",
+                "title" : "Kernprincipe",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtcoordinator/onderzoek/kernprincipe/value",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "kernprincipe-2",
+                "title" : "Kernprincipe 2",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtcoordinator/onderzoek/kernprincipe2/value",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "kernprincipe-3",
+                "title" : "Kernprincipe 3",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtcoordinator/onderzoek/kernprincipe3/value",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "geschonden-behoorlijkheidsnormen",
+                "title" : "Geschonden behoorlijkheidsnormen",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtcoordinator/onderzoek/geschondenBehoorlijkheidsnormen",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "geschonden-behoorlijkheidsnormen-2",
+                "title" : "Geschonden behoorlijkheidsnormen 2",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtcoordinator/onderzoek/geschondenBehoorlijkheidsnormen2",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "geschonden-behoorlijkheidsnormen-3",
+                "title" : "Geschonden behoorlijkheidsnormen 3",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtcoordinator/onderzoek/geschondenBehoorlijkheidsnormen3",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "type" : "fields",
+        "key" : "informeel-afronding",
+        "title" : "Informele afronding",
+        "icon" : "mdi-email-check",
+        "color" : "WHITE",
+        "width" : 1,
+        "highContrast" : false,
+        "isCompact" : true,
+        "actions" : [],
+        "displayConditions" : [],
+        "properties" : {
+          "columns" : [
+            [
+              {
+                "key" : "melder-akkoord-met-oplossingsvoorstel",
+                "title" : "Melder akkoord met oplossingsvoorstel",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtcoordinator/onderzoek/oplossing/melderAkkoordMetVoorstel",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "toelichting-definitieve-eindbrief",
+                "title" : "Toelichting definitieve eindbrief",
+                "value" : "doc:/informeleAfhandeling/eindbrief/toelichting",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "eindbrief-gedeeld-met",
+                "title" : "Eindbrief gedeeld met",
+                "value" : "doc:/informeleAfhandeling/eindbrief/gedeeldMet",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "oorzaak-volgens-klachtbehandelaar",
+                "title" : "Oorzaak volgens klachtbehandelaar",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtcoordinator/onderzoek/geleerdVoorToekomst/oorzaakKlachtBehandelaar",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "toelichting-oorzaak-behandelaar",
+                "title" : "Toelichting oorzaak behandelaar",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtcoordinator/onderzoek/geleerdVoorToekomst/oorzaakKBToelichting",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "oorzaak-volgens-klachtco-rdinator",
+                "title" : "Oorzaak volgens klachtcoördinator",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtcoordinator/onderzoek/geleerdVoorToekomst/oorzaakKlachtCoordinator",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "toelichting-oorzaak-co-rdinator",
+                "title" : "Toelichting oorzaak coördinator",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtcoordinator/onderzoek/geleerdVoorToekomst/oorzaakKCToelichting",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "geleerd-voor-de-toekomst",
+                "title" : "Geleerd voor de toekomst",
+                "value" : "doc:/informeleAfhandeling/afhandelingDoorKlachtcoordinator/onderzoek/geleerdVoorToekomst/toelichting",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              }
+            ]
+          ]
+        }
+      }
+    ],
+    "widgetLayout" : "MUURI_GAP_FREE"
+  },
+  {
+    "caseDefinitionKey" : "eerstelijns-klachten",
+    "caseDefinitionVersionTag" : "1.0.7",
+    "key" : "summary-formeel",
+    "widgets" : [
+      {
+        "type" : "fields",
+        "key" : "formeel-hoor-wederhoor",
+        "title" : "Formele afhandeling – hoor en wederhoor",
+        "icon" : "mdi-account-voice",
+        "color" : "WHITE",
+        "width" : 1,
+        "highContrast" : false,
+        "isCompact" : true,
+        "actions" : [],
+        "displayConditions" : [],
+        "properties" : {
+          "columns" : [
+            [
+              {
+                "key" : "gehanteerde-gespreksvorm",
+                "title" : "Gehanteerde gespreksvorm",
+                "value" : "doc:/formeleAfhandeling/verslagHoorwederhoor/gespreksvorm",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "datum-gesprek",
+                "title" : "Datum gesprek",
+                "value" : "doc:/formeleAfhandeling/verslagHoorwederhoor/datumGesprek",
+                "displayProperties" : {
+                  "type" : "date",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "toelichting-gesprek",
+                "title" : "Toelichting gesprek",
+                "value" : "doc:/formeleAfhandeling/verslagHoorwederhoor/toelichting",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "gespreksverslag-gedeeld-met",
+                "title" : "Gespreksverslag gedeeld met",
+                "value" : "doc:/formeleAfhandeling/verslagHoorwederhoor/gedeeldMet",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "type" : "fields",
+        "key" : "formeel-onderzoek",
+        "title" : "Formele afhandeling – onderzoek en oordeel",
+        "icon" : "mdi-gavel",
+        "color" : "WHITE",
+        "width" : 1,
+        "highContrast" : false,
+        "isCompact" : false,
+        "actions" : [],
+        "displayConditions" : [],
+        "properties" : {
+          "columns" : [
+            [
+              {
+                "key" : "verdiepend-onderzoek-uitgevoerd",
+                "title" : "Verdiepend onderzoek uitgevoerd",
+                "value" : "doc:/formeleAfhandeling/onderzoek/onderzoekUitgevoerd",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "toelichting-verdiepend-onderzoek",
+                "title" : "Toelichting verdiepend onderzoek",
+                "value" : "doc:/formeleAfhandeling/onderzoek/toelichting",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "gemotiveerd-oordeel",
+                "title" : "Gemotiveerd oordeel",
+                "value" : "doc:/formeleAfhandeling/onderzoek/gemotiveerdOordeel/omschrijving",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "oordeel",
+                "title" : "Oordeel",
+                "value" : "doc:/formeleAfhandeling/onderzoek/oordeel/value",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "kernprincipe",
+                "title" : "Kernprincipe",
+                "value" : "doc:/formeleAfhandeling/onderzoek/kernprincipe/value",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "kernprincipe-2",
+                "title" : "Kernprincipe 2",
+                "value" : "doc:/formeleAfhandeling/onderzoek/kernprincipe2/value",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "kernprincipe-3",
+                "title" : "Kernprincipe 3",
+                "value" : "doc:/formeleAfhandeling/onderzoek/kernprincipe3/value",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "geschonden-behoorlijkheidsnormen",
+                "title" : "Geschonden behoorlijkheidsnormen",
+                "value" : "doc:/formeleAfhandeling/onderzoek/geschondenBehoorlijkheidsnormen",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "geschonden-behoorlijkheidsnormen-2",
+                "title" : "Geschonden behoorlijkheidsnormen 2",
+                "value" : "doc:/formeleAfhandeling/onderzoek/geschondenBehoorlijkheidsnormen2",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "geschonden-behoorlijkheidsnormen-3",
+                "title" : "Geschonden behoorlijkheidsnormen 3",
+                "value" : "doc:/formeleAfhandeling/onderzoek/geschondenBehoorlijkheidsnormen3",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "type" : "fields",
+        "key" : "formeel-afronding",
+        "title" : "Formele afhandeling – afronding",
+        "icon" : "mdi-file-document-check",
+        "color" : "WHITE",
+        "width" : 1,
+        "highContrast" : false,
+        "isCompact" : false,
+        "actions" : [],
+        "displayConditions" : [],
+        "properties" : {
+          "columns" : [
+            [
+              {
+                "key" : "toelichting-definitieve-eindbrief",
+                "title" : "Toelichting definitieve eindbrief",
+                "value" : "doc:/formeleAfhandeling/eindbrief/toelichting",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "eindbrief-gedeeld-met",
+                "title" : "Eindbrief gedeeld met",
+                "value" : "doc:/formeleAfhandeling/eindbrief/gedeeldMet",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "oorzaak-volgens-klachtbehandelaar",
+                "title" : "Oorzaak volgens klachtbehandelaar",
+                "value" : "doc:/formeleAfhandeling/onderzoek/geleerdVoorToekomst/oorzaakKlachtBehandelaar",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "toelichting-oorzaak-behandelaar",
+                "title" : "Toelichting oorzaak behandelaar",
+                "value" : "doc:/formeleAfhandeling/onderzoek/geleerdVoorToekomst/oorzaakKBToelichting",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "oorzaak-volgens-klachtco-rdinator",
+                "title" : "Oorzaak volgens klachtcoördinator",
+                "value" : "doc:/formeleAfhandeling/onderzoek/geleerdVoorToekomst/oorzaakKlachtCoordinator",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "toelichting-oorzaak-co-rdinator",
+                "title" : "Toelichting oorzaak coördinator",
+                "value" : "doc:/formeleAfhandeling/onderzoek/geleerdVoorToekomst/oorzaakKCToelichting",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "geleerd-voor-de-toekomst",
+                "title" : "Geleerd voor de toekomst",
+                "value" : "doc:/formeleAfhandeling/onderzoek/geleerdVoorToekomst/toelichting",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "type" : "fields",
+        "key" : "formeel-aardigheidje",
+        "title" : "Aardigheidje – formele afhandeling",
+        "icon" : "mdi-gift",
+        "color" : "WHITE",
+        "width" : 1,
+        "highContrast" : false,
+        "isCompact" : true,
+        "actions" : [],
+        "displayConditions" : [],
+        "properties" : {
+          "columns" : [
+            [
+              {
+                "key" : "aardigheidje-verstuurd",
+                "title" : "Aardigheidje verstuurd",
+                "value" : "doc:/formeleAfhandeling/aardigheidje/isVerstuurd",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "datum-verstuurd",
+                "title" : "Datum verstuurd",
+                "value" : "doc:/formeleAfhandeling/aardigheidje/verstuurdOp",
+                "displayProperties" : {
+                  "type" : "date",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "omschrijving",
+                "title" : "Omschrijving",
+                "value" : "doc:/formeleAfhandeling/aardigheidje/omschrijving",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "kosten",
+                "title" : "Kosten",
+                "value" : "doc:/formeleAfhandeling/aardigheidje/kosten",
+                "displayProperties" : {
+                  "type" : "number",
+                  "hideWhenEmpty" : false
+                }
+              }
+            ]
+          ]
+        }
+      }
+    ],
+    "widgetLayout" : "MUURI_GAP_FREE"
+  },
+  {
+    "caseDefinitionKey" : "eerstelijns-klachten",
+    "caseDefinitionVersionTag" : "1.0.7",
+    "key" : "summary-klachtencommissie",
+    "widgets" : [
+      {
+        "type" : "fields",
+        "key" : "klachtencommissie-overdracht",
+        "title" : "Klachtencommissie – overdracht en resultaat",
+        "icon" : "mdi-account-group",
+        "color" : "WHITE",
+        "width" : 1,
+        "highContrast" : false,
+        "isCompact" : true,
+        "actions" : [],
+        "displayConditions" : [],
+        "properties" : {
+          "columns" : [
+            [
+              {
+                "key" : "datum-van-overdracht",
+                "title" : "Datum van overdracht",
+                "value" : "doc:/behandelingDoorKlachtencommissie/overdracht/datum",
+                "displayProperties" : {
+                  "type" : "date",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "toelichting-overdracht",
+                "title" : "Toelichting overdracht",
+                "value" : "doc:/behandelingDoorKlachtencommissie/overdracht/toelichting",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "datum-ontvangst-resultaat",
+                "title" : "Datum ontvangst resultaat",
+                "value" : "doc:/behandelingDoorKlachtencommissie/klachtencommissie/resultaat/datumOntvangst",
+                "displayProperties" : {
+                  "type" : "date",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "toelichting-resultaat",
+                "title" : "Toelichting resultaat",
+                "value" : "doc:/behandelingDoorKlachtencommissie/klachtencommissie/resultaat/toelichting",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "eindbrief-verstuurd-naar-melder",
+                "title" : "Eindbrief verstuurd naar melder",
+                "value" : "doc:/behandelingDoorKlachtencommissie/klachtencommissie/resultaat/versturenEindbriefNaarMelder",
+                "displayProperties" : {
+                  "type" : "boolean",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "reactie-directie-ontvangen-op",
+                "title" : "Reactie directie ontvangen op",
+                "value" : "doc:/behandelingDoorKlachtencommissie/directie/resultaat/datumOntvangst",
+                "displayProperties" : {
+                  "type" : "date",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "toelichting-terug-naar-hoofdproces",
+                "title" : "Toelichting terug naar hoofdproces",
+                "value" : "doc:/behandelingDoorKlachtencommissie/redenTeruggaanNaarHoofdproces",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "type" : "fields",
+        "key" : "klachtencommissie-beoordeling",
+        "title" : "Klachtencommissie – beoordeling",
+        "icon" : "mdi-scale-balance",
+        "color" : "WHITE",
+        "width" : 1,
+        "highContrast" : false,
+        "isCompact" : true,
+        "actions" : [],
+        "displayConditions" : [],
+        "properties" : {
+          "columns" : [
+            [
+              {
+                "key" : "oordeel",
+                "title" : "Oordeel",
+                "value" : "doc:/behandelingDoorKlachtencommissie/klachtencommissie/beoordeling/oordeel/value",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "kernprincipe",
+                "title" : "Kernprincipe",
+                "value" : "doc:/behandelingDoorKlachtencommissie/klachtencommissie/beoordeling/kernprincipe/value",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "kernprincipe-2",
+                "title" : "Kernprincipe 2",
+                "value" : "doc:/behandelingDoorKlachtencommissie/klachtencommissie/beoordeling/kernprincipe2/value",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "kernprincipe-3",
+                "title" : "Kernprincipe 3",
+                "value" : "doc:/behandelingDoorKlachtencommissie/klachtencommissie/beoordeling/kernprincipe3/value",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "geschonden-behoorlijkheidsnormen",
+                "title" : "Geschonden behoorlijkheidsnormen",
+                "value" : "doc:/behandelingDoorKlachtencommissie/klachtencommissie/beoordeling/geschondenBehoorlijkheidsnormen",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "geschonden-behoorlijkheidsnormen-2",
+                "title" : "Geschonden behoorlijkheidsnormen 2",
+                "value" : "doc:/behandelingDoorKlachtencommissie/klachtencommissie/beoordeling/geschondenBehoorlijkheidsnormen2",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "geschonden-behoorlijkheidsnormen-3",
+                "title" : "Geschonden behoorlijkheidsnormen 3",
+                "value" : "doc:/behandelingDoorKlachtencommissie/klachtencommissie/beoordeling/geschondenBehoorlijkheidsnormen3",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "type" : "fields",
+        "key" : "klachtencommissie-afwijkend-oordeel",
+        "title" : "Klachtencommissie – afwijkend oordeel",
+        "icon" : "mdi-alert-decagram",
+        "color" : "WHITE",
+        "width" : 1,
+        "highContrast" : false,
+        "isCompact" : true,
+        "actions" : [],
+        "displayConditions" : [],
+        "properties" : {
+          "columns" : [
+            [
+              {
+                "key" : "reden-afwijkend-oordeel",
+                "title" : "Reden afwijkend oordeel",
+                "value" : "doc:/behandelingDoorKlachtencommissie/klachtenCoordinator/redenAfwijkendOordeel",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "gemotiveerd-oordeel",
+                "title" : "Gemotiveerd oordeel",
+                "value" : "doc:/behandelingDoorKlachtencommissie/klachtenCoordinator/beoordeling/gemotiveerdOordeel/omschrijving",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "oordeel",
+                "title" : "Oordeel",
+                "value" : "doc:/behandelingDoorKlachtencommissie/klachtenCoordinator/beoordeling/oordeel/value",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "kernprincipe",
+                "title" : "Kernprincipe",
+                "value" : "doc:/behandelingDoorKlachtencommissie/klachtenCoordinator/beoordeling/kernprincipe/value",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "kernprincipe-2",
+                "title" : "Kernprincipe 2",
+                "value" : "doc:/behandelingDoorKlachtencommissie/klachtenCoordinator/beoordeling/kernprincipe2/value",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "kernprincipe-3",
+                "title" : "Kernprincipe 3",
+                "value" : "doc:/behandelingDoorKlachtencommissie/klachtenCoordinator/beoordeling/kernprincipe3/value",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "geschonden-behoorlijkheidsnormen",
+                "title" : "Geschonden behoorlijkheidsnormen",
+                "value" : "doc:/behandelingDoorKlachtencommissie/klachtenCoordinator/beoordeling/geschondenBehoorlijkheidsnormen",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "geschonden-behoorlijkheidsnormen-2",
+                "title" : "Geschonden behoorlijkheidsnormen 2",
+                "value" : "doc:/behandelingDoorKlachtencommissie/klachtenCoordinator/beoordeling/geschondenBehoorlijkheidsnormen2",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "geschonden-behoorlijkheidsnormen-3",
+                "title" : "Geschonden behoorlijkheidsnormen 3",
+                "value" : "doc:/behandelingDoorKlachtencommissie/klachtenCoordinator/beoordeling/geschondenBehoorlijkheidsnormen3",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "type" : "fields",
+        "key" : "klachtencommissie-afronding",
+        "title" : "Klachtencommissie – afronding en leren",
+        "icon" : "mdi-school",
+        "color" : "WHITE",
+        "width" : 1,
+        "highContrast" : false,
+        "isCompact" : true,
+        "actions" : [],
+        "displayConditions" : [],
+        "properties" : {
+          "columns" : [
+            [
+              {
+                "key" : "toelichting-verstuurde-eindbrief",
+                "title" : "Toelichting verstuurde eindbrief",
+                "value" : "doc:/behandelingDoorKlachtencommissie/eindbrief/toelichting",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "eindbrief-gedeeld-met",
+                "title" : "Eindbrief gedeeld met",
+                "value" : "doc:/behandelingDoorKlachtencommissie/eindbrief/gedeeldMet",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "oorzaak-volgens-klachtbehandelaar",
+                "title" : "Oorzaak volgens klachtbehandelaar",
+                "value" : "doc:/behandelingDoorKlachtencommissie/onderzoek/geleerdVoorToekomst/oorzaakKlachtBehandelaar",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "toelichting-oorzaak-behandelaar",
+                "title" : "Toelichting oorzaak behandelaar",
+                "value" : "doc:/behandelingDoorKlachtencommissie/onderzoek/geleerdVoorToekomst/oorzaakKBToelichting",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "oorzaak-volgens-klachtco-rdinator",
+                "title" : "Oorzaak volgens klachtcoördinator",
+                "value" : "doc:/behandelingDoorKlachtencommissie/onderzoek/geleerdVoorToekomst/oorzaakKlachtCoordinator",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "toelichting-oorzaak-co-rdinator",
+                "title" : "Toelichting oorzaak coördinator",
+                "value" : "doc:/behandelingDoorKlachtencommissie/onderzoek/geleerdVoorToekomst/oorzaakKCToelichting",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              },
+              {
+                "key" : "geleerd-voor-de-toekomst",
+                "title" : "Geleerd voor de toekomst",
+                "value" : "doc:/behandelingDoorKlachtencommissie/onderzoek/geleerdVoorToekomst/toelichting",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : true
+                }
+              }
+            ]
+          ]
+        }
+      },
+      {
+        "type" : "fields",
+        "key" : "klachtencommissie-aardigheidje",
+        "title" : "Aardigheidje – klachtencommissie",
+        "icon" : "mdi-gift-open",
+        "color" : "WHITE",
+        "width" : 1,
+        "highContrast" : false,
+        "isCompact" : true,
+        "actions" : [],
+        "displayConditions" : [],
+        "properties" : {
+          "columns" : [
+            [
+              {
+                "key" : "aardigheidje-verstuurd",
+                "title" : "Aardigheidje verstuurd",
+                "value" : "doc:/behandelingDoorKlachtencommissie/aardigheidje/isVerstuurd",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "datum-verstuurd",
+                "title" : "Datum verstuurd",
+                "value" : "doc:/behandelingDoorKlachtencommissie/aardigheidje/verstuurdOp",
+                "displayProperties" : {
+                  "type" : "date",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "omschrijving",
+                "title" : "Omschrijving",
+                "value" : "doc:/behandelingDoorKlachtencommissie/aardigheidje/omschrijving",
+                "displayProperties" : {
+                  "type" : "text",
+                  "hideWhenEmpty" : false
+                }
+              },
+              {
+                "key" : "kosten",
+                "title" : "Kosten",
+                "value" : "doc:/behandelingDoorKlachtencommissie/aardigheidje/kosten",
+                "displayProperties" : {
+                  "type" : "number",
+                  "hideWhenEmpty" : false
+                }
+              }
+            ]
+          ]
+        }
+      }
+    ],
+    "widgetLayout" : "MUURI_GAP_FREE"
+  }
+]

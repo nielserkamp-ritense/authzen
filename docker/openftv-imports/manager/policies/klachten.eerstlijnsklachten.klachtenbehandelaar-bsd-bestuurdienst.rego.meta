@@ -1,0 +1,5 @@
+id: "klachten-eerstlijnsklachten-klachtenbehandelaar-bsd-bestuurdienst"
+language: "rego"
+metadata:
+  description: "eerstelijnsklachten-klachtenbehandelaar-bsd-bestuurdienst-permission-v5"
+  tags: ["klachten"]

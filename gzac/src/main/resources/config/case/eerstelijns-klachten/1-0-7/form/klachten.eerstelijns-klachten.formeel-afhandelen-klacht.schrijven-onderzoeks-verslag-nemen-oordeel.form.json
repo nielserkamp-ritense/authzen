@@ -1,0 +1,728 @@
+{
+  "display" : "form",
+  "components" : [
+    {
+      "key" : "informeleAfhandeling.afhandelingDoorKlachtcoordinator",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "data",
+      "tableView" : false,
+      "defaultValue" : {},
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-informeleAfhandeling.afhandelingDoorKlachtcoordinator"
+      }
+    },
+    {
+      "key" : "pv.oordeelOvernemen",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "pv oordeelOvernemen",
+      "tableView" : false,
+      "calculateValue" : "data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.gemotiveerdOordeel?.overnemenNaarFormeleAfhandeling == 'JA' ? value = true : value = false",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-pv.oordeelOvernemen"
+      }
+    },
+    {
+      "key" : "html",
+      "tag" : "div",
+      "type" : "htmlelement",
+      "input" : false,
+      "label" : "HTML",
+      "content" : "<h4>Vastleggen onderzoeksverslag en/of gemotiveerd oordeel</h4>",
+      "tableView" : false,
+      "refreshOnChange" : false
+    },
+    {
+      "key" : "formeleAfhandeling.onderzoek.onderzoekUitgevoerd",
+      "type" : "radio",
+      "input" : true,
+      "label" : "Is er een verdiepend onderzoek uitgevoerd?",
+      "inline" : false,
+      "values" : [
+        {
+          "label" : "Ja",
+          "value" : "JA",
+          "shortcut" : ""
+        },
+        {
+          "label" : "Nee",
+          "value" : "NEE",
+          "shortcut" : ""
+        }
+      ],
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : false,
+      "defaultValue" : "JA",
+      "optionsLabelPosition" : "right",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-formeleAfhandeling.onderzoek.onderzoekUitgevoerd"
+      }
+    },
+    {
+      "key" : "panel",
+      "type" : "panel",
+      "input" : false,
+      "label" : "Panel",
+      "hideLabel" : true,
+      "tableView" : false,
+      "components" : [
+        {
+          "key" : "formeleAfhandeling.onderzoek.verslagDocument",
+          "type" : "documenten-api-file",
+          "input" : true,
+          "label" : "Upload hieronder het verslag van het verdiepend onderzoek",
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : false,
+          "customOptions" : {
+            "tags" : "",
+            "title" : "",
+            "author" : "",
+            "camera" : false,
+            "status" : "definitief",
+            "filename" : "",
+            "hideTags" : true,
+            "language" : "nld",
+            "subtitle" : "",
+            "hideTitle" : false,
+            "hideAuthor" : false,
+            "hideStatus" : false,
+            "description" : "",
+            "maxFileSize" : 100,
+            "documentType" : "",
+            "hideFilename" : false,
+            "hideLanguage" : false,
+            "acceptedFiles" : "",
+            "disableAuthor" : true,
+            "disableStatus" : false,
+            "documentTitle" : "",
+            "disableFilename" : false,
+            "disableLanguage" : false,
+            "hideDescription" : true,
+            "hideMaxFileSize" : true,
+            "hideCreationDate" : true,
+            "hideDocumentType" : false,
+            "hideAcceptedFiles" : false,
+            "hideDocumentTitle" : false,
+            "disableDescription" : false,
+            "hideAdditionalDate" : true,
+            "disableCreationDate" : false,
+            "disableDocumentType" : false,
+            "confidentialityLevel" : "zaakvertrouwelijk",
+            "disableDocumentTitle" : false,
+            "hideConfidentialityLevel" : false,
+            "documentUrlProcessVariable" : "",
+            "disableConfidentialityLevel" : false
+          },
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-formeleAfhandeling.onderzoek.verslagDocument"
+          }
+        }
+      ],
+      "collapsible" : false,
+      "conditional" : {
+        "eq" : "JA",
+        "show" : true,
+        "when" : "formeleAfhandeling.onderzoek.onderzoekUitgevoerd"
+      }
+    },
+    {
+      "key" : "formeleAfhandeling.onderzoek.toelichting",
+      "type" : "textarea",
+      "input" : true,
+      "label" : "Toelichting verdiepend onderzoek",
+      "tableView" : true,
+      "autoExpand" : false,
+      "applyMaskOn" : "change",
+      "conditional" : {
+        "eq" : "JA",
+        "show" : true,
+        "when" : "formeleAfhandeling.onderzoek.onderzoekUitgevoerd"
+      },
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-formeleAfhandeling.onderzoek.toelichting"
+      }
+    },
+    {
+      "key" : "formeleAfhandeling.onderzoek.oordeel",
+      "data" : {
+        "url" : "../api/v1/choice-fields/name/OORDEEL",
+        "method" : "GET",
+        "headers" : [
+          {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          },
+          {
+            "key" : "Authorization",
+            "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Oordeel",
+      "widget" : "choicesjs",
+      "dataSrc" : "url",
+      "lazyLoad" : false,
+      "template" : "<span>{{ item.value }}</span>",
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : true,
+      "selectValues" : "choiceFieldValues",
+      "valueProperty" : "",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-formeleAfhandeling.onderzoek.oordeel"
+      }
+    },
+    {
+      "key" : "formeleAfhandeling.onderzoek.gemotiveerdOordeel.omschrijving",
+      "type" : "textarea",
+      "input" : true,
+      "label" : "Motivatie oordeel (formele behandeling)",
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : true,
+      "autoExpand" : false,
+      "applyMaskOn" : "change",
+      "customDefaultValue" : "data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.gemotiveerdOordeel?.overnemenNaarFormeleAfhandeling == 'JA' ? value = data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.gemotiveerdOordeel?.omschrijving : ''",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-formeleAfhandeling.onderzoek.gemotiveerdOordeel.omschrijving"
+      }
+    },
+    {
+      "key" : "formeleAfhandeling.onderzoek.geleerdVoorToekomst.oorzaakKlachtBehandelaar",
+      "data" : {
+        "method" : "GET",
+        "values" : [
+          {
+            "label" : "Beleid",
+            "value" : "beleid"
+          },
+          {
+            "label" : "Persoon",
+            "value" : "persoon"
+          },
+          {
+            "label" : "Proces",
+            "value" : "proces"
+          },
+          {
+            "label" : "Anders, namelijk",
+            "value" : "andersNamelijk"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Oorzaak volgens klachtbehandelaar",
+      "widget" : "choicesjs",
+      "template" : "",
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-formeleAfhandeling.onderzoek.oordeel"
+      }
+    },
+    {
+      "key" : "formeleAfhandeling.onderzoek.geleerdVoorToekomst.oorzaakKBToelichting",
+      "type" : "textarea",
+      "input" : true,
+      "label" : "Toelichting oorzaak volgens klachtbehandelaar",
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.vastleggen-eindresultaat-onderzoek-oplossingsmogelijkheden-geleerdVoorToekomst.oorzaakKBToelichting"
+      },
+      "autoExpand" : false,
+      "conditional" : {
+        "eq" : "andersNamelijk",
+        "show" : true,
+        "when" : "formeleAfhandeling.onderzoek.geleerdVoorToekomst.oorzaakKlachtBehandelaar"
+      }
+    },
+    {
+      "key" : "formeleAfhandeling.onderzoek.geleerdVoorToekomst.oorzaakKlachtCoordinator",
+      "data" : {
+        "method" : "GET",
+        "values" : [
+          {
+            "label" : "Beleid",
+            "value" : "beleid"
+          },
+          {
+            "label" : "Persoon",
+            "value" : "persoon"
+          },
+          {
+            "label" : "Proces",
+            "value" : "proces"
+          },
+          {
+            "label" : "Anders, namelijk",
+            "value" : "andersNamelijk"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Oorzaak volgens klachtcoordinator",
+      "widget" : "choicesjs",
+      "template" : "",
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-formeleAfhandeling.onderzoek.oordeel"
+      }
+    },
+    {
+      "key" : "formeleAfhandeling.onderzoek.geleerdVoorToekomst.oorzaakKCToelichting",
+      "type" : "textarea",
+      "input" : true,
+      "label" : "Toelichting oorzaak volgens klachtcoordinator",
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-formeleAfhandeling.onderzoek.gemotiveerdOordeel.omschrijving"
+      },
+      "autoExpand" : false,
+      "applyMaskOn" : "change",
+      "conditional" : {
+        "eq" : "andersNamelijk",
+        "show" : true,
+        "when" : "formeleAfhandeling.onderzoek.geleerdVoorToekomst.oorzaakKlachtCoordinator"
+      }
+    },
+    {
+      "key" : "formeleAfhandeling.onderzoek.geleerdVoorToekomst.toelichting",
+      "type" : "textarea",
+      "input" : true,
+      "label" : "Wat hebben wij geleerd voor de toekomst?",
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-formeleAfhandeling.onderzoek.gemotiveerdOordeel.omschrijving"
+      },
+      "autoExpand" : false,
+      "applyMaskOn" : "change",
+      "customDefaultValue" : "data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.gemotiveerdOordeel?.overnemenNaarFormeleAfhandeling == 'JA' ? value = data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.gemotiveerdOordeel?.omschrijving : ''"
+    },
+    {
+      "key" : "formeleAfhandeling.onderzoek.dienstverleningsprincipe",
+      "data" : {
+        "url" : "../api/v1/choice-fields/name/DIENSTVERLENINGSPRINCIPES",
+        "method" : "GET",
+        "headers" : [
+          {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          },
+          {
+            "key" : "Authorization",
+            "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Over welk dienstverleningsprincipe gaat de klacht?",
+      "widget" : "choicesjs",
+      "dataSrc" : "url",
+      "lazyLoad" : false,
+      "template" : "<span>{{ item.value }}</span>",
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.vastleggen-eindresultaat-onderzoek-oplossingsmogelijkheden-dienstverleningsprincipe"
+      },
+      "disableLimit" : false,
+      "selectValues" : "choiceFieldValues",
+      "customConditional" : "show = (data.formeleAfhandeling?.onderzoek?.oordeel?.name === 'GEGROND' || data.formeleAfhandeling?.onderzoek?.oordeel?.name === 'DEELS_GEGROND')",
+      "noRefreshOnScroll" : false
+    },
+    {
+      "key" : "formeleAfhandeling.onderzoek.geschondenDienstverleningsprincipes",
+      "data" : {
+        "url" : "../api/v1/choice-fields/name/{{ data.formeleAfhandeling?.onderzoek?.dienstverleningsprincipe?.name }}",
+        "method" : "GET",
+        "headers" : [
+          {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          },
+          {
+            "key" : "Authorization",
+            "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Geschonden normen bij het gekozen dienstverleningsprincipe",
+      "widget" : "choicesjs",
+      "dataSrc" : "url",
+      "lazyLoad" : false,
+      "multiple" : true,
+      "template" : "<span>{{ item.value }}</span>",
+      "validate" : {
+        "required" : true
+      },
+      "refreshOn" : "formeleAfhandeling.onderzoek.dienstverleningsprincipe",
+      "tableView" : true,
+      "selectValues" : "choiceFieldValues",
+      "customOptions" : {
+        "searchResultLimit" : 99
+      },
+      "valueProperty" : "",
+      "clearOnRefresh" : true,
+      "customConditional" : "show = (data.formeleAfhandeling?.onderzoek?.oordeel?.name === 'GEGROND' || data.formeleAfhandeling?.onderzoek?.oordeel?.name === 'DEELS_GEGROND')",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-formeleAfhandeling.onderzoek.geschondenDienstverleningsprincipes"
+      }
+    },
+    {
+      "key" : "formeleAfhandeling.onderzoek.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen",
+      "type" : "radio",
+      "input" : true,
+      "label" : "Zijn er nog meer dienstverleningsprincipes geschonden?",
+      "inline" : false,
+      "values" : [
+        {
+          "label" : "Ja",
+          "value" : "JA",
+          "shortcut" : ""
+        },
+        {
+          "label" : "Nee",
+          "value" : "NEE",
+          "shortcut" : ""
+        }
+      ],
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : false,
+      "defaultValue" : "NEE",
+      "customConditional" : "show = (data.formeleAfhandeling?.onderzoek?.oordeel?.name === 'GEGROND' || data.formeleAfhandeling?.onderzoek?.oordeel?.name === 'DEELS_GEGROND');",
+      "validateWhenHidden" : false,
+      "optionsLabelPosition" : "right",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-formeleAfhandeling.onderzoek.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen"
+      }
+    },
+    {
+      "key" : "formeleAfhandeling.onderzoek.dienstverleningsprincipe2",
+      "data" : {
+        "url" : "../api/v1/choice-fields/name/DIENSTVERLENINGSPRINCIPES",
+        "method" : "GET",
+        "headers" : [
+          {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          },
+          {
+            "key" : "Authorization",
+            "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Over welk dienstverleningsprincipe gaat de klacht?",
+      "widget" : "choicesjs",
+      "dataSrc" : "url",
+      "lazyLoad" : false,
+      "template" : "<span>{{ item.value }}</span>",
+      "tableView" : true,
+      "conditional" : {
+        "eq" : "JA",
+        "show" : true,
+        "when" : "formeleAfhandeling.onderzoek.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen"
+      },
+      "selectValues" : "choiceFieldValues",
+      "valueProperty" : "",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-formeleAfhandeling.onderzoek.dienstverleningsprincipe2"
+      }
+    },
+    {
+      "key" : "formeleAfhandeling.onderzoek.geschondenDienstverleningsprincipes2",
+      "data" : {
+        "url" : "../api/v1/choice-fields/name/{{ data.formeleAfhandeling?.onderzoek?.dienstverleningsprincipe2?.name }}",
+        "method" : "GET",
+        "headers" : [
+          {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          },
+          {
+            "key" : "Authorization",
+            "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Geschonden normen bij het gekozen dienstverleningsprincipe",
+      "widget" : "choicesjs",
+      "dataSrc" : "url",
+      "lazyLoad" : false,
+      "multiple" : true,
+      "template" : "<span>{{ item.value }}</span>",
+      "refreshOn" : "formeleAfhandeling.onderzoek.dienstverleningsprincipe2",
+      "tableView" : true,
+      "conditional" : {
+        "eq" : "JA",
+        "show" : true,
+        "when" : "formeleAfhandeling.onderzoek.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen"
+      },
+      "selectValues" : "choiceFieldValues",
+      "customOptions" : {
+        "searchResultLimit" : 99
+      },
+      "valueProperty" : "",
+      "clearOnRefresh" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-formeleAfhandeling.onderzoek.geschondenDienstverleningsprincipes2"
+      }
+    },
+    {
+      "key" : "formeleAfhandeling.onderzoek.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen2",
+      "type" : "radio",
+      "input" : true,
+      "label" : "Zijn er nog meer dienstverleningsprincipes geschonden?",
+      "inline" : false,
+      "values" : [
+        {
+          "label" : "Ja",
+          "value" : "JA",
+          "shortcut" : ""
+        },
+        {
+          "label" : "Nee",
+          "value" : "NEE",
+          "shortcut" : ""
+        }
+      ],
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : false,
+      "conditional" : {
+        "eq" : "JA",
+        "show" : true,
+        "when" : "formeleAfhandeling.onderzoek.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen"
+      },
+      "defaultValue" : "NEE",
+      "validateWhenHidden" : false,
+      "optionsLabelPosition" : "right",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-formeleAfhandeling.onderzoek.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen2"
+      }
+    },
+    {
+      "key" : "formeleAfhandeling.onderzoek.dienstverleningsprincipes3",
+      "data" : {
+        "url" : "../api/v1/choice-fields/name/DIENSTVERLENINGSPRINCIPES",
+        "method" : "GET",
+        "headers" : [
+          {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          },
+          {
+            "key" : "Authorization",
+            "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Over welk dienstverleningsprincipe gaat de klacht?",
+      "widget" : "choicesjs",
+      "dataSrc" : "url",
+      "lazyLoad" : false,
+      "template" : "<span>{{ item.value }}</span>",
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.vastleggen-eindresultaat-onderzoek-oplossingsmogelijkheden-dienstverleningsprincipe"
+      },
+      "conditional" : {
+        "eq" : "JA",
+        "show" : true,
+        "when" : "formeleAfhandeling.onderzoek.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen2"
+      },
+      "disableLimit" : false,
+      "selectValues" : "choiceFieldValues",
+      "noRefreshOnScroll" : false
+    },
+    {
+      "key" : "formeleAfhandeling.onderzoek.geschondenDienstverleningsprincipes3",
+      "data" : {
+        "url" : "../api/v1/choice-fields/name/{{ data.formeleAfhandeling?.onderzoek?.dienstverleningsprincipe3?.name }}",
+        "method" : "GET",
+        "headers" : [
+          {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          },
+          {
+            "key" : "Authorization",
+            "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Geschonden normen bij het gekozen dienstverleningsprincipe",
+      "widget" : "choicesjs",
+      "dataSrc" : "url",
+      "lazyLoad" : false,
+      "multiple" : true,
+      "template" : "<span>{{ item.value }}</span>",
+      "refreshOn" : "formeleAfhandeling.onderzoek.dienstverleningsprincipes3",
+      "tableView" : true,
+      "conditional" : {
+        "eq" : "JA",
+        "show" : true,
+        "when" : "formeleAfhandeling.onderzoek.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen2"
+      },
+      "selectValues" : "choiceFieldValues",
+      "customOptions" : {
+        "searchResultLimit" : 99
+      },
+      "valueProperty" : "",
+      "clearOnRefresh" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-formeleAfhandeling.onderzoek.geschondenDienstverleningsprincipes3"
+      }
+    },
+    {
+      "key" : "formeleAfhandeling.onderzoek.oplossing.datumBesprokenMetMelder",
+      "type" : "datetime",
+      "input" : true,
+      "label" : "Beklaagde (of beklaagde afdeling) geïnformeerd over het gemotiveerd oordeel op",
+      "format" : "dd-MM-yyyy",
+      "widget" : {
+        "mode" : "single",
+        "type" : "calendar",
+        "format" : "dd-MM-yyyy",
+        "locale" : "en",
+        "maxDate" : null,
+        "minDate" : null,
+        "time_24hr" : false,
+        "allowInput" : true,
+        "enableTime" : false,
+        "noCalendar" : false,
+        "hourIncrement" : 1,
+        "disableWeekdays" : false,
+        "disableWeekends" : false,
+        "minuteIncrement" : 1,
+        "displayInTimezone" : "viewer",
+        "useLocaleSettings" : false
+      },
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : false,
+      "datePicker" : {
+        "disableWeekdays" : false,
+        "disableWeekends" : false
+      },
+      "enableTime" : false,
+      "enableMaxDateInput" : false,
+      "enableMinDateInput" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-formeleAfhandeling.onderzoek.oplossing.datumBesprokenMetMelder"
+      }
+    },
+    {
+      "key" : "pv.zaakresultaat",
+      "data" : {
+        "values" : [
+          {
+            "label" : "Afgehandeld",
+            "value" : "Afgehandeld"
+          },
+          {
+            "label" : "Afgehandeld – met financiële consequenties",
+            "value" : "Afgehandeld - financieel"
+          },
+          {
+            "label" : "Afgehandeld – met invloed op een te bewaren zaak",
+            "value" : "Afgehandeld - bewaren"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Selecteer hieronder welke variant van het zaakresultaat 'Afgehandeld' van toepassing is op deze klacht",
+      "widget" : "choicesjs",
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-pv.zaakresultaat"
+      }
+    },
+    {
+      "key" : "afhandeldatumIntern",
+      "type" : "datetime",
+      "input" : true,
+      "label" : "Afhandeldatum",
+      "format" : "dd-MM-yyyy",
+      "widget" : {
+        "mode" : "single",
+        "type" : "calendar",
+        "format" : "dd-MM-yyyy",
+        "locale" : "en",
+        "maxDate" : null,
+        "minDate" : null,
+        "time_24hr" : true,
+        "allowInput" : true,
+        "enableTime" : false,
+        "noCalendar" : false,
+        "hourIncrement" : 1,
+        "disableWeekdays" : false,
+        "disableWeekends" : false,
+        "minuteIncrement" : 1,
+        "displayInTimezone" : "viewer",
+        "useLocaleSettings" : true
+      },
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : false,
+      "datePicker" : {
+        "maxDate" : false,
+        "minDate" : false,
+        "disableWeekdays" : false,
+        "disableWeekends" : false
+      },
+      "enableTime" : false,
+      "timePicker" : {
+        "showMeridian" : false
+      },
+      "defaultDate" : "moment()",
+      "useLocaleSettings" : true,
+      "enableMaxDateInput" : false,
+      "enableMinDateInput" : false,
+      "validateWhenHidden" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-afhandeldatumIntern"
+      }
+    },
+    {
+      "key" : "submit",
+      "type" : "button",
+      "input" : true,
+      "label" : "Doorgaan",
+      "action" : "custom",
+      "custom" : "component.disabled = true; form.submit();",
+      "tableView" : false,
+      "showValidations" : false,
+      "disableOnInvalid" : true
+    }
+  ]
+}

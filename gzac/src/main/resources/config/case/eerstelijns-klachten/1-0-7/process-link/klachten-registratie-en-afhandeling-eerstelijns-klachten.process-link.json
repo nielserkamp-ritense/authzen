@@ -1,0 +1,32 @@
+[
+  {
+    "activityId" : "NieuweKlachtAangemaaktStartEvent",
+    "activityType" : "bpmn:StartEvent:start",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.start",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  },
+  {
+    "activityId" : "ToewijzenKlachtAanKlachtenteamDienstTask",
+    "activityType" : "bpmn:UserTask:create",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.toewijzen-klacht-aan-klachtenteam-dienst",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  },
+  {
+    "activityId" : "ControleFormulierAfsluitenZaak",
+    "activityType" : "bpmn:UserTask:create",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  }
+]

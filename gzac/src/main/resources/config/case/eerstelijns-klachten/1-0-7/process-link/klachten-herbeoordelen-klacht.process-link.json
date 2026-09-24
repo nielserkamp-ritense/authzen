@@ -1,0 +1,12 @@
+[
+  {
+    "activityId" : "HerBeoordelenStartEvent",
+    "activityType" : "bpmn:StartEvent:start",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.herbeoordelen-klacht.start",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  }
+]

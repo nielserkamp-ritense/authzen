@@ -1,0 +1,12 @@
+[
+  {
+    "activityId" : "VastleggenResultaatEersteBeoordelingTask",
+    "activityType" : "bpmn:UserTask:create",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.vastleggen-resultaat-eerste-beoordeling",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  }
+]

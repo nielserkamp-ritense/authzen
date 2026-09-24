@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" exporter="Camunda Modeler" exporterVersion="5.28.0" expressionLanguage="http://www.w3.org/1999/XPath" id="Definitions_1ont9l7" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.22.0" targetNamespace="http://bpmn.io/schema/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema">
+      
+  
+  <bpmn:process camunda:versionTag="CD:eerstelijns-klachten:1.0.7" id="start-klachtencomissie" isClosed="false" isExecutable="true" name="Klachten: Start klachtencomissie" processType="None">
+            
+    
+    <bpmn:startEvent id="klachten-klachtencomissie-subproces-start" isInterrupting="true" name="Klachten: Start klachtencomissie" parallelMultiple="false">
+                  
+      
+      <bpmn:outgoing>Flow_0graxbv</bpmn:outgoing>
+                
+    
+    </bpmn:startEvent>
+            
+    
+    <bpmn:sequenceFlow id="Flow_0graxbv" sourceRef="klachten-klachtencomissie-subproces-start" targetRef="Event_0996b1e"/>
+            
+    
+    <bpmn:endEvent id="Event_0996b1e">
+                  
+      
+      <bpmn:incoming>Flow_0graxbv</bpmn:incoming>
+                  
+      
+      <bpmn:messageEventDefinition camunda:expression="${correlationService.sendCatchEventMessage(&quot;KLACHT_OVERDRAGEN_AAN_KLACHTENCOMMISSIE_MESSAGE&quot;, execution.businessKey)}" id="MessageEventDefinition_19v3ikj"/>
+                
+    
+    </bpmn:endEvent>
+          
+  
+  </bpmn:process>
+      
+  
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+            
+    
+    <bpmndi:BPMNPlane bpmnElement="start-klachtencomissie" id="BPMNPlane_1">
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="klachten-klachtencomissie-subproces-start" id="StartEvent_1_di">
+                        
+        
+        <dc:Bounds height="36" width="36" x="182" y="82"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="27" width="84" x="161" y="125"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="Event_0996b1e" id="Event_0160vda_di">
+                        
+        
+        <dc:Bounds height="36" width="36" x="312" y="82"/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_0graxbv" id="Flow_0graxbv_di">
+                        
+        
+        <di:waypoint x="218" y="100"/>
+                        
+        
+        <di:waypoint x="312" y="100"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                
+    
+    </bpmndi:BPMNPlane>
+          
+  
+  </bpmndi:BPMNDiagram>
+    
+
+</bpmn:definitions>

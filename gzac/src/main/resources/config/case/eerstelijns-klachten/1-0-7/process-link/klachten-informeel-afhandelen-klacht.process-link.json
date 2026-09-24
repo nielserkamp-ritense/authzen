@@ -1,0 +1,52 @@
+[
+  {
+    "activityId" : "ToewijzenZaakAanZaakbehandelaarTask",
+    "activityType" : "bpmn:UserTask:create",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.toewijzen-zaak-aan-zaakbehandelaar",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  },
+  {
+    "activityId" : "VastleggenEindresultaatOnderzoekOplossingsmogelijkhedenTask",
+    "activityType" : "bpmn:UserTask:create",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.vastleggen-eindresultaat-onderzoek-oplossingsmogelijkheden",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  },
+  {
+    "activityId" : "ControlerenAfhandelingEnVastleggenEindresultaatTask",
+    "activityType" : "bpmn:UserTask:create",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  },
+  {
+    "activityId" : "VastleggenEindresultaatOnderzoekOplossingsmogelijkhedenTask1",
+    "activityType" : "bpmn:UserTask:create",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.vastleggen-eindresultaat-onderzoek-oplossingsmogelijkheden-behandelaar",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  },
+  {
+    "activityId" : "VastleggenDefinitiefEindbriefTask",
+    "activityType" : "bpmn:UserTask:create",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.vastleggen-definitief-eindbrief",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  }
+]

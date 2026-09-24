@@ -1,0 +1,614 @@
+{
+  "display" : "form",
+  "components" : [
+    {
+      "key" : "informeleAfhandeling.afhandelingDoorKlachtbehandelaar",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "afhandelingDoorKlachtbehandelaar",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-informeleAfhandeling.afhandelingDoorKlachtbehandelaar"
+      }
+    },
+    {
+      "key" : "informeleAfhandeling.afhandelingDoorKlachtbehandelaar.akkoordTerugkoppeling",
+      "type" : "radio",
+      "input" : true,
+      "label" : "Akkoord afhandeling door behandelaar?",
+      "inline" : false,
+      "values" : [
+        {
+          "label" : "Ja",
+          "value" : true,
+          "shortcut" : ""
+        },
+        {
+          "label" : "Nee",
+          "value" : false,
+          "shortcut" : ""
+        }
+      ],
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : false,
+      "optionsLabelPosition" : "right",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-informeleAfhandeling.afhandelingDoorKlachtbehandelaar.akkoordTerugkoppeling"
+      }
+    },
+    {
+      "key" : "informeleAfhandeling.afhandelingDoorKlachtcoordinator.onderzoek",
+      "type" : "container",
+      "input" : true,
+      "label" : "Container oordeel",
+      "tableView" : false,
+      "components" : [
+        {
+          "key" : "oordeel",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/OORDEEL",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Oordeel",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "template" : "<span>{{ item.value }}</span>",
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : true,
+          "selectValues" : "choiceFieldValues",
+          "valueProperty" : "",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-oordeel"
+          }
+        },
+        {
+          "key" : "gemotiveerdOordeel.omschrijving",
+          "type" : "textarea",
+          "input" : true,
+          "label" : "Motivatie oordeel (informele behandeling)",
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : true,
+          "autoExpand" : false,
+          "applyMaskOn" : "change",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-gemotiveerdOordeel.omschrijving"
+          }
+        },
+        {
+          "key" : "dienstverleningsprincipe",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/DIENSTVERLENINGSPRINCIPES",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Over welk dienstverleningsprincipe gaat de klacht?",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "template" : "<span>{{ item.value }}</span>",
+          "tableView" : true,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.vastleggen-eindresultaat-onderzoek-oplossingsmogelijkheden-dienstverleningsprincipe"
+          },
+          "disableLimit" : false,
+          "selectValues" : "choiceFieldValues",
+          "customConditional" : "show = (data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oordeel?.name === 'GEGROND' || data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oordeel?.name === 'DEELS_GEGROND')",
+          "noRefreshOnScroll" : false
+        },
+        {
+          "key" : "geschondenDienstverleningsprincipes",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/{{ data.informeleAfhandeling.afhandelingDoorKlachtcoordinator.onderzoek.dienstverleningsprincipe.name }}",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Geschonden normen bij het gekozen dienstverleningsprincipe",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "multiple" : true,
+          "template" : "<span>{{ item.value }}</span>",
+          "refreshOn" : "informeleAfhandeling.afhandelingDoorKlachtcoordinator.onderzoek.dienstverleningsprincipe",
+          "tableView" : true,
+          "selectValues" : "choiceFieldValues",
+          "customOptions" : {
+            "searchResultLimit" : 99
+          },
+          "valueProperty" : "",
+          "clearOnRefresh" : true,
+          "customConditional" : "show = ((data.informeleAfhandeling.afhandelingDoorKlachtcoordinator.onderzoek.dienstverleningsprincipe ? true : false) && (data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oordeel?.name === 'GEGROND' || data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oordeel?.name === 'DEELS_GEGROND'))",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-geschondenDienstverleningsprincipes"
+          }
+        },
+        {
+          "key" : "nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen",
+          "type" : "radio",
+          "input" : true,
+          "label" : "Zijn er nog meer dienstverleningsprincipes geschonden?",
+          "inline" : false,
+          "values" : [
+            {
+              "label" : "Ja",
+              "value" : "JA",
+              "shortcut" : ""
+            },
+            {
+              "label" : "Nee",
+              "value" : "NEE",
+              "shortcut" : ""
+            }
+          ],
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : false,
+          "defaultValue" : "NEE",
+          "customConditional" : "show = (data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oordeel?.name === 'GEGROND' || data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oordeel?.name === 'DEELS_GEGROND');",
+          "validateWhenHidden" : false,
+          "optionsLabelPosition" : "right",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen"
+          }
+        },
+        {
+          "key" : "dienstverleningsprincipe2",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/DIENSTVERLENINGSPRINCIPES",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Over welk dienstverleningsprincipe gaat de klacht?",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "template" : "<span>{{ item.value }}</span>",
+          "tableView" : true,
+          "conditional" : {
+            "eq" : "JA",
+            "show" : true,
+            "when" : "nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen"
+          },
+          "selectValues" : "choiceFieldValues",
+          "valueProperty" : "",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-dienstverleningsprincipe2"
+          }
+        },
+        {
+          "key" : "geschondenDienstverleningsprincipes3",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/{{ data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.dienstverleningsprincipe2?.name }}",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Geschonden normen bij het gekozen dienstverleningsprincipe",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "multiple" : true,
+          "template" : "<span>{{ item.value }}</span>",
+          "refreshOn" : "informeleAfhandeling.afhandelingDoorKlachtcoordinator.onderzoek.dienstverleningsprincipe2",
+          "tableView" : true,
+          "conditional" : {
+            "eq" : "JA",
+            "show" : true,
+            "when" : "nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen"
+          },
+          "selectValues" : "choiceFieldValues",
+          "customOptions" : {
+            "searchResultLimit" : 99
+          },
+          "valueProperty" : "",
+          "clearOnRefresh" : true,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-geschondenDienstverleningsprincipes3"
+          }
+        },
+        {
+          "key" : "nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen2",
+          "type" : "radio",
+          "input" : true,
+          "label" : "Zijn er nog meer dienstverleningsprincipes geschonden?",
+          "inline" : false,
+          "values" : [
+            {
+              "label" : "Ja",
+              "value" : "JA",
+              "shortcut" : ""
+            },
+            {
+              "label" : "Nee",
+              "value" : "NEE",
+              "shortcut" : ""
+            }
+          ],
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : false,
+          "conditional" : {
+            "eq" : "JA",
+            "show" : true,
+            "when" : "nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen"
+          },
+          "defaultValue" : "NEE",
+          "validateWhenHidden" : false,
+          "optionsLabelPosition" : "right",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen2"
+          }
+        },
+        {
+          "key" : "dienstverleningsprincipe3",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/DIENSTVERLENINGSPRINCIPES",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Over welk dienstverleningsprincipe gaat de klacht?",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "template" : "<span>{{ item.value }}</span>",
+          "tableView" : true,
+          "conditional" : {
+            "eq" : "JA",
+            "show" : true,
+            "when" : "nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen2"
+          },
+          "selectValues" : "choiceFieldValues",
+          "valueProperty" : "",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-dienstverleningsprincipe3"
+          }
+        },
+        {
+          "key" : "geschondenDienstverleningsprincipes2",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/{{ data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.dienstverleningsprincipe3?.name }}",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Geschonden normen bij het gekozen dienstverleningsprincipe",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "multiple" : true,
+          "template" : "<span>{{ item.value }}</span>",
+          "refreshOn" : "informeleAfhandeling.afhandelingDoorKlachtcoordinator.onderzoek.dienstverleningsprincipe3",
+          "tableView" : true,
+          "conditional" : {
+            "eq" : "JA",
+            "show" : true,
+            "when" : "nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen2"
+          },
+          "selectValues" : "choiceFieldValues",
+          "customOptions" : {
+            "searchResultLimit" : 99
+          },
+          "valueProperty" : "",
+          "clearOnRefresh" : true,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-geschondenDienstverleningsprincipes2"
+          }
+        }
+      ],
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-informeleAfhandeling.afhandelingDoorKlachtcoordinator.onderzoek"
+      }
+    },
+    {
+      "key" : "informeleAfhandeling.afhandelingDoorKlachtcoordinator.onderzoek.oplossing.melderAkkoordMetVoorstel",
+      "type" : "radio",
+      "input" : true,
+      "label" : "Melder akkoord met oplossingsvoorstel?",
+      "inline" : false,
+      "values" : [
+        {
+          "label" : "Ja, klacht wordt afgesloten",
+          "value" : "JA",
+          "shortcut" : ""
+        },
+        {
+          "label" : "Nee, klacht gaat door naar formeel proces",
+          "value" : "NEE",
+          "shortcut" : ""
+        },
+        {
+          "label" : "Afgedaan zonder reactie melder",
+          "value" : "ONBEKEND",
+          "shortcut" : ""
+        }
+      ],
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : false,
+      "customConditional" : "show = data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.akkoordTerugkoppeling;",
+      "customDefaultValue" : "value = data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.oplossing?.melderAkkoordMetVoorstel;",
+      "optionsLabelPosition" : "right",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-informeleAfhandeling.afhandelingDoorKlachtcoordinator.onderzoek.oplossing.melderAkkoordMetVoorstel"
+      }
+    },
+    {
+      "key" : "informeleAfhandeling.afhandelingDoorKlachtcoordinator.onderzoek.oplossing.melderAkkoordMetVoorstelToelichting",
+      "type" : "textarea",
+      "input" : true,
+      "label" : "Toelichting wanneer nog niet bekend is of de melder akkoord is met oplossingsvoorstel",
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : true,
+      "autoExpand" : false,
+      "applyMaskOn" : "change",
+      "customConditional" : "show = data.informeleAfhandeling.afhandelingDoorKlachtcoordinator.onderzoek.oplossing.melderAkkoordMetVoorstel && data.informeleAfhandeling.afhandelingDoorKlachtcoordinator.onderzoek.oplossing.melderAkkoordMetVoorstel === 'ONBEKEND';",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-informeleAfhandeling.afhandelingDoorKlachtcoordinator.onderzoek.oplossing.melderAkkoordMetVoorstelToelichting"
+      }
+    },
+    {
+      "key" : "informeleAfhandeling.afhandelingDoorKlachtcoordinator.onderzoek.gemotiveerdOordeel.overnemenNaarFormeleAfhandeling",
+      "type" : "radio",
+      "input" : true,
+      "label" : "Gemotiveerd oordeel overnemen als formeel gemotiveerd oordeel?",
+      "inline" : false,
+      "values" : [
+        {
+          "label" : "Ja",
+          "value" : "JA",
+          "shortcut" : ""
+        },
+        {
+          "label" : "Nee",
+          "value" : "NEE",
+          "shortcut" : ""
+        }
+      ],
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : false,
+      "customConditional" : "show = data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.akkoordTerugkoppeling;",
+      "optionsLabelPosition" : "right",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-informeleAfhandeling.afhandelingDoorKlachtcoordinator.onderzoek.gemotiveerdOordeel.overnemenNaarFormeleAfhandeling"
+      }
+    },
+    {
+      "key" : "pv.zaakresultaat",
+      "data" : {
+        "values" : [
+          {
+            "label" : "Afgehandeld",
+            "value" : "Afgehandeld"
+          },
+          {
+            "label" : "Afgehandeld – met financiële consequenties",
+            "value" : "Afgehandeld - financieel"
+          },
+          {
+            "label" : "Afgehandeld – met invloed op een te bewaren zaak",
+            "value" : "Afgehandeld - bewaren"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Selecteer hieronder welke variant van het zaakresultaat 'Afgehandeld' van toepassing is op deze klacht",
+      "hidden" : true,
+      "widget" : "choicesjs",
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : true,
+      "customConditional" : "show = (data.informeleAfhandeling.afhandelingDoorKlachtcoordinator.onderzoek.oplossing.melderAkkoordMetVoorstel === 'JA' || data.informeleAfhandeling.afhandelingDoorKlachtcoordinator.onderzoek.oplossing.melderAkkoordMetVoorstel === 'ONBEKEND');",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-pv.zaakresultaat"
+      }
+    },
+    {
+      "key" : "afhandeldatumIntern",
+      "type" : "datetime",
+      "input" : true,
+      "label" : "Afhandeldatum",
+      "format" : "dd-MM-yyyy",
+      "widget" : {
+        "mode" : "single",
+        "type" : "calendar",
+        "format" : "dd-MM-yyyy",
+        "locale" : "en",
+        "maxDate" : "moment()",
+        "minDate" : "moment()",
+        "time_24hr" : true,
+        "allowInput" : true,
+        "enableTime" : false,
+        "noCalendar" : false,
+        "hourIncrement" : 1,
+        "disableWeekdays" : false,
+        "disableWeekends" : false,
+        "minuteIncrement" : 1,
+        "displayInTimezone" : "viewer",
+        "useLocaleSettings" : true
+      },
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : false,
+      "datePicker" : {
+        "maxDate" : "moment()",
+        "minDate" : null,
+        "disableWeekdays" : false,
+        "disableWeekends" : false
+      },
+      "enableTime" : false,
+      "timePicker" : {
+        "showMeridian" : false
+      },
+      "defaultDate" : "moment()",
+      "customConditional" : "show = data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.akkoordTerugkoppeling;",
+      "useLocaleSettings" : true,
+      "enableMaxDateInput" : false,
+      "enableMinDateInput" : false,
+      "validateWhenHidden" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-afhandeldatumIntern"
+      }
+    },
+    {
+      "key" : "pv.melderAkkoordMetOplossing",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "pv melderAkkoordMetOplossing",
+      "tableView" : false,
+      "calculateValue" : "(data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oplossing?.melderAkkoordMetVoorstel == 'JA' || data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oplossing?.melderAkkoordMetVoorstel == 'ONBEKEND') ? value = true : value = false",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-pv.melderAkkoordMetOplossing"
+      }
+    },
+    {
+      "key" : "pv.oordeelOvernemen",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "pv oordeelOvernemen",
+      "tableView" : false,
+      "calculateValue" : "data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.gemotiveerdOordeel?.overnemenNaarFormeleAfhandeling === 'JA' ? value = true : value = false",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-pv.oordeelOvernemen"
+      }
+    },
+    {
+      "key" : "informeleAfhandeling.afhandelingDoorKlachtbehandelaar.toelichting",
+      "type" : "textarea",
+      "input" : true,
+      "label" : "Toelichting",
+      "logic" : [
+        {
+          "name" : "Should this field be required?",
+          "actions" : [
+            {
+              "name" : "Make required",
+              "type" : "property",
+              "state" : true,
+              "property" : {
+                "type" : "boolean",
+                "label" : "Required",
+                "value" : "validate.required"
+              }
+            }
+          ],
+          "trigger" : {
+            "type" : "simple",
+            "simple" : {
+              "eq" : false,
+              "show" : true,
+              "when" : "informeleAfhandeling.afhandelingDoorKlachtbehandelaar.akkoordTerugkoppeling"
+            }
+          }
+        }
+      ],
+      "tableView" : true,
+      "applyMaskOn" : "change",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-informeleAfhandeling.afhandelingDoorKlachtbehandelaar.toelichting"
+      }
+    },
+    {
+      "key" : "submit",
+      "type" : "button",
+      "input" : true,
+      "label" : "Doorgaan",
+      "action" : "custom",
+      "custom" : "component.disabled = true; form.submit();",
+      "tableView" : false,
+      "showValidations" : false,
+      "disableOnInvalid" : true
+    }
+  ]
+}

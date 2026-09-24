@@ -1,0 +1,118 @@
+{
+  "display" : "form",
+  "components" : [
+    {
+      "key" : "openZaak",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "openZaak",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.start-openZaak"
+      }
+    },
+    {
+      "key" : "html",
+      "tag" : "p",
+      "type" : "htmlelement",
+      "input" : false,
+      "label" : "HTML",
+      "content" : "Het behandelen door klachtencommissie proces kan niet worden gestart omdat de rol KlachtenKlachtencoordinator ontbreekt.",
+      "tableView" : false,
+      "refreshOnChange" : false,
+      "customConditional" : "const formioUser = JSON.parse(localStorage.getItem('formioUser')); const hasRoleKlachtenKlachtencoordinator = formioUser?.realm_access?.roles?.includes('ROLE_KLACHTEN_KLACHTENCOORDINATOR') || false; show = data.openZaak?.statusOmschrijving !== 'Afgehandeld' && hasRoleKlachtenKlachtencoordinator === false"
+    },
+    {
+      "key" : "behandelingDoorKlachtencommissie",
+      "type" : "container",
+      "input" : true,
+      "label" : "behandelingDoorKlachtencommissie",
+      "hideLabel" : true,
+      "tableView" : false,
+      "components" : [
+        {
+          "key" : "overdracht.datum",
+          "type" : "datetime",
+          "input" : true,
+          "label" : "Datum van overdracht",
+          "format" : "dd-MM-yyyy",
+          "widget" : {
+            "mode" : "single",
+            "type" : "calendar",
+            "format" : "dd-MM-yyyy",
+            "locale" : "en",
+            "maxDate" : null,
+            "minDate" : null,
+            "time_24hr" : false,
+            "allowInput" : true,
+            "enableTime" : false,
+            "noCalendar" : false,
+            "hourIncrement" : 1,
+            "disableWeekdays" : false,
+            "disableWeekends" : false,
+            "minuteIncrement" : 1,
+            "displayInTimezone" : "viewer",
+            "useLocaleSettings" : false
+          },
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : false,
+          "datePicker" : {
+            "disableWeekdays" : false,
+            "disableWeekends" : false
+          },
+          "enableTime" : false,
+          "defaultDate" : "moment()",
+          "enableMaxDateInput" : false,
+          "enableMinDateInput" : false,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.start-overdracht.datum"
+          }
+        },
+        {
+          "key" : "overdracht.toelichting",
+          "type" : "textarea",
+          "input" : true,
+          "label" : "Toelichting overdracht aan klachtencommissie",
+          "validate" : {
+            "required" : false
+          },
+          "tableView" : true,
+          "autoExpand" : false,
+          "applyMaskOn" : "change",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.start-overdracht.toelichting"
+          }
+        }
+      ],
+      "customConditional" : "const formioUser = JSON.parse(localStorage.getItem('formioUser'));\r\nconst roles = formioUser?.realm_access?.roles || [];\r\n\r\nconst acceptedRoles = [\r\n  'ROLE_KLACHTEN_KLACHTENCOORDINATOR',\r\n  'ROLE_KLACHTEN_KLACHTENCOORDINATOR_GGD',\r\n  'ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH'\r\n];\r\n\r\nconst hasRoleKlachtenKlachtencoordinator = acceptedRoles.some(role =>\r\n  roles.includes(role)\r\n);\r\n\r\nshow =\r\n  data.openZaak?.statusOmschrijving !== 'Afgehandeld' &&\r\n  hasRoleKlachtenKlachtencoordinator;",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.start-behandelingDoorKlachtencommissie"
+      }
+    },
+    {
+      "key" : "html",
+      "tag" : "p",
+      "type" : "htmlelement",
+      "input" : false,
+      "label" : "HTML",
+      "content" : "Het behandelen door klachtencommissie proces kan niet meer worden gestart omdat de zaak al is afgesloten.",
+      "tableView" : false,
+      "refreshOnChange" : false,
+      "customConditional" : "show = data.openZaak.statusOmschrijving === 'Afgehandeld'"
+    },
+    {
+      "key" : "submit",
+      "type" : "button",
+      "input" : true,
+      "label" : "Doorgaan",
+      "action" : "custom",
+      "custom" : "component.disabled = true; form.submit();",
+      "tableView" : false,
+      "showValidations" : false,
+      "disableOnInvalid" : true,
+      "customConditional" : "const formioUser = JSON.parse(localStorage.getItem('formioUser'));\r\nconst roles = formioUser?.realm_access?.roles || [];\r\n\r\nconst acceptedRoles = [\r\n  'ROLE_KLACHTEN_KLACHTENCOORDINATOR',\r\n  'ROLE_KLACHTEN_KLACHTENCOORDINATOR_GGD',\r\n  'ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH'\r\n];\r\n\r\nconst hasRoleKlachtenKlachtencoordinator = acceptedRoles.some(role =>\r\n  roles.includes(role)\r\n);\r\n\r\nshow =\r\n  data.openZaak?.statusOmschrijving !== 'Afgehandeld' &&\r\n  hasRoleKlachtenKlachtencoordinator;"
+    }
+  ]
+}

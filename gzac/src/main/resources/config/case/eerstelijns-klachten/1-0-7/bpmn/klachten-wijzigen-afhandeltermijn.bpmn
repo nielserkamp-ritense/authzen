@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" exporter="Camunda Modeler" exporterVersion="5.46.1" expressionLanguage="http://www.w3.org/1999/XPath" id="Definitions_wijzigenafhandeltermijn" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.22.0" targetNamespace="http://bpmn.io/schema/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema">
+      
+  
+  <bpmn:collaboration id="Collaboration_1jx8jq4" isClosed="false">
+            
+    
+    <bpmn:participant id="KlachtenWijzigAfhandeltermijnParticipant" name="Klachten: wijzig afhandeltermijn" processRef="klachten-wijzigen-afhandeltermijn"/>
+          
+  
+  </bpmn:collaboration>
+      
+  
+  <bpmn:process camunda:versionTag="CD:eerstelijns-klachten:1.0.7" id="klachten-wijzigen-afhandeltermijn" isClosed="false" isExecutable="true" name="Klachten: Wijzigen afhandeltermijn" processType="None">
+            
+    
+    <bpmn:startEvent id="WijzigenAfhandeltermijnStartEvent" isInterrupting="true" name="Wijzigen afhandeltermijn" parallelMultiple="false">
+                  
+      
+      <bpmn:outgoing>Flow_0wat1</bpmn:outgoing>
+                
+    
+    </bpmn:startEvent>
+            
+    
+    <bpmn:endEvent id="AfhandeltermijnAangepastEndEvent" name="Afhandeltermijn aangepast">
+                  
+      
+      <bpmn:extensionElements>
+                        
+        
+        <camunda:inputOutput>
+                              
+          
+          <camunda:inputParameter name="variablesMap">
+                                    
+            
+            <camunda:map>
+                                          
+              
+              <camunda:entry key="afhandeltermijnDatum">${afhandeltermijnDatum}</camunda:entry>
+                                        
+            
+            </camunda:map>
+                                  
+          
+          </camunda:inputParameter>
+                            
+        
+        </camunda:inputOutput>
+                      
+      
+      </bpmn:extensionElements>
+                  
+      
+      <bpmn:incoming>Flow_0wat1</bpmn:incoming>
+                  
+      
+      <bpmn:messageEventDefinition camunda:expression="${correlationService.sendCatchEventMessage(&quot;KLACHT_AFHANDELTERMIJN_AANPASSEN_MESSAGE&quot;, execution.businessKey, variablesMap)}" id="MessageEventDefinition_0wat3"/>
+                
+    
+    </bpmn:endEvent>
+            
+    
+    <bpmn:sequenceFlow id="Flow_0wat1" sourceRef="WijzigenAfhandeltermijnStartEvent" targetRef="AfhandeltermijnAangepastEndEvent"/>
+          
+  
+  </bpmn:process>
+      
+  
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+            
+    
+    <bpmndi:BPMNPlane bpmnElement="Collaboration_1jx8jq4" id="BPMNPlane_1">
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="KlachtenWijzigAfhandeltermijnParticipant" id="Participant_1gxjek6_di" isHorizontal="true">
+                        
+        
+        <dc:Bounds height="250" width="450" x="160" y="85"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="WijzigenAfhandeltermijnStartEvent" id="StartEvent_1_di">
+                        
+        
+        <dc:Bounds height="36" width="36" x="302" y="192"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="27" width="76" x="282" y="235"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="AfhandeltermijnAangepastEndEvent" id="Event_0wat2_di">
+                        
+        
+        <dc:Bounds height="36" width="36" x="442" y="192"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="27" width="77" x="422" y="235"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_0wat1" id="Flow_0wat1_di">
+                        
+        
+        <di:waypoint x="338" y="210"/>
+                        
+        
+        <di:waypoint x="442" y="210"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                
+    
+    </bpmndi:BPMNPlane>
+          
+  
+  </bpmndi:BPMNDiagram>
+    
+
+</bpmn:definitions>

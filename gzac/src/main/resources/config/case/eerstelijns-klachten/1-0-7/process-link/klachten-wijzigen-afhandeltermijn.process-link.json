@@ -1,0 +1,12 @@
+[
+  {
+    "activityId" : "WijzigenAfhandeltermijnStartEvent",
+    "activityType" : "bpmn:StartEvent:start",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.wijzigen-afhandeltermijn.start",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  }
+]

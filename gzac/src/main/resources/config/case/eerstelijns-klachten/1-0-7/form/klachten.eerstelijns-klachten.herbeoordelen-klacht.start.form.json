@@ -1,0 +1,72 @@
+{
+  "display" : "form",
+  "components" : [
+    {
+      "key" : "openZaak",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "openZaak status",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.herbeoordelen-klacht.start-openZaak"
+      }
+    },
+    {
+      "key" : "pv.herbeoordelenKlachtMogelijk",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "herbeoordelenKlachtMogelijk",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.herbeoordelen-klacht.start-pv.herbeoordelenKlachtMogelijk"
+      }
+    },
+    {
+      "key" : "hiddenDocumentId",
+      "type" : "hidden",
+      "input" : false,
+      "label" : "hidden document Id",
+      "tableView" : false,
+      "properties" : {
+        "sourceKey" : "case:id"
+      },
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.herbeoordelen-klacht.start-hiddenDocumentId"
+      }
+    },
+    {
+      "key" : "html",
+      "tag" : "p",
+      "type" : "htmlelement",
+      "input" : false,
+      "label" : "HTML",
+      "content" : "Met deze actie wordt het huidige proces onderbroken en wordt het dossier teruggezet naar de stap 'Beoordelen klacht'.",
+      "tableView" : false,
+      "refreshOnChange" : false,
+      "customConditional" : "show = data.pv.herbeoordelenKlachtMogelijk;"
+    },
+    {
+      "key" : "html",
+      "tag" : "p",
+      "type" : "htmlelement",
+      "input" : false,
+      "label" : "HTML",
+      "content" : "Het herbeoordelen proces kan op dit moment niet worden gestart.",
+      "tableView" : false,
+      "refreshOnChange" : false,
+      "customConditional" : "show = !(data.pv.herbeoordelenKlachtMogelijk);"
+    },
+    {
+      "key" : "submit",
+      "type" : "button",
+      "input" : true,
+      "label" : "Doorgaan",
+      "action" : "custom",
+      "custom" : "fetch(`../api/v1/document/${data.hiddenDocumentId}/unassign`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('formioToken') } }).then(() => { component.disabled = true; form.submit(); });",
+      "tableView" : false,
+      "showValidations" : false,
+      "disableOnInvalid" : true,
+      "customConditional" : "show = data.pv.herbeoordelenKlachtMogelijk;"
+    }
+  ]
+}

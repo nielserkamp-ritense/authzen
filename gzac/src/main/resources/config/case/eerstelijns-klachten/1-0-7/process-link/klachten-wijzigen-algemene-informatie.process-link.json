@@ -1,0 +1,12 @@
+[
+  {
+    "activityId" : "WijzigenAlgemeneInformatieStartEvent",
+    "activityType" : "bpmn:StartEvent:start",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  }
+]

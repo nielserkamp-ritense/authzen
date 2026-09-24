@@ -1,0 +1,297 @@
+{
+  "display" : "form",
+  "components" : [
+    {
+      "key" : "html",
+      "tag" : "div",
+      "type" : "htmlelement",
+      "input" : false,
+      "label" : "HTML",
+      "content" : "<h4>Vastleggen definitieve eindbrief</h4>",
+      "tableView" : false,
+      "refreshOnChange" : false
+    },
+    {
+      "key" : "formeleAfhandeling.eindbrief.document",
+      "type" : "documenten-api-file",
+      "input" : true,
+      "label" : "Upload hieronder de opgestelde definitieve eindbrief",
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : false,
+      "customOptions" : {
+        "tags" : "",
+        "title" : "",
+        "author" : "",
+        "camera" : false,
+        "status" : "definitief",
+        "filename" : "",
+        "hideTags" : true,
+        "language" : "nld",
+        "subtitle" : "",
+        "hideTitle" : false,
+        "hideAuthor" : false,
+        "hideStatus" : false,
+        "description" : "",
+        "maxFileSize" : 100,
+        "documentType" : "",
+        "hideFilename" : false,
+        "hideLanguage" : false,
+        "acceptedFiles" : "",
+        "disableAuthor" : true,
+        "disableStatus" : false,
+        "documentTitle" : "",
+        "disableFilename" : false,
+        "disableLanguage" : false,
+        "hideDescription" : true,
+        "hideMaxFileSize" : false,
+        "hideCreationDate" : true,
+        "hideDocumentType" : false,
+        "hideAcceptedFiles" : false,
+        "hideDocumentTitle" : false,
+        "disableDescription" : false,
+        "hideAdditionalDate" : true,
+        "disableCreationDate" : false,
+        "disableDocumentType" : false,
+        "confidentialityLevel" : "zaakvertrouwelijk",
+        "disableDocumentTitle" : false,
+        "hideConfidentialityLevel" : false,
+        "documentUrlProcessVariable" : "",
+        "disableConfidentialityLevel" : false
+      },
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.vastleggen-definitief-eindbrief-formeleAfhandeling.eindbrief.document"
+      }
+    },
+    {
+      "key" : "formeleAfhandeling.eindbrief.toelichting",
+      "type" : "textarea",
+      "input" : true,
+      "label" : "Toelichting definitieve eindbrief",
+      "tableView" : true,
+      "autoExpand" : false,
+      "applyMaskOn" : "change",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.vastleggen-definitief-eindbrief-formeleAfhandeling.eindbrief.toelichting"
+      }
+    },
+    {
+      "key" : "formeleAfhandeling.eindbrief.gedeeldMet",
+      "type" : "datagrid",
+      "input" : true,
+      "label" : "Deze eindbrief is gedeeld met:",
+      "reorder" : false,
+      "initEmpty" : true,
+      "tableView" : false,
+      "addAnother" : "Persoon Toevoegen",
+      "components" : [
+        {
+          "key" : "columns",
+          "type" : "columns",
+          "input" : false,
+          "label" : "Columns",
+          "columns" : [
+            {
+              "pull" : 0,
+              "push" : 0,
+              "size" : "md",
+              "width" : 12,
+              "offset" : 0,
+              "components" : [
+                {
+                  "key" : "naam",
+                  "type" : "textfield",
+                  "input" : true,
+                  "label" : "Naam",
+                  "tableView" : true,
+                  "applyMaskOn" : "change"
+                },
+                {
+                  "key" : "email",
+                  "type" : "email",
+                  "input" : true,
+                  "label" : "E-mailadres",
+                  "tableView" : true,
+                  "applyMaskOn" : "change"
+                },
+                {
+                  "key" : "verstuurdOp",
+                  "type" : "datetime",
+                  "input" : true,
+                  "label" : "Brief verstuurd op:",
+                  "format" : "dd-MM-yyyy",
+                  "widget" : {
+                    "mode" : "single",
+                    "type" : "calendar",
+                    "format" : "dd-MM-yyyy",
+                    "locale" : "en",
+                    "maxDate" : null,
+                    "minDate" : null,
+                    "time_24hr" : false,
+                    "allowInput" : true,
+                    "enableTime" : false,
+                    "noCalendar" : false,
+                    "hourIncrement" : 1,
+                    "disableWeekdays" : false,
+                    "disableWeekends" : false,
+                    "minuteIncrement" : 1,
+                    "displayInTimezone" : "viewer",
+                    "useLocaleSettings" : false
+                  },
+                  "tableView" : false,
+                  "datePicker" : {
+                    "disableWeekdays" : false,
+                    "disableWeekends" : false
+                  },
+                  "enableTime" : false,
+                  "defaultDate" : "moment()",
+                  "enableMaxDateInput" : false,
+                  "enableMinDateInput" : false
+                }
+              ],
+              "currentWidth" : 12
+            },
+            {
+              "pull" : 0,
+              "push" : 0,
+              "size" : "md",
+              "width" : 6,
+              "offset" : 0,
+              "components" : [],
+              "currentWidth" : 6
+            }
+          ],
+          "hideLabel" : true,
+          "tableView" : false
+        }
+      ],
+      "layoutFixed" : false,
+      "enableRowGroups" : false,
+      "addAnotherPosition" : "bottom",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.vastleggen-definitief-eindbrief-formeleAfhandeling.eindbrief.gedeeldMet"
+      }
+    },
+    {
+      "key" : "formeleAfhandeling.aardigheidje.isVerstuurd",
+      "type" : "radio",
+      "input" : true,
+      "label" : "Aardigheidje verstuurd naar melder?",
+      "inline" : false,
+      "values" : [
+        {
+          "label" : "Ja",
+          "value" : "JA",
+          "shortcut" : ""
+        },
+        {
+          "label" : "Nee",
+          "value" : "NEE",
+          "shortcut" : ""
+        }
+      ],
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : false,
+      "optionsLabelPosition" : "right",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.vastleggen-definitief-eindbrief-formeleAfhandeling.aardigheidje.isVerstuurd"
+      }
+    },
+    {
+      "key" : "formeleAfhandeling.aardigheidje",
+      "type" : "container",
+      "input" : true,
+      "label" : "Container",
+      "tableView" : false,
+      "components" : [
+        {
+          "key" : "verstuurdOp",
+          "type" : "datetime",
+          "input" : true,
+          "label" : "Aardigheidje verstuurd op:",
+          "format" : "dd-MM-yyyy",
+          "widget" : {
+            "mode" : "single",
+            "type" : "calendar",
+            "format" : "dd-MM-yyyy",
+            "locale" : "en",
+            "maxDate" : null,
+            "minDate" : null,
+            "time_24hr" : false,
+            "allowInput" : true,
+            "enableTime" : false,
+            "noCalendar" : false,
+            "hourIncrement" : 1,
+            "disableWeekdays" : false,
+            "disableWeekends" : false,
+            "minuteIncrement" : 1,
+            "displayInTimezone" : "viewer",
+            "useLocaleSettings" : false
+          },
+          "tableView" : false,
+          "datePicker" : {
+            "disableWeekdays" : false,
+            "disableWeekends" : false
+          },
+          "enableTime" : false,
+          "defaultDate" : "moment()",
+          "enableMaxDateInput" : false,
+          "enableMinDateInput" : false,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.vastleggen-definitief-eindbrief-verstuurdOp"
+          }
+        },
+        {
+          "key" : "omschrijving",
+          "type" : "textarea",
+          "input" : true,
+          "label" : "Omschrijving aardigheidje",
+          "tableView" : true,
+          "autoExpand" : false,
+          "applyMaskOn" : "change",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.vastleggen-definitief-eindbrief-omschrijving"
+          }
+        },
+        {
+          "key" : "kosten",
+          "mask" : false,
+          "type" : "currency",
+          "input" : true,
+          "label" : "Kosten aardigheidje",
+          "currency" : "EUR",
+          "delimiter" : true,
+          "tableView" : false,
+          "applyMaskOn" : "change",
+          "inputFormat" : "plain",
+          "truncateMultipleSpaces" : false,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.vastleggen-definitief-eindbrief-kosten"
+          }
+        }
+      ],
+      "conditional" : {
+        "eq" : "JA",
+        "show" : true,
+        "when" : "formeleAfhandeling.aardigheidje.isVerstuurd"
+      },
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.vastleggen-definitief-eindbrief-formeleAfhandeling.aardigheidje"
+      }
+    },
+    {
+      "key" : "submit",
+      "type" : "button",
+      "input" : true,
+      "label" : "Doorgaan",
+      "action" : "custom",
+      "custom" : "component.disabled = true; form.submit();",
+      "tableView" : false,
+      "showValidations" : false,
+      "disableOnInvalid" : true
+    }
+  ]
+}

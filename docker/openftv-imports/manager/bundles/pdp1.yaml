@@ -2,7 +2,7 @@
 id: "pdp"
 title: "Outway deployment bundle (pdp)"
 language: "rego"
-tags: ["valtimo"]
+tags: ["valtimo", "klachten"]
 policies: true
 data: true
 version: true

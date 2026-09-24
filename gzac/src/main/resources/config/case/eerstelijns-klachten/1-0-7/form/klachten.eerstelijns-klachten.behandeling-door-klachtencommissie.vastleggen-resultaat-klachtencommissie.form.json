@@ -1,0 +1,1119 @@
+{
+  "display" : "form",
+  "components" : [
+    {
+      "key" : "behandelingDoorKlachtencommissie.klachtencommissie",
+      "type" : "container",
+      "input" : true,
+      "label" : "Container",
+      "tableView" : false,
+      "components" : [
+        {
+          "key" : "html",
+          "tag" : "div",
+          "type" : "htmlelement",
+          "input" : false,
+          "label" : "HTML",
+          "content" : "<h4>Oordeel volgens klachtencommissie</h4>",
+          "tableView" : false,
+          "refreshOnChange" : false
+        },
+        {
+          "key" : "resultaat.datumOntvangst",
+          "type" : "datetime",
+          "input" : true,
+          "label" : "Datum ontvangst resultaat klachtencommissie",
+          "format" : "dd-MM-yyyy",
+          "widget" : {
+            "mode" : "single",
+            "type" : "calendar",
+            "format" : "dd-MM-yyyy",
+            "locale" : "en",
+            "maxDate" : null,
+            "minDate" : null,
+            "time_24hr" : false,
+            "allowInput" : true,
+            "enableTime" : false,
+            "noCalendar" : false,
+            "hourIncrement" : 1,
+            "disableWeekdays" : false,
+            "disableWeekends" : false,
+            "minuteIncrement" : 1,
+            "displayInTimezone" : "viewer",
+            "useLocaleSettings" : false
+          },
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : false,
+          "datePicker" : {
+            "disableWeekdays" : false,
+            "disableWeekends" : false
+          },
+          "enableTime" : false,
+          "defaultDate" : "moment()",
+          "enableMaxDateInput" : false,
+          "enableMinDateInput" : false,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-resultaat.datumOntvangst"
+          }
+        },
+        {
+          "key" : "resultaat.ontvangenDocumenten",
+          "type" : "documenten-api-file",
+          "input" : true,
+          "label" : "Upload hieronder het ontvangen resultaat van de klachtencommissie",
+          "tableView" : false,
+          "customOptions" : {
+            "tags" : "",
+            "title" : "",
+            "author" : "",
+            "camera" : false,
+            "status" : "definitief",
+            "filename" : "",
+            "hideTags" : true,
+            "language" : "nld",
+            "subtitle" : "",
+            "hideTitle" : false,
+            "hideAuthor" : false,
+            "hideStatus" : false,
+            "description" : "",
+            "maxFileSize" : 100,
+            "documentType" : "",
+            "hideFilename" : false,
+            "hideLanguage" : false,
+            "acceptedFiles" : "",
+            "disableAuthor" : true,
+            "disableStatus" : false,
+            "documentTitle" : "",
+            "disableFilename" : false,
+            "disableLanguage" : false,
+            "hideDescription" : true,
+            "hideMaxFileSize" : true,
+            "hideCreationDate" : true,
+            "hideDocumentType" : false,
+            "hideAcceptedFiles" : false,
+            "hideDocumentTitle" : false,
+            "disableDescription" : false,
+            "hideAdditionalDate" : true,
+            "disableCreationDate" : false,
+            "disableDocumentType" : false,
+            "confidentialityLevel" : "zaakvertrouwelijk",
+            "disableDocumentTitle" : false,
+            "hideConfidentialityLevel" : false,
+            "documentUrlProcessVariable" : "",
+            "disableConfidentialityLevel" : false
+          },
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-resultaat.ontvangenDocumenten"
+          }
+        },
+        {
+          "key" : "resultaat.toelichting",
+          "type" : "textfield",
+          "input" : true,
+          "label" : "Toelichting resultaat klachtencommissie",
+          "validate" : {
+            "required" : false
+          },
+          "tableView" : true,
+          "autoExpand" : false,
+          "applyMaskOn" : "change",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-resultaat.toelichting"
+          }
+        },
+        {
+          "key" : "beoordeling.oordeel",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/OORDEEL",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Oordeel",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "template" : "<span>{{ item.value }}</span>",
+          "tableView" : true,
+          "selectValues" : "choiceFieldValues",
+          "valueProperty" : "",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-beoordeling.oordeel"
+          }
+        },
+        {
+          "key" : "beoordeling.gemotiveerdOordeel.omschrijving",
+          "type" : "textarea",
+          "input" : true,
+          "label" : "Motivatie oordeel",
+          "tableView" : true,
+          "autoExpand" : false,
+          "applyMaskOn" : "change",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-beoordeling.gemotiveerdOordeel.omschrijving"
+          }
+        },
+        {
+          "key" : "beoordeling.dienstverleningsprincipe",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/DIENSTVERLENINGSPRINCIPES",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Over welk dienstverleningsprincipe gaat de klacht?",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "template" : "<span>{{ item.value }}</span>",
+          "tableView" : true,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.vastleggen-eindresultaat-onderzoek-oplossingsmogelijkheden-Dienstverleningsprincipe"
+          },
+          "disableLimit" : false,
+          "selectValues" : "choiceFieldValues",
+          "customConditional" : "show = (data.behandelingDoorKlachtencommissie?.klachtencommissie.beoordeling?.oordeel?.name === 'GEGROND' || data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.oordeel?.name === 'DEELS_GEGROND')",
+          "noRefreshOnScroll" : false
+        },
+        {
+          "key" : "beoordeling.geschondenDienstverleningsprincipes",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/{{ data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.dienstverleningsprincipe?.name }}",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Geschonden normen bij het gekozen dienstverleningsprincipe",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "multiple" : true,
+          "template" : "<span>{{ item.value }}</span>",
+          "validate" : {
+            "required" : true
+          },
+          "refreshOn" : "behandelingDoorKlachtencommissie.klachtencommissie.beoordeling.dienstverleningsprincipe",
+          "tableView" : true,
+          "selectValues" : "choiceFieldValues",
+          "valueProperty" : "",
+          "clearOnRefresh" : true,
+          "customConditional" : "show = (data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.oordeel?.name === 'GEGROND' || data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.oordeel?.name === 'DEELS_GEGROND')",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-beoordeling.geschondenDienstverleningsprincipes"
+          }
+        },
+        {
+          "key" : "beoordeling.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen",
+          "type" : "radio",
+          "input" : true,
+          "label" : "Zijn er nog meer dienstverleningsprincipes geschonden?",
+          "inline" : false,
+          "values" : [
+            {
+              "label" : "Ja",
+              "value" : "JA",
+              "shortcut" : ""
+            },
+            {
+              "label" : "Nee",
+              "value" : "NEE",
+              "shortcut" : ""
+            }
+          ],
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : false,
+          "defaultValue" : "NEE",
+          "customConditional" : "show = (data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.oordeel?.name === 'GEGROND' || data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.oordeel?.name === 'DEELS_GEGROND')",
+          "validateWhenHidden" : false,
+          "optionsLabelPosition" : "right",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-beoordeling.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen"
+          }
+        },
+        {
+          "key" : "beoordeling.dienstverleningsprincipe2",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/DIENSTVERLENINGSPRINCIPES",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Over welk dienstverleningsprincipe gaat de klacht?",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "template" : "<span>{{ item.value }}</span>",
+          "tableView" : true,
+          "conditional" : {
+            "eq" : "JA",
+            "show" : true,
+            "when" : "beoordeling.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen"
+          },
+          "selectValues" : "choiceFieldValues",
+          "valueProperty" : "",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-beoordeling.dienstverleningsprincipe2"
+          }
+        },
+        {
+          "key" : "beoordeling.geschondenDienstverleningsprincipes2",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/{{ data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.dienstverleningsprincipe2?.name }}",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Geschonden normen bij het gekozen dienstverleningsprincipe",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "multiple" : true,
+          "template" : "<span>{{ item.value }}</span>",
+          "refreshOn" : "behandelingDoorKlachtencommissie.klachtencommissie.beoordeling.dienstverleningsprincipe2",
+          "tableView" : true,
+          "conditional" : {
+            "eq" : "JA",
+            "show" : true,
+            "when" : "beoordeling.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen"
+          },
+          "selectValues" : "choiceFieldValues",
+          "customOptions" : {
+            "searchResultLimit" : 99
+          },
+          "valueProperty" : "",
+          "clearOnRefresh" : true,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-beoordeling.geschondenDienstverleningsprincipes2"
+          }
+        },
+        {
+          "key" : "beoordeling.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen2",
+          "type" : "radio",
+          "input" : true,
+          "label" : "Zijn er nog meer dienstverleningsprincipes geschonden?",
+          "inline" : false,
+          "values" : [
+            {
+              "label" : "Ja",
+              "value" : "JA",
+              "shortcut" : ""
+            },
+            {
+              "label" : "Nee",
+              "value" : "NEE",
+              "shortcut" : ""
+            }
+          ],
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : false,
+          "conditional" : {
+            "eq" : "JA",
+            "show" : true,
+            "when" : "beoordeling.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen"
+          },
+          "defaultValue" : "NEE",
+          "validateWhenHidden" : false,
+          "optionsLabelPosition" : "right",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-beoordeling.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen2"
+          }
+        },
+        {
+          "key" : "beoordeling.dienstverleningsprincipe3",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/DIENSTVERLENINGSPRINCIPES",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Over welk dienstverleningsprincipe gaat de klacht?",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "template" : "<span>{{ item.value }}</span>",
+          "tableView" : true,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.vastleggen-eindresultaat-onderzoek-oplossingsmogelijkheden-dienstverleningsprincipe"
+          },
+          "conditional" : {
+            "eq" : "JA",
+            "show" : true,
+            "when" : "beoordeling.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen2"
+          },
+          "disableLimit" : false,
+          "selectValues" : "choiceFieldValues",
+          "noRefreshOnScroll" : false
+        },
+        {
+          "key" : "beoordeling.geschondenDienstverleningsprincipes3",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/{{ data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.dienstverleningsprincipe3?.name }}",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Geschonden normen bij het gekozen dienstverleningsprincipe",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "multiple" : true,
+          "template" : "<span>{{ item.value }}</span>",
+          "refreshOn" : "behandelingDoorKlachtencommissie.klachtencommissie.beoordeling.dienstverleningsprincipe3",
+          "tableView" : true,
+          "conditional" : {
+            "eq" : "JA",
+            "show" : true,
+            "when" : "beoordeling.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen2"
+          },
+          "selectValues" : "choiceFieldValues",
+          "customOptions" : {
+            "searchResultLimit" : 99
+          },
+          "valueProperty" : "",
+          "clearOnRefresh" : true,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-beoordeling.geschondenDienstverleningsprincipes3"
+          }
+        },
+        {
+          "key" : "resultaat.versturenEindbriefNaarMelder",
+          "type" : "radio",
+          "input" : true,
+          "label" : "Definitieve eindbrief op basis van resultaat klachtencommissie versturen naar melder?",
+          "inline" : false,
+          "values" : [
+            {
+              "label" : "Ja",
+              "value" : true,
+              "shortcut" : ""
+            },
+            {
+              "label" : "Nee",
+              "value" : false,
+              "shortcut" : ""
+            }
+          ],
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : false,
+          "defaultValue" : false,
+          "optionsLabelPosition" : "right",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-resultaat.versturenEindbriefNaarMelder"
+          }
+        }
+      ],
+      "customClass" : "section-border",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-behandelingDoorKlachtencommissie.klachtencommissie"
+      }
+    },
+    {
+      "key" : "behandelingDoorKlachtencommissie.afwijkendOordeel",
+      "type" : "checkbox",
+      "input" : true,
+      "label" : "Ik wil een afwijkend oordeel t.o.v. het oordeel van de klachtencommissie vastleggen",
+      "tableView" : false,
+      "defaultValue" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-behandelingDoorKlachtencommissie.afwijkendOordeel"
+      }
+    },
+    {
+      "key" : "behandelingDoorKlachtencommissie.klachtenCoordinator",
+      "type" : "container",
+      "input" : true,
+      "label" : "Container",
+      "tableView" : false,
+      "components" : [
+        {
+          "key" : "html",
+          "tag" : "div",
+          "type" : "htmlelement",
+          "input" : false,
+          "label" : "HTML",
+          "content" : "<h4>Afwijkend oordeel volgens klachtencoördinator</h4>",
+          "tableView" : false,
+          "refreshOnChange" : false
+        },
+        {
+          "key" : "redenAfwijkendOordeel",
+          "type" : "textarea",
+          "input" : true,
+          "label" : "Reden van het niet overnemen van het oordeel van de klachtencommissie",
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : true,
+          "autoExpand" : false,
+          "applyMaskOn" : "change",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-redenAfwijkendOordeel"
+          }
+        },
+        {
+          "key" : "beoordeling.oordeel",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/OORDEEL",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Oordeel",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "template" : "<span>{{ item.value }}</span>",
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : true,
+          "selectValues" : "choiceFieldValues",
+          "valueProperty" : "",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-beoordeling.oordeel"
+          }
+        },
+        {
+          "key" : "beoordeling.gemotiveerdOordeel.omschrijving",
+          "type" : "textarea",
+          "input" : true,
+          "label" : "Motivatie oordeel",
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : true,
+          "autoExpand" : false,
+          "applyMaskOn" : "change",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-beoordeling.gemotiveerdOordeel.omschrijving"
+          }
+        },
+        {
+          "key" : "Dienstverleningsprincipes",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/DIENSTVERLENINGSPRINCIPES",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Dienstverleningsprincipes",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "template" : "<span>{{ item.value }}</span>",
+          "tableView" : true,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.vastleggen-eindresultaat-onderzoek-oplossingsmogelijkheden-dienstverleningsprincipe"
+          },
+          "disableLimit" : false,
+          "selectValues" : "choiceFieldValues",
+          "customConditional" : "show = (data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.oordeel?.name === 'GEGROND' || data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.oordeel?.name === 'DEELS_GEGROND')",
+          "noRefreshOnScroll" : false
+        },
+        {
+          "key" : "beoordeling.dienstverleningsprincipe",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/BEHOORLIJKHEIDSNORMEN",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Dienstverleningsprincipe behoorlijkheidsnorm",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "template" : "<span>{{ item.value }}</span>",
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : true,
+          "selectValues" : "choiceFieldValues",
+          "valueProperty" : "",
+          "customConditional" : "show = (data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.oordeel?.name === 'GEGROND' || data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.oordeel?.name === 'DEELS_GEGROND')",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-beoordeling.dienstverleningsprincipe"
+          }
+        },
+        {
+          "key" : "beoordeling.geschondenBehoorlijkheidsnormen",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/{{ data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.dienstverleningsprincipe?.name }}",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Geschonden behoorlijkheidsnormen",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "multiple" : true,
+          "template" : "<span>{{ item.value }}</span>",
+          "validate" : {
+            "required" : true
+          },
+          "refreshOn" : "behandelingDoorKlachtencommissie.klachtencommissie.beoordeling.dienstverleningsprincipe",
+          "tableView" : true,
+          "selectValues" : "choiceFieldValues",
+          "valueProperty" : "",
+          "clearOnRefresh" : true,
+          "customConditional" : "show = (data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.oordeel?.name === 'GEGROND' || data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.oordeel?.name === 'DEELS_GEGROND')",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-beoordeling.geschondenBehoorlijkheidsnormen"
+          }
+        }
+      ],
+      "conditional" : {
+        "eq" : true,
+        "show" : true,
+        "when" : "behandelingDoorKlachtencommissie.afwijkendOordeel"
+      },
+      "customClass" : "section-border",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-behandelingDoorKlachtencommissie.klachtenCoordinator"
+      }
+    },
+    {
+      "key" : "behandelingDoorKlachtencommissie.directie.resultaat",
+      "type" : "container",
+      "input" : true,
+      "label" : "Container",
+      "tableView" : false,
+      "components" : [
+        {
+          "key" : "html",
+          "tag" : "div",
+          "type" : "htmlelement",
+          "input" : false,
+          "label" : "HTML",
+          "content" : "<h4>Reactie directie</h4>",
+          "tableView" : false,
+          "refreshOnChange" : false
+        },
+        {
+          "key" : "datumOntvangst",
+          "type" : "datetime",
+          "input" : true,
+          "label" : "Reactie ontvangen op",
+          "format" : "dd-MM-yyyy",
+          "widget" : {
+            "mode" : "single",
+            "type" : "calendar",
+            "format" : "dd-MM-yyyy",
+            "locale" : "en",
+            "maxDate" : null,
+            "minDate" : null,
+            "time_24hr" : false,
+            "allowInput" : true,
+            "enableTime" : false,
+            "noCalendar" : false,
+            "hourIncrement" : 1,
+            "disableWeekdays" : false,
+            "disableWeekends" : false,
+            "minuteIncrement" : 1,
+            "displayInTimezone" : "viewer",
+            "useLocaleSettings" : false
+          },
+          "validate" : {
+            "required" : false
+          },
+          "tableView" : false,
+          "datePicker" : {
+            "disableWeekdays" : false,
+            "disableWeekends" : false
+          },
+          "enableTime" : false,
+          "defaultDate" : "moment()",
+          "enableMaxDateInput" : false,
+          "enableMinDateInput" : false,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-datumOntvangst"
+          }
+        },
+        {
+          "key" : "ontvangenDocumenten",
+          "type" : "documenten-api-file",
+          "input" : true,
+          "label" : "Upload hieronder de reactie van de directie",
+          "validate" : {
+            "required" : false
+          },
+          "tableView" : false,
+          "customOptions" : {
+            "tags" : "",
+            "title" : "",
+            "author" : "",
+            "camera" : false,
+            "status" : "definitief",
+            "filename" : "",
+            "hideTags" : true,
+            "language" : "nld",
+            "subtitle" : "",
+            "hideTitle" : false,
+            "hideAuthor" : false,
+            "hideStatus" : false,
+            "description" : "",
+            "maxFileSize" : 100,
+            "documentType" : "",
+            "hideFilename" : false,
+            "hideLanguage" : false,
+            "acceptedFiles" : "",
+            "disableAuthor" : true,
+            "disableStatus" : false,
+            "documentTitle" : "",
+            "disableFilename" : false,
+            "disableLanguage" : false,
+            "hideDescription" : true,
+            "hideMaxFileSize" : true,
+            "hideCreationDate" : true,
+            "hideDocumentType" : false,
+            "hideAcceptedFiles" : false,
+            "hideDocumentTitle" : false,
+            "disableDescription" : false,
+            "hideAdditionalDate" : true,
+            "disableCreationDate" : false,
+            "disableDocumentType" : false,
+            "confidentialityLevel" : "zaakvertrouwelijk",
+            "disableDocumentTitle" : false,
+            "hideConfidentialityLevel" : false,
+            "documentUrlProcessVariable" : "",
+            "disableConfidentialityLevel" : false
+          },
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-ontvangenDocumenten"
+          }
+        }
+      ],
+      "customClass" : "section-border",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-behandelingDoorKlachtencommissie.directie.resultaat"
+      }
+    },
+    {
+      "key" : "behandelingDoorKlachtencommissie.onderzoek.geleerdVoorToekomst.oorzaakKlachtBehandelaar",
+      "data" : {
+        "method" : "GET",
+        "values" : [
+          {
+            "label" : "Beleid",
+            "value" : "beleid"
+          },
+          {
+            "label" : "Persoon",
+            "value" : "persoon"
+          },
+          {
+            "label" : "Proces",
+            "value" : "proces"
+          },
+          {
+            "label" : "Anders, namelijk",
+            "value" : "andersNamelijk"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Oorzaak volgens klachtbehandelaar",
+      "widget" : "choicesjs",
+      "template" : "",
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-formeleAfhandeling.onderzoek.oordeel"
+      }
+    },
+    {
+      "key" : "behandelingDoorKlachtencommissie.onderzoek.geleerdVoorToekomst.oorzaakKBToelichting",
+      "type" : "textarea",
+      "input" : true,
+      "label" : "Toelichting oorzaak volgens klachtbehandelaar",
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.vastleggen-eindresultaat-onderzoek-oplossingsmogelijkheden-geleerdVoorToekomst.oorzaakKBToelichting"
+      },
+      "autoExpand" : false,
+      "conditional" : {
+        "eq" : "andersNamelijk",
+        "show" : true,
+        "when" : "behandelingDoorKlachtencommissie.onderzoek.geleerdVoorToekomst.oorzaakKlachtBehandelaar"
+      }
+    },
+    {
+      "key" : "behandelingDoorKlachtencommissie.onderzoek.geleerdVoorToekomst.oorzaakKlachtCoordinator",
+      "data" : {
+        "method" : "GET",
+        "values" : [
+          {
+            "label" : "Beleid",
+            "value" : "beleid"
+          },
+          {
+            "label" : "Persoon",
+            "value" : "persoon"
+          },
+          {
+            "label" : "Proces",
+            "value" : "proces"
+          },
+          {
+            "label" : "Anders, namelijk",
+            "value" : "andersNamelijk"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Oorzaak volgens klachtcoordinator",
+      "widget" : "choicesjs",
+      "template" : "",
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-formeleAfhandeling.onderzoek.oordeel"
+      }
+    },
+    {
+      "key" : "behandelingDoorKlachtencommissie.onderzoek.geleerdVoorToekomst.oorzaakKCToelichting",
+      "type" : "textarea",
+      "input" : true,
+      "label" : "Toelichting oorzaak volgens klachtcoordinator",
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-formeleAfhandeling.onderzoek.gemotiveerdOordeel.omschrijving"
+      },
+      "autoExpand" : false,
+      "applyMaskOn" : "change",
+      "conditional" : {
+        "eq" : "andersNamelijk",
+        "show" : true,
+        "when" : "behandelingDoorKlachtencommissie.onderzoek.geleerdVoorToekomst.oorzaakKlachtCoordinator"
+      }
+    },
+    {
+      "key" : "behandelingDoorKlachtencommissie.onderzoek.geleerdVoorToekomst.toelichting",
+      "type" : "textarea",
+      "input" : true,
+      "label" : "Wat hebben wij geleerd voor de toekomst?",
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.formeel-afhandelen-klacht.schrijven-onderzoeks-verslag-nemen-oordeel-formeleAfhandeling.onderzoek.gemotiveerdOordeel.omschrijving"
+      },
+      "autoExpand" : false,
+      "applyMaskOn" : "change",
+      "customDefaultValue" : "data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.gemotiveerdOordeel?.overnemenNaarFormeleAfhandeling == 'JA' ? value = data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.gemotiveerdOordeel?.omschrijving : ''"
+    },
+    {
+      "key" : "behandelingDoorKlachtencommissie.aardigheidje.isVerstuurd",
+      "type" : "radio",
+      "input" : true,
+      "label" : "Aardigheidje verstuurd naar melder?",
+      "inline" : false,
+      "values" : [
+        {
+          "label" : "Ja",
+          "value" : "JA",
+          "shortcut" : ""
+        },
+        {
+          "label" : "Nee",
+          "value" : "NEE",
+          "shortcut" : ""
+        }
+      ],
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : false,
+      "optionsLabelPosition" : "right",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-behandelingDoorKlachtencommissie.aardigheidje.isVerstuurd"
+      }
+    },
+    {
+      "key" : "behandelingDoorKlachtencommissie.aardigheidje",
+      "type" : "container",
+      "input" : true,
+      "label" : "Container",
+      "tableView" : false,
+      "components" : [
+        {
+          "key" : "verstuurdOp",
+          "type" : "datetime",
+          "input" : true,
+          "label" : "Aardigheidje verstuurd op:",
+          "format" : "dd-MM-yyyy",
+          "widget" : {
+            "mode" : "single",
+            "type" : "calendar",
+            "format" : "dd-MM-yyyy",
+            "locale" : "en",
+            "maxDate" : null,
+            "minDate" : null,
+            "time_24hr" : false,
+            "allowInput" : true,
+            "enableTime" : false,
+            "noCalendar" : false,
+            "hourIncrement" : 1,
+            "disableWeekdays" : false,
+            "disableWeekends" : false,
+            "minuteIncrement" : 1,
+            "displayInTimezone" : "viewer",
+            "useLocaleSettings" : false
+          },
+          "tableView" : false,
+          "datePicker" : {
+            "disableWeekdays" : false,
+            "disableWeekends" : false
+          },
+          "enableTime" : false,
+          "defaultDate" : "moment()",
+          "enableMaxDateInput" : false,
+          "enableMinDateInput" : false,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-verstuurdOp"
+          }
+        },
+        {
+          "key" : "omschrijving",
+          "type" : "textarea",
+          "input" : true,
+          "label" : "Omschrijving aardigheidje",
+          "tableView" : true,
+          "autoExpand" : false,
+          "applyMaskOn" : "change",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-omschrijving"
+          }
+        },
+        {
+          "key" : "kosten",
+          "mask" : false,
+          "type" : "currency",
+          "input" : true,
+          "label" : "Kosten aardigheidje",
+          "currency" : "EUR",
+          "delimiter" : true,
+          "tableView" : false,
+          "applyMaskOn" : "change",
+          "inputFormat" : "plain",
+          "truncateMultipleSpaces" : false,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-kosten"
+          }
+        }
+      ],
+      "conditional" : {
+        "eq" : "JA",
+        "show" : true,
+        "when" : "behandelingDoorKlachtencommissie.aardigheidje.isVerstuurd"
+      },
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-behandelingDoorKlachtencommissie.aardigheidje"
+      }
+    },
+    {
+      "key" : "pv.zaakresultaat",
+      "data" : {
+        "values" : [
+          {
+            "label" : "Afgehandeld",
+            "value" : "Afgehandeld"
+          },
+          {
+            "label" : "Afgehandeld – met financiële consequenties",
+            "value" : "Afgehandeld - financieel"
+          },
+          {
+            "label" : "Afgehandeld – met invloed op een te bewaren zaak",
+            "value" : "Afgehandeld - bewaren"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Selecteer hieronder welke variant van het zaakresultaat 'Afgehandeld' van toepassing is op deze klacht",
+      "widget" : "choicesjs",
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-pv.zaakresultaat"
+      }
+    },
+    {
+      "key" : "afhandeldatumIntern",
+      "type" : "datetime",
+      "input" : true,
+      "label" : "Afhandeldatum",
+      "format" : "dd-MM-yyyy",
+      "widget" : {
+        "mode" : "single",
+        "type" : "calendar",
+        "format" : "dd-MM-yyyy",
+        "locale" : "en",
+        "maxDate" : "moment()",
+        "minDate" : "moment()",
+        "time_24hr" : true,
+        "allowInput" : true,
+        "enableTime" : false,
+        "noCalendar" : false,
+        "hourIncrement" : 1,
+        "disableWeekdays" : false,
+        "disableWeekends" : false,
+        "minuteIncrement" : 1,
+        "displayInTimezone" : "viewer",
+        "useLocaleSettings" : true
+      },
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : false,
+      "datePicker" : {
+        "maxDate" : null,
+        "minDate" : null,
+        "disableWeekdays" : false,
+        "disableWeekends" : false
+      },
+      "enableTime" : false,
+      "timePicker" : {
+        "showMeridian" : false
+      },
+      "defaultDate" : "moment()",
+      "useLocaleSettings" : true,
+      "enableMaxDateInput" : false,
+      "enableMinDateInput" : false,
+      "validateWhenHidden" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-afhandeldatumIntern"
+      }
+    },
+    {
+      "key" : "submit",
+      "type" : "button",
+      "input" : true,
+      "label" : "Doorgaan",
+      "action" : "custom",
+      "custom" : "component.disabled = true; form.submit();",
+      "tableView" : false,
+      "showValidations" : false,
+      "disableOnInvalid" : true
+    }
+  ]
+}

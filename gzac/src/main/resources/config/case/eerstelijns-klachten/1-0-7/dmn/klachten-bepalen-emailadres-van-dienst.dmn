@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:ns0="http://operaton.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.19.0" expressionLanguage="https://www.omg.org/spec/DMN/20191111/FEEL/" id="bepalen-emailadres-van-dienst" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0" name="Klachten: Bepalen emailadres van dienst" namespace="http://camunda.org/schema/1.0/dmn" typeLanguage="https://www.omg.org/spec/DMN/20191111/FEEL/">
+    
+  <decision camunda:versionTag="CD:eerstelijns-klachten:1.0.7" id="klachten-bepalen-emailadres-van-dienst" name="Bepalen email dienst">
+        
+    <decisionTable hitPolicy="FIRST" id="DecisionTable_0ni1gla" preferredOrientation="Rule-as-Row">
+            
+      <input camunda:inputVariable="dienst" id="Input_1" label="Dienst">
+                
+        <inputExpression id="InputExpression_1" typeRef="string">
+                    
+          <text/>
+                  
+        </inputExpression>
+              
+      </input>
+            
+      <output biodi:width="314" id="Output_1" label="email dienst" name="emailDienst" typeRef="string"/>
+            
+      <rule id="DecisionRule_1lze2vz">
+                
+        <description/>
+                
+        <inputEntry id="UnaryTests_19me17q">
+                    
+          <text>"OCW"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_1shv1j4">
+                    
+          <text>"klachtenocw@denhaag.nl"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_0nojebu">
+                
+        <description/>
+                
+        <inputEntry id="UnaryTests_17wcs11">
+                    
+          <text>"SZW"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_0u9qe8l">
+                    
+          <text>"klachten_SZW@denhaag.nl"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_0lv1ttu">
+                
+        <description/>
+                
+        <inputEntry id="UnaryTests_1ybu5wu">
+                    
+          <text>"DPZ"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_042pqb7">
+                    
+          <text>"klachtenmanagement.dpz@denhaag.nl"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_1t21gkd">
+                
+        <description/>
+                
+        <inputEntry id="UnaryTests_0uq5ns1">
+                    
+          <text>"DSB"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_0ragy7j">
+                    
+          <text>"klachtenDSB@denhaag.nl"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_0bvpbfi">
+                
+        <description/>
+                
+        <inputEntry id="UnaryTests_0nwymz4">
+                    
+          <text>"DSO"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_0aa9800">
+                    
+          <text>"klachten_DSO@denhaag.nl"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_1u8cglk">
+                
+        <description/>
+                
+        <inputEntry id="UnaryTests_0zztpu3">
+                    
+          <text>"DBV"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_048p5wj">
+                    
+          <text>"klachtenmanagement.dbv@denhaag.nl"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_1iidll9">
+                
+        <description/>
+                
+        <inputEntry id="UnaryTests_1g036lj">
+                    
+          <text>"BSD"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_0eiust7">
+                    
+          <text>"klachtenbsd@denhaag.nl"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_00kmrj1">
+                
+        <inputEntry id="UnaryTests_1sxg6al">
+                    
+          <text>"VTH"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_1yuzlx9">
+                    
+          <text>"klachten@veiligthuishaaglanden.nl"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_0sxux74">
+                
+        <inputEntry id="UnaryTests_08bicbm">
+                    
+          <text>"GGD"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_02lzdud">
+                    
+          <text>"klachtenfunctionarisGGD@ggdhaaglanden.nl"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+          
+    </decisionTable>
+      
+  </decision>
+    
+  <dmndi:DMNDI>
+        
+    <dmndi:DMNDiagram>
+            
+      <dmndi:DMNShape dmnElementRef="klachten-bepalen-emailadres-van-dienst" isCollapsed="false">
+                
+        <dc:Bounds height="80" width="180" x="160" y="100"/>
+              
+      </dmndi:DMNShape>
+          
+    </dmndi:DMNDiagram>
+      
+  </dmndi:DMNDI>
+  
+</definitions>

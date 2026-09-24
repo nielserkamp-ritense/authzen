@@ -1,0 +1,12 @@
+[
+  {
+    "activityId" : "AfdrukkenBriefTask",
+    "activityType" : "bpmn:UserTask:create",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.informeren-externe-betrokkenen.afdrukken-brief",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  }
+]

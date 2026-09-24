@@ -1,0 +1,244 @@
+{
+  "type" : "fields",
+  "highContrast" : false,
+  "properties" : {
+    "columns" : [
+      [
+        {
+          "key" : "klacht-ontvangen-op",
+          "title" : "Klacht ontvangen op",
+          "value" : "doc:/klacht/datumOntvangst",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "date"
+          }
+        },
+        {
+          "key" : "verwachte-afhandeltermijn-in-weken",
+          "title" : "Verwachte afhandeltermijn in weken",
+          "value" : "doc:/verkenning/teVerwachteAfhandeltermijn",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "number",
+            "hideWhenEmpty" : true
+          }
+        },
+        {
+          "key" : "kenmerk-ombudsman",
+          "title" : "Kenmerk ombudsman",
+          "value" : "doc:/ombudsmannummer",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "text",
+            "hideWhenEmpty" : true
+          }
+        },
+        {
+          "key" : "kenmerk-leverancier",
+          "title" : "Kenmerk leverancier",
+          "value" : "doc:/leverancierskenmerk",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "text"
+          }
+        },
+        {
+          "key" : "via-burgemeester-of-wethouder",
+          "title" : "Via burgemeester of wethouder",
+          "value" : "doc:/routeBurgemeesterWethouderkenmerk",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "text"
+          }
+        },
+        {
+          "key" : "ge-scaleerd",
+          "title" : "Geëscaleerd",
+          "value" : "doc:/escalatie/isGeescaleerd",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "text",
+            "hideWhenEmpty" : true
+          }
+        },
+        {
+          "key" : "klachtenco-rdinator",
+          "title" : "Klachtencoördinator",
+          "value" : "doc:/klachtencoordinator",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "text"
+          }
+        }
+      ],
+      [
+        {
+          "key" : "toegewezen-dienst",
+          "title" : "Toegewezen dienst",
+          "value" : "doc:/rapportageCategorieen/toegewezenDienst/dienst/name",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "text"
+          }
+        },
+        {
+          "key" : "e-mailadres-afdeling",
+          "title" : "E-mailadres afdeling",
+          "value" : "doc:/eersteBeoordeling/afdeling/email",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "text",
+            "hideWhenEmpty" : true
+          }
+        },
+        {
+          "key" : "autorisatiegroep",
+          "title" : "Autorisatiegroep",
+          "value" : "doc:/verkenning/autorisatieGroep/value",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "text"
+          }
+        },
+        {
+          "key" : "sector",
+          "title" : "Sector",
+          "value" : "doc:/rapportageCategorieen/sector/value",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "text"
+          }
+        },
+        {
+          "key" : "afdeling",
+          "title" : "Afdeling",
+          "value" : "doc:/rapportageCategorieen/afdeling/value",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "text"
+          }
+        },
+        {
+          "key" : "producten",
+          "title" : "Producten",
+          "value" : "doc:/rapportageCategorieen/producten",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "enum",
+            "values" : {
+              "x" : "x"
+            }
+          }
+        },
+        {
+          "key" : "thema-s",
+          "title" : "Thema's",
+          "value" : "doc:/rapportageCategorieen/themas",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "enum",
+            "values" : {
+              "x" : "x"
+            }
+          }
+        }
+      ],
+      [
+        {
+          "key" : "soort-melder",
+          "title" : "Soort melder",
+          "value" : "doc:/melder/soortMelder",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "text"
+          }
+        },
+        {
+          "key" : "voornaam",
+          "title" : "Voornaam",
+          "value" : "doc:/melder/personalia/voornaam",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "text"
+          }
+        },
+        {
+          "key" : "voorvoegsel-s",
+          "title" : "Voorvoegsel(s)",
+          "value" : "doc:/melder/personalia/voorvoegsels",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "text",
+            "hideWhenEmpty" : true
+          }
+        },
+        {
+          "key" : "achternaam",
+          "title" : "Achternaam",
+          "value" : "doc:/melder/personalia/achternaam",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "text"
+          }
+        },
+        {
+          "key" : "e-mailadres",
+          "title" : "E-mailadres",
+          "value" : "doc:/melder/contactgegevens/email",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "text"
+          }
+        },
+        {
+          "key" : "communicatie-via-post",
+          "title" : "Communicatie via post",
+          "value" : "doc:/melder/contactgegevens/communicatieViaPost",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "boolean"
+          }
+        }
+      ],
+      [
+        {
+          "key" : "openzaak-id",
+          "title" : "OpenZaak ID",
+          "value" : "doc:/openZaak/identificatie",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "text"
+          }
+        },
+        {
+          "key" : "zaakstatus",
+          "title" : "Zaakstatus",
+          "value" : "doc:/openZaak/statusOmschrijving",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "text"
+          }
+        },
+        {
+          "key" : "zaakresultaat",
+          "title" : "Zaakresultaat",
+          "value" : "doc:/openZaak/resultaatOmschrijving",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "text"
+          }
+        },
+        {
+          "key" : "afhandeldatum-intern",
+          "title" : "Afhandeldatum intern",
+          "value" : "doc:/afhandeldatumIntern",
+          "sortable" : false,
+          "displayProperties" : {
+            "type" : "date",
+            "hideWhenEmpty" : true
+          }
+        }
+      ]
+    ]
+  }
+}

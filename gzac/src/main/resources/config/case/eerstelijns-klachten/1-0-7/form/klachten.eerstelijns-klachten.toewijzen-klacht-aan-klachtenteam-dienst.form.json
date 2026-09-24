@@ -1,0 +1,59 @@
+{
+  "display" : "form",
+  "components" : [
+    {
+      "key" : "rapportageCategorieen.toegewezenDienst.dienst",
+      "data" : {
+        "url" : "../api/v1/choice-fields/name/DIENSTEN",
+        "method" : "GET",
+        "headers" : [
+          {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          },
+          {
+            "key" : "Authorization",
+            "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Toewijzing klacht naar",
+      "widget" : "choicesjs",
+      "dataSrc" : "url",
+      "lazyLoad" : false,
+      "template" : "<span>{{ item.value }}</span>",
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : true,
+      "selectValues" : "choiceFieldValues",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.toewijzen-klacht-aan-klachtenteam-dienst-rapportageCategorieen.toegewezenDienst.dienst"
+      }
+    },
+    {
+      "key" : "rapportageCategorieen.toegewezenDienst.toelichtingVastleggenDienst",
+      "type" : "textarea",
+      "input" : true,
+      "label" : "Toelichting",
+      "tableView" : true,
+      "autoExpand" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.toewijzen-klacht-aan-klachtenteam-dienst-rapportageCategorieen.toegewezenDienst.toelichtingVastleggenDienst"
+      }
+    },
+    {
+      "key" : "submit",
+      "type" : "button",
+      "input" : true,
+      "label" : "Doorgaan",
+      "action" : "custom",
+      "custom" : "component.disabled = true; form.submit();",
+      "tableView" : false,
+      "showValidations" : false,
+      "disableOnInvalid" : true
+    }
+  ]
+}

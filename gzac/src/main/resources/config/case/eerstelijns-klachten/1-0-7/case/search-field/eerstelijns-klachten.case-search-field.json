@@ -1,0 +1,88 @@
+{
+  "searchFields" : [
+    {
+      "key" : "zaakNumber",
+      "path" : "doc:openZaak.identificatie",
+      "dataType" : "text",
+      "fieldType" : "single",
+      "matchType" : "like"
+    },
+    {
+      "key" : "DatumOntvangst",
+      "path" : "doc:klacht.datumOntvangst",
+      "dataType" : "date",
+      "fieldType" : "range",
+      "matchType" : "exact"
+    },
+    {
+      "key" : "customerLastName",
+      "path" : "doc:melder.personalia.achternaam",
+      "dataType" : "text",
+      "fieldType" : "single",
+      "matchType" : "like"
+    },
+    {
+      "key" : "street",
+      "path" : "doc:melder.adres.straat",
+      "dataType" : "text",
+      "fieldType" : "single",
+      "matchType" : "like"
+    },
+    {
+      "key" : "place",
+      "path" : "doc:melder.adres.woonplaats",
+      "dataType" : "text",
+      "fieldType" : "single",
+      "matchType" : "like"
+    },
+    {
+      "key" : "phonenumber",
+      "path" : "doc:melder.contactgegevens.telefoonnummer",
+      "dataType" : "text",
+      "fieldType" : "single",
+      "matchType" : "like"
+    },
+    {
+      "key" : "email",
+      "path" : "doc:melder.contactgegevens.email",
+      "dataType" : "text",
+      "fieldType" : "single",
+      "matchType" : "like"
+    },
+    {
+      "key" : "klachtenTeamDienst",
+      "path" : "doc:rapportageCategorieen.toegewezenDienst.dienst",
+      "dataType" : "text",
+      "fieldType" : "single",
+      "matchType" : "like"
+    },
+    {
+      "key" : "klachtencoordinator",
+      "path" : "doc:klachtencoordinator",
+      "dataType" : "text",
+      "fieldType" : "single",
+      "matchType" : "like"
+    },
+    {
+      "key" : "Zaakbehandelaar",
+      "path" : "case:assigneeFullName",
+      "dataType" : "text",
+      "fieldType" : "single",
+      "matchType" : "like"
+    },
+    {
+      "key" : "sector",
+      "path" : "doc:rapportageCategorieen.sector.value",
+      "dataType" : "text",
+      "fieldType" : "single",
+      "matchType" : "like"
+    },
+    {
+      "key" : "afdeling",
+      "path" : "doc:rapportageCategorieen.afdeling.value",
+      "dataType" : "text",
+      "fieldType" : "single",
+      "matchType" : "like"
+    }
+  ]
+}

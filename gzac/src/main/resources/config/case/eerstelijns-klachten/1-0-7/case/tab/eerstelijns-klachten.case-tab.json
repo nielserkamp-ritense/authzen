@@ -1,0 +1,65 @@
+[
+  {
+    "key" : "summary-algemeen",
+    "name" : "Algemeen",
+    "type" : "widgets",
+    "contentKey" : "-",
+    "showTasks" : true
+  },
+  {
+    "key" : "summary-informeel",
+    "name" : "informeel",
+    "type" : "widgets",
+    "contentKey" : "-",
+    "showTasks" : true
+  },
+  {
+    "key" : "summary-formeel",
+    "name" : "formeel",
+    "type" : "widgets",
+    "contentKey" : "-",
+    "showTasks" : true
+  },
+  {
+    "key" : "summary-klachtencommissie",
+    "name" : "klachtencommissie",
+    "type" : "widgets",
+    "contentKey" : "-",
+    "showTasks" : true
+  },
+  {
+    "key" : "notes",
+    "name" : null,
+    "type" : "standard",
+    "contentKey" : "notes",
+    "showTasks" : false
+  },
+  {
+    "key" : "documents",
+    "name" : null,
+    "type" : "standard",
+    "contentKey" : "documents",
+    "showTasks" : false
+  },
+  {
+    "key" : "progress",
+    "name" : null,
+    "type" : "standard",
+    "contentKey" : "progress",
+    "showTasks" : false
+  },
+  {
+    "key" : "audit",
+    "name" : null,
+    "type" : "standard",
+    "contentKey" : "audit",
+    "showTasks" : false
+  },
+  {
+    "key" : "summary",
+    "name" : null,
+    "type" : "standard",
+    "contentKey" : "summary",
+    "showTasks" : false
+  }
+]

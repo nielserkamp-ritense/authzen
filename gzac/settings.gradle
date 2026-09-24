@@ -1,0 +1,20 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+rootProject.name = "gzac"
+
+// Valtimo is consumed straight off the filesystem instead of from a Maven
+// repository. `includeBuild` makes ../valtimo part of this build, and Gradle
+// substitutes every `com.ritense.valtimo:<module>` coordinate in build.gradle
+// with the matching project in that checkout (it matches on group:name, which
+// valtimo sets for all its subprojects via `group = projectGroup`).
+//
+// Consequence: edit a valtimo source file and `./gradlew build` here recompiles
+// it — no publishing step in between.
+//
+// Point at a different checkout with -PvaltimoDir=/path/to/valtimo.
+includeBuild(providers.gradleProperty("valtimoDir").getOrElse("../valtimo"))

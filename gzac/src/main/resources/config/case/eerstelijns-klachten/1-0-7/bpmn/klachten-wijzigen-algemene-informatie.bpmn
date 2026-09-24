@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="Camunda Modeler" exporterVersion="5.30.0" expressionLanguage="http://www.w3.org/1999/XPath" id="Definitions_13tsunq" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0" targetNamespace="http://bpmn.io/schema/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema">
+      
+  
+  <bpmn:collaboration id="Collaboration_0cnbhyr" isClosed="false">
+            
+    
+    <bpmn:participant id="WijzigenAlgemeneInformatieParticipant" name="Wijzigen algemene informatie " processRef="klachten-wijzigen-algemene-informatie"/>
+          
+  
+  </bpmn:collaboration>
+      
+  
+  <bpmn:process camunda:historyTimeToLive="P3650D" camunda:versionTag="CD:eerstelijns-klachten:1.0.7" id="klachten-wijzigen-algemene-informatie" isClosed="false" isExecutable="true" name="Klachten: Wijzigen informatie melder" processType="None">
+            
+    
+    <bpmn:startEvent id="WijzigenAlgemeneInformatieStartEvent" isInterrupting="true" name="start wijzigen" parallelMultiple="false">
+                  
+      
+      <bpmn:outgoing>Flow_02a2h3y</bpmn:outgoing>
+                
+    
+    </bpmn:startEvent>
+            
+    
+    <bpmn:sequenceFlow id="Flow_02a2h3y" sourceRef="WijzigenAlgemeneInformatieStartEvent" targetRef="BepalenEmailadresVanDienstTask"/>
+            
+    
+    <bpmn:endEvent id="Event_1k4k6g1">
+                  
+      
+      <bpmn:incoming>Flow_0xz3t5a</bpmn:incoming>
+                
+    
+    </bpmn:endEvent>
+            
+    
+    <bpmn:businessRuleTask camunda:asyncAfter="true" camunda:asyncBefore="true" camunda:decisionRef="klachten-bepalen-emailadres-van-dienst" camunda:decisionRefBinding="versionTag" camunda:decisionRefVersionTag="CD:eerstelijns-klachten:1.0.7" camunda:mapDecisionResult="singleResult" camunda:resultVariable="resultMap" completionQuantity="1" id="BepalenEmailadresVanDienstTask" implementation="##unspecified" isForCompensation="false" name="Bepalen emailadres van dienst" startQuantity="1">
+                  
+      
+      <bpmn:extensionElements>
+                        
+        
+        <camunda:inputOutput>
+                              
+          
+          <camunda:inputParameter name="dienst">${documentDelegateService.findValueByJsonPointer("/rapportageCategorieen/toegewezenDienst/dienst/name", execution)}</camunda:inputParameter>
+                              
+          
+          <camunda:outputParameter name="emailDienst">${resultMap.emailDienst}</camunda:outputParameter>
+                              
+          
+          <camunda:outputParameter name="klachtenteam">${dienst}</camunda:outputParameter>
+                            
+        
+        </camunda:inputOutput>
+                      
+      
+      </bpmn:extensionElements>
+                  
+      
+      <bpmn:incoming>Flow_02a2h3y</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_0xz3t5a</bpmn:outgoing>
+                
+    
+    </bpmn:businessRuleTask>
+            
+    
+    <bpmn:sequenceFlow id="Flow_0xz3t5a" sourceRef="BepalenEmailadresVanDienstTask" targetRef="Event_1k4k6g1"/>
+          
+  
+  </bpmn:process>
+      
+  
+  <bpmn:message id="Message_06fkl3s" name="KLACHT_OVERDRAGEN_AAN_KLACHTENCOMMISSIE_MESSAGE"/>
+      
+  
+  <bpmn:message id="Message_3b8mmrk" name="Message_3b8mmrk"/>
+      
+  
+  <bpmn:message id="Message_2b1ds6m" name="ESCALATIE_TIJD_AANPASSEN_VANWEGE_OVERDRAGEN_AAN_KLACHTENCOMMISSIE_MESSAGE"/>
+      
+  
+  <bpmn:message id="Message_0qvl8g2" name="Message_0qvl8g2"/>
+      
+  
+  <bpmn:message id="Message_37ckn8f" name="Message_37ckn8f"/>
+      
+  
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+            
+    
+    <bpmndi:BPMNPlane bpmnElement="Collaboration_0cnbhyr" id="BPMNPlane_1">
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="WijzigenAlgemeneInformatieParticipant" id="Participant_1ydj17v_di" isHorizontal="true">
+                        
+        
+        <dc:Bounds height="370" width="540" x="160" y="70"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="WijzigenAlgemeneInformatieStartEvent" id="_BPMNShape_StartEvent_2">
+                        
+        
+        <dc:Bounds height="36" width="36" x="232" y="232"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="14" width="64" x="219" y="275"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="Event_1k4k6g1" id="Event_1k4k6g1_di">
+                        
+        
+        <dc:Bounds height="36" width="36" x="552" y="232"/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="BepalenEmailadresVanDienstTask" id="Activity_1oofzl5_di">
+                        
+        
+        <dc:Bounds height="80" width="100" x="360" y="210"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_02a2h3y" id="Flow_02a2h3y_di">
+                        
+        
+        <di:waypoint x="268" y="250"/>
+                        
+        
+        <di:waypoint x="360" y="250"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_0xz3t5a" id="Flow_0xz3t5a_di">
+                        
+        
+        <di:waypoint x="460" y="250"/>
+                        
+        
+        <di:waypoint x="552" y="250"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                
+    
+    </bpmndi:BPMNPlane>
+          
+  
+  </bpmndi:BPMNDiagram>
+    
+
+</bpmn:definitions>

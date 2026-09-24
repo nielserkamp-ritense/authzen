@@ -1,0 +1,15 @@
+{
+  "key" : "eerstelijns-klachten",
+  "versionTag" : "1.0.7",
+  "name" : "Eerstelijns klachten",
+  "description" : null,
+  "createdBy" : null,
+  "createdDate" : null,
+  "basedOnVersionTag" : null,
+  "final" : false,
+  "canHaveAssignee" : true,
+  "autoAssignTasks" : false,
+  "originalKey" : null,
+  "originalName" : null,
+  "originalVersionTag" : null
+}

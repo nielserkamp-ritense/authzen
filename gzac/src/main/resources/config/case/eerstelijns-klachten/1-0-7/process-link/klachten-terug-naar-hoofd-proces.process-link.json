@@ -1,0 +1,12 @@
+[
+  {
+    "activityId" : "klachten-terug-naar-hoofdproces",
+    "activityType" : "bpmn:StartEvent:start",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.terug-naar-hoofd-proces",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  }
+]

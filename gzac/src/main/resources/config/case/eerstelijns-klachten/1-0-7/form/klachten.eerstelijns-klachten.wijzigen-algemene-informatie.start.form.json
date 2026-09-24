@@ -1,0 +1,828 @@
+{
+  "display" : "form",
+  "components" : [
+    {
+      "key" : "openZaak",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "openZaak",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-openZaak"
+      }
+    },
+    {
+      "key" : "klacht",
+      "type" : "container",
+      "input" : true,
+      "label" : "klacht",
+      "tableView" : false,
+      "components" : [
+        {
+          "key" : "datumOntvangst",
+          "type" : "datetime",
+          "input" : true,
+          "label" : "Datum ontvangst",
+          "format" : "dd-MM-yyyy",
+          "widget" : {
+            "mode" : "single",
+            "type" : "calendar",
+            "format" : "dd-MM-yyyy",
+            "locale" : "en",
+            "maxDate" : null,
+            "minDate" : null,
+            "time_24hr" : false,
+            "allowInput" : true,
+            "enableTime" : false,
+            "noCalendar" : false,
+            "hourIncrement" : 1,
+            "disableWeekdays" : false,
+            "disableWeekends" : false,
+            "minuteIncrement" : 1,
+            "displayInTimezone" : "viewer",
+            "useLocaleSettings" : false
+          },
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : false,
+          "datePicker" : {
+            "disableWeekdays" : false,
+            "disableWeekends" : false
+          },
+          "enableTime" : false,
+          "defaultDate" : "moment()",
+          "enableMaxDateInput" : false,
+          "enableMinDateInput" : false,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-datumOntvangst"
+          }
+        },
+        {
+          "key" : "korteOmschrijvingMelding",
+          "type" : "textfield",
+          "input" : true,
+          "label" : "Korte omschrijving",
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : true,
+          "applyMaskOn" : "change",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-korteOmschrijvingMelding"
+          }
+        },
+        {
+          "key" : "toelichtingMelding",
+          "type" : "textarea",
+          "input" : true,
+          "label" : "Toelichting",
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : true,
+          "autoExpand" : false,
+          "applyMaskOn" : "change",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-toelichtingMelding"
+          }
+        },
+        {
+          "key" : "relevanteBestanden",
+          "type" : "documenten-api-file",
+          "input" : true,
+          "label" : "Upload hieronder alle relevante bestanden",
+          "validate" : {
+            "required" : false
+          },
+          "tableView" : false,
+          "customOptions" : {
+            "title" : "",
+            "author" : "",
+            "camera" : false,
+            "status" : "definitief",
+            "filename" : "",
+            "language" : "nld",
+            "subtitle" : "",
+            "hideTitle" : false,
+            "description" : "",
+            "maxFileSize" : 100,
+            "documentType" : "",
+            "disableAuthor" : false,
+            "disableStatus" : false,
+            "documentTitle" : "",
+            "disableFilename" : false,
+            "disableLanguage" : false,
+            "hideMaxFileSize" : false,
+            "disableDescription" : false,
+            "disableDocumentType" : false,
+            "confidentialityLevel" : "zaakvertrouwelijk",
+            "disableDocumentTitle" : false,
+            "disableConfidentialityLevel" : false
+          },
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-relevanteBestanden"
+          }
+        }
+      ],
+      "customConditional" : "show = data.openZaak?.statusOmschrijving !== 'Afgehandeld'",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-klacht"
+      }
+    },
+    {
+      "key" : "rapportageCategorieen",
+      "type" : "container",
+      "input" : true,
+      "label" : "Producten & Themas",
+      "tableView" : false,
+      "components" : [
+        {
+          "key" : "sector",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/{{ data.rapportageCategorieen?.toegewezenDienst?.dienst?.name }}_SECTOR",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Sector",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "template" : "<span>{{ item.value }}</span>",
+          "tableView" : true,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-rapportageCategorieen.sector"
+          },
+          "selectValues" : "choiceFieldValues"
+        },
+        {
+          "key" : "afdeling",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/{{ data.rapportageCategorieen?.sector.name }}",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Afdeling",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "template" : "<span>{{ item.value }}</span>",
+          "refreshOn" : "rapportageCategorieen.sector",
+          "tableView" : true,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-rapportageCategorieen.afdeling"
+          },
+          "disableLimit" : false,
+          "selectValues" : "choiceFieldValues",
+          "clearOnRefresh" : true,
+          "noRefreshOnScroll" : false
+        },
+        {
+          "key" : "producten",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/PRODUCTEN",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Producten (1 of meer)",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "multiple" : true,
+          "template" : "<span>{{ item.value }}</span>",
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : true,
+          "validateOn" : "change",
+          "selectValues" : "choiceFieldValues",
+          "customOptions" : {
+            "searchResultLimit" : 99
+          },
+          "customConditional" : "show = Array.isArray(data.rapportageCategorieen.producten) && data.rapportageCategorieen.producten.length > 0;",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-producten"
+          }
+        },
+        {
+          "key" : "themas",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/THEMAS",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Thema's (1 of meer)",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "multiple" : true,
+          "template" : "<span>{{ item.value }}</span>",
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : true,
+          "validateOn" : "change",
+          "selectValues" : "choiceFieldValues",
+          "customOptions" : {
+            "searchResultLimit" : 99
+          },
+          "customConditional" : "show = Array.isArray(data.rapportageCategorieen.themas) && data.rapportageCategorieen.themas.length > 0;",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-themas"
+          }
+        }
+      ],
+      "customConditional" : "show = data.openZaak?.statusOmschrijving !== 'Afgehandeld'",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-rapportageCategorieen"
+      }
+    },
+    {
+      "key" : "melder",
+      "type" : "container",
+      "input" : true,
+      "label" : "Melder",
+      "tableView" : false,
+      "components" : [
+        {
+          "key" : "soortMelder",
+          "data" : {
+            "values" : [
+              {
+                "label" : "Inwoner",
+                "value" : "INWONER"
+              },
+              {
+                "label" : "Organisatie",
+                "value" : "ORGANISATIE"
+              },
+              {
+                "label" : "Anders",
+                "value" : "ANDERS"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Melder dient klacht in als:",
+          "widget" : "choicesjs",
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : true,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-soortMelder"
+          }
+        },
+        {
+          "key" : "personalia.voornaam",
+          "type" : "textfield",
+          "input" : true,
+          "label" : "Voornaam",
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : true,
+          "applyMaskOn" : "change",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-personalia.voornaam"
+          }
+        },
+        {
+          "key" : "personalia.voorvoegsels",
+          "type" : "textfield",
+          "input" : true,
+          "label" : "Voorvoegsel(s)",
+          "tableView" : true,
+          "applyMaskOn" : "change",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-personalia.voorvoegsels"
+          }
+        },
+        {
+          "key" : "personalia.achternaam",
+          "type" : "textfield",
+          "input" : true,
+          "label" : "Achternaam",
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : true,
+          "applyMaskOn" : "change",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-personalia.achternaam"
+          }
+        },
+        {
+          "key" : "contactgegevens.communicatieViaPost",
+          "type" : "checkbox",
+          "input" : true,
+          "label" : "Melder heeft geen e-mailadres, stuur de informatie per post",
+          "tableView" : false,
+          "defaultValue" : false,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-contactgegevens.communicatieViaPost"
+          }
+        },
+        {
+          "key" : "adres.straat",
+          "type" : "textfield",
+          "input" : true,
+          "label" : "Straat",
+          "logic" : [
+            {
+              "name" : "Validate",
+              "actions" : [
+                {
+                  "name" : "Required",
+                  "type" : "property",
+                  "state" : true,
+                  "property" : {
+                    "type" : "boolean",
+                    "label" : "Required",
+                    "value" : "validate.required"
+                  }
+                }
+              ],
+              "trigger" : {
+                "type" : "simple",
+                "simple" : {
+                  "eq" : true,
+                  "show" : true,
+                  "when" : "contactgegevens.communicatieViaPost"
+                }
+              }
+            }
+          ],
+          "tableView" : true,
+          "applyMaskOn" : "change",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-adres.straat"
+          }
+        },
+        {
+          "key" : "adres.huisnummer",
+          "type" : "number",
+          "input" : true,
+          "label" : "Huisnummer",
+          "logic" : [
+            {
+              "name" : "Validate",
+              "actions" : [
+                {
+                  "name" : "Required",
+                  "type" : "property",
+                  "state" : true,
+                  "property" : {
+                    "type" : "boolean",
+                    "label" : "Required",
+                    "value" : "validate.required"
+                  }
+                }
+              ],
+              "trigger" : {
+                "type" : "simple",
+                "simple" : {
+                  "eq" : true,
+                  "show" : true,
+                  "when" : "contactgegevens.communicatieViaPost"
+                }
+              }
+            }
+          ],
+          "tableView" : true,
+          "applyMaskOn" : "change",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-adres.huisnummer"
+          }
+        },
+        {
+          "key" : "adres.huisletter",
+          "type" : "textfield",
+          "input" : true,
+          "label" : "Huisletter",
+          "tableView" : true,
+          "applyMaskOn" : "change",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-adres.huisletter"
+          }
+        },
+        {
+          "key" : "adres.huisnummertoevoeging",
+          "type" : "textfield",
+          "input" : true,
+          "label" : "Huisnummer toevoeging",
+          "tableView" : true,
+          "applyMaskOn" : "change",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-adres.huisnummertoevoeging"
+          }
+        },
+        {
+          "key" : "adres.postcode",
+          "type" : "textfield",
+          "input" : true,
+          "label" : "Postcode",
+          "logic" : [
+            {
+              "name" : "Validate",
+              "actions" : [
+                {
+                  "name" : "Required",
+                  "type" : "property",
+                  "state" : true,
+                  "property" : {
+                    "type" : "boolean",
+                    "label" : "Required",
+                    "value" : "validate.required"
+                  }
+                }
+              ],
+              "trigger" : {
+                "type" : "simple",
+                "simple" : {
+                  "eq" : true,
+                  "show" : true,
+                  "when" : "contactgegevens.communicatieViaPost"
+                }
+              }
+            }
+          ],
+          "inputMask" : "9999 AA",
+          "tableView" : true,
+          "applyMaskOn" : "change",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-adres.postcode"
+          }
+        },
+        {
+          "key" : "adres.woonplaats",
+          "type" : "textfield",
+          "input" : true,
+          "label" : "Plaats",
+          "logic" : [
+            {
+              "name" : "Validate",
+              "actions" : [
+                {
+                  "name" : "Required",
+                  "type" : "property",
+                  "state" : true,
+                  "property" : {
+                    "type" : "boolean",
+                    "label" : "Required",
+                    "value" : "validate.required"
+                  }
+                }
+              ],
+              "trigger" : {
+                "type" : "simple",
+                "simple" : {
+                  "eq" : true,
+                  "show" : true,
+                  "when" : "contactgegevens.communicatieViaPost"
+                }
+              }
+            }
+          ],
+          "tableView" : true,
+          "applyMaskOn" : "change",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-adres.woonplaats"
+          }
+        },
+        {
+          "key" : "contactgegevens.email",
+          "type" : "email",
+          "input" : true,
+          "label" : "E-mailadres",
+          "validate" : {
+            "required" : true
+          },
+          "tableView" : true,
+          "applyMaskOn" : "change",
+          "conditional" : {
+            "eq" : false,
+            "show" : true,
+            "when" : "contactgegevens.communicatieViaPost"
+          },
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-contactgegevens.email"
+          }
+        },
+        {
+          "key" : "contactgegevens.telefoonnummer",
+          "type" : "textfield",
+          "input" : true,
+          "label" : "Telefoon",
+          "tableView" : true,
+          "applyMaskOn" : "change",
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-contactgegevens.telefoonnummer"
+          }
+        }
+      ],
+      "customConditional" : "show = data.openZaak?.statusOmschrijving !== 'Afgehandeld'",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-melder"
+      }
+    },
+    {
+      "key" : "klachtencoordinator",
+      "data" : {
+        "url" : "../api/v1/users/authority/ROLE_KLACHTEN_KLACHTENCOORDINATOR",
+        "method" : "GET",
+        "headers" : [
+          {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          },
+          {
+            "key" : "Authorization",
+            "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Klachtencoördinator",
+      "logic" : [
+        {
+          "name" : "hide if value is VTH ",
+          "actions" : [
+            {
+              "name" : "hide VTH",
+              "type" : "property",
+              "state" : true,
+              "property" : {
+                "type" : "boolean",
+                "label" : "Hidden",
+                "value" : "hidden"
+              }
+            }
+          ],
+          "trigger" : {
+            "type" : "simple",
+            "simple" : {
+              "eq" : "VTH",
+              "show" : true,
+              "when" : "rapportageCategorieen.toegewezenDienst.dienst.name"
+            }
+          }
+        },
+        {
+          "name" : "hide if value is GGD",
+          "actions" : [
+            {
+              "name" : "hide GGD",
+              "type" : "property",
+              "state" : true,
+              "property" : {
+                "type" : "boolean",
+                "label" : "Hidden",
+                "value" : "hidden"
+              }
+            }
+          ],
+          "trigger" : {
+            "type" : "simple",
+            "simple" : {
+              "eq" : "GGD",
+              "show" : true,
+              "when" : "rapportageCategorieen.toegewezenDienst.dienst.name"
+            }
+          }
+        }
+      ],
+      "widget" : "choicesjs",
+      "dataSrc" : "url",
+      "lazyLoad" : false,
+      "template" : "<span>{{ item.fullName }}</span>",
+      "tableView" : true,
+      "disableLimit" : false,
+      "valueProperty" : "fullName",
+      "noRefreshOnScroll" : false,
+      "validateWhenHidden" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-klachtencoordinator"
+      }
+    },
+    {
+      "key" : "klachtencoordinator",
+      "data" : {
+        "url" : "../api/v1/users/authority/ROLE_KLACHTEN_KLACHTENCOORDINATOR_GGD",
+        "method" : "GET",
+        "headers" : [
+          {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          },
+          {
+            "key" : "Authorization",
+            "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Klachtencoördinator",
+      "logic" : [
+        {
+          "name" : "show when value is GGD",
+          "actions" : [
+            {
+              "name" : "Show when value is GGD",
+              "type" : "property",
+              "state" : false,
+              "property" : {
+                "type" : "boolean",
+                "label" : "Hidden",
+                "value" : "hidden"
+              }
+            }
+          ],
+          "trigger" : {
+            "type" : "simple",
+            "simple" : {
+              "eq" : "GGD",
+              "show" : true,
+              "when" : "rapportageCategorieen.toegewezenDienst.dienst.name"
+            }
+          }
+        }
+      ],
+      "hidden" : true,
+      "widget" : "choicesjs",
+      "dataSrc" : "url",
+      "lazyLoad" : false,
+      "template" : "<span>{{ item.fullName }}</span>",
+      "tableView" : true,
+      "disableLimit" : false,
+      "valueProperty" : "fullName",
+      "noRefreshOnScroll" : false,
+      "validateWhenHidden" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-klachtencoordinator"
+      }
+    },
+    {
+      "key" : "klachtencoordinator",
+      "data" : {
+        "url" : "../api/v1/users/authority/ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+        "method" : "GET",
+        "headers" : [
+          {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          },
+          {
+            "key" : "Authorization",
+            "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Klachtencoördinator",
+      "logic" : [
+        {
+          "name" : "Show when value is VTH",
+          "actions" : [
+            {
+              "name" : "Show when value is VTH",
+              "type" : "property",
+              "state" : false,
+              "property" : {
+                "type" : "boolean",
+                "label" : "Hidden",
+                "value" : "hidden"
+              }
+            }
+          ],
+          "trigger" : {
+            "type" : "simple",
+            "simple" : {
+              "eq" : "VTH",
+              "show" : true,
+              "when" : "rapportageCategorieen.toegewezenDienst.dienst.name"
+            }
+          }
+        }
+      ],
+      "hidden" : true,
+      "widget" : "choicesjs",
+      "dataSrc" : "url",
+      "lazyLoad" : false,
+      "template" : "<span>{{ item.fullName }}</span>",
+      "tableView" : true,
+      "disableLimit" : false,
+      "valueProperty" : "fullName",
+      "noRefreshOnScroll" : false,
+      "validateWhenHidden" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-klachtencoordinator"
+      }
+    },
+    {
+      "key" : "ombudsmannummer",
+      "type" : "textfield",
+      "input" : true,
+      "label" : "Kenmerk ombudsman",
+      "tableView" : true,
+      "applyMaskOn" : "change",
+      "customConditional" : "show = data.openZaak?.statusOmschrijving !== 'Afgehandeld'",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.wijzigen-algemene-informatie.start-ombudsmannummer"
+      }
+    },
+    {
+      "key" : "routeBurgemeesterWethouderkenmerk",
+      "type" : "checkbox",
+      "input" : true,
+      "label" : "Deze zaak is via de wethouder of burgemeester ingediend",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.start-routeBurgemeesterWethouderkenmerk"
+      },
+      "defaultValue" : false
+    },
+    {
+      "key" : "leverancierskenmerk",
+      "type" : "textfield",
+      "input" : true,
+      "label" : "Kenmerk leverancier of ketenpartner",
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.start-leverancierskenmerk"
+      },
+      "applyMaskOn" : "change"
+    },
+    {
+      "key" : "submit",
+      "type" : "button",
+      "input" : true,
+      "label" : "Doorgaan",
+      "action" : "custom",
+      "custom" : "form.submit(); component.disabled = true;",
+      "tableView" : false,
+      "showValidations" : false,
+      "disableOnInvalid" : true,
+      "customConditional" : "show = data.openZaak?.statusOmschrijving !== 'Afgehandeld'"
+    },
+    {
+      "key" : "html",
+      "tag" : "p",
+      "type" : "htmlelement",
+      "input" : false,
+      "label" : "HTML",
+      "content" : "De informatie kan niet meer worden gewijzigd omdat de zaak al is afgesloten",
+      "tableView" : false,
+      "refreshOnChange" : false,
+      "customConditional" : "show = data.openZaak?.statusOmschrijving === 'Afgehandeld'"
+    }
+  ]
+}

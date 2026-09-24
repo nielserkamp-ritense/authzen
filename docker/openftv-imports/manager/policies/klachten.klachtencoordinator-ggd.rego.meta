@@ -1,0 +1,5 @@
+id: "klachten-klachtencoordinator-ggd"
+language: "rego"
+metadata:
+  description: "klachten-klachtencoordinator-ggd-permission-v7"
+  tags: ["klachten"]

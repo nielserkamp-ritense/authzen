@@ -1,0 +1,1088 @@
+{
+  "display" : "form",
+  "components" : [
+    {
+      "key" : "escalatie",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "geescaleerd",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-escalatie"
+      }
+    },
+    {
+      "key" : "pv.geenTerugkoppelingNaarDeMelder",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "Verstuur geen terugkoppeling naar de melder",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-pv.geenTerugkoppelingNaarDeMelder"
+      },
+      "defaultValue" : true
+    },
+    {
+      "key" : "klacht.datumOntvangst",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "Aanvraagdatum",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-klacht.datumOntvangst"
+      }
+    },
+    {
+      "key" : "pv.klachtenteam",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "pv klachtenteam",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-pv.klachtenteam"
+      }
+    },
+    {
+      "key" : "verkenning.resultaat",
+      "data" : {
+        "values" : [
+          {
+            "label" : "Klacht behandelen",
+            "value" : "KLACHT_BEHANDELEN"
+          },
+          {
+            "label" : "Klacht is niet ontvankelijk",
+            "value" : "KLACHT_BETREFT_KLACHT_NIET_ONTVANKELIJK"
+          },
+          {
+            "label" : "Klacht is ingetrokken",
+            "value" : "KLACHT_IS_INGETROKKEN"
+          },
+          {
+            "label" : "Geen klacht – Leverancier",
+            "value" : "GEEN_KLACHT_LEVERANCIER"
+          },
+          {
+            "label" : "Geen klacht – Beleid",
+            "value" : "GEEN_KLACHT_BELEID"
+          },
+          {
+            "label" : "Geen klacht – Melding Openbare Ruimte",
+            "value" : "GEEN_KLACHT_MELDING_OPENBARE_RUIMTE"
+          },
+          {
+            "label" : "Geen klacht – Melding",
+            "value" : "GEEN_KLACHT_MELDING"
+          },
+          {
+            "label" : "Geen klacht – Algemeen",
+            "value" : "GEEN_KLACHT_ALGEMEEN"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Resultaat verkenning",
+      "widget" : "choicesjs",
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-verkenning.resultaat"
+      },
+      "defaultValue" : "KLACHT_BEHANDELEN"
+    },
+    {
+      "key" : "verkenningRapportageGroep",
+      "type" : "panel",
+      "input" : false,
+      "label" : "Rapportagecategorieen",
+      "title" : "Rapportagecategorieen",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-rapportagecategorieen-container"
+      },
+      "components" : [
+        {
+          "key" : "verkenning.autorisatieGroep",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/AUTORISATIEGROEPEN_{{ data.pv.klachtenteam }}",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Autorisatiegroep",
+          "logic" : [
+            {
+              "name" : "Verplicht volgens resultaat verkenning",
+              "actions" : [
+                {
+                  "name" : "Maak verplicht",
+                  "type" : "property",
+                  "state" : true,
+                  "property" : {
+                    "type" : "boolean",
+                    "label" : "Required",
+                    "value" : "validate.required"
+                  }
+                }
+              ],
+              "trigger" : {
+                "type" : "javascript",
+                "javascript" : "result = [\"KLACHT_IS_INGETROKKEN\", \"GEEN_KLACHT_BELEID\", \"GEEN_KLACHT_MELDING_OPENBARE_RUIMTE\"].includes(data.verkenning?.resultaat);"
+              }
+            },
+            {
+              "name" : "Niet verplicht volgens resultaat verkenning",
+              "actions" : [
+                {
+                  "name" : "Maak niet verplicht",
+                  "type" : "property",
+                  "state" : false,
+                  "property" : {
+                    "type" : "boolean",
+                    "label" : "Required",
+                    "value" : "validate.required"
+                  }
+                }
+              ],
+              "trigger" : {
+                "type" : "javascript",
+                "javascript" : "result = ![\"KLACHT_IS_INGETROKKEN\", \"GEEN_KLACHT_BELEID\", \"GEEN_KLACHT_MELDING_OPENBARE_RUIMTE\"].includes(data.verkenning?.resultaat);"
+              }
+            }
+          ],
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "template" : "<span>{{ item.value }}</span>",
+          "validate" : {
+            "required" : false
+          },
+          "tableView" : true,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-verkenning.autorisatieGroep"
+          },
+          "selectValues" : "choiceFieldValues",
+          "validateWhenHidden" : false
+        },
+        {
+          "key" : "rapportageCategorieen.sector",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/{{ data.pv.klachtenteam }}_SECTOR",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Sector",
+          "logic" : [
+            {
+              "name" : "Verplicht volgens resultaat verkenning",
+              "actions" : [
+                {
+                  "name" : "Maak verplicht",
+                  "type" : "property",
+                  "state" : true,
+                  "property" : {
+                    "type" : "boolean",
+                    "label" : "Required",
+                    "value" : "validate.required"
+                  }
+                }
+              ],
+              "trigger" : {
+                "type" : "javascript",
+                "javascript" : "result = [\"KLACHT_IS_INGETROKKEN\", \"GEEN_KLACHT_BELEID\", \"GEEN_KLACHT_MELDING_OPENBARE_RUIMTE\"].includes(data.verkenning?.resultaat);"
+              }
+            },
+            {
+              "name" : "Niet verplicht volgens resultaat verkenning",
+              "actions" : [
+                {
+                  "name" : "Maak niet verplicht",
+                  "type" : "property",
+                  "state" : false,
+                  "property" : {
+                    "type" : "boolean",
+                    "label" : "Required",
+                    "value" : "validate.required"
+                  }
+                }
+              ],
+              "trigger" : {
+                "type" : "javascript",
+                "javascript" : "result = ![\"KLACHT_IS_INGETROKKEN\", \"GEEN_KLACHT_BELEID\", \"GEEN_KLACHT_MELDING_OPENBARE_RUIMTE\"].includes(data.verkenning?.resultaat);"
+              }
+            }
+          ],
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "template" : "<span>{{ item.value }}</span>",
+          "validate" : {
+            "required" : false
+          },
+          "tableView" : true,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-rapportageCategorieen.sector"
+          },
+          "selectValues" : "choiceFieldValues",
+          "validateWhenHidden" : false
+        },
+        {
+          "key" : "rapportageCategorieen.afdeling",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/{{ data.rapportageCategorieen?.sector.name }}",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Afdeling",
+          "logic" : [
+            {
+              "name" : "Verplicht volgens resultaat verkenning",
+              "actions" : [
+                {
+                  "name" : "Maak verplicht",
+                  "type" : "property",
+                  "state" : true,
+                  "property" : {
+                    "type" : "boolean",
+                    "label" : "Required",
+                    "value" : "validate.required"
+                  }
+                }
+              ],
+              "trigger" : {
+                "type" : "javascript",
+                "javascript" : "result = [\"KLACHT_IS_INGETROKKEN\", \"GEEN_KLACHT_BELEID\"].includes(data.verkenning?.resultaat);"
+              }
+            },
+            {
+              "name" : "Niet verplicht volgens resultaat verkenning",
+              "actions" : [
+                {
+                  "name" : "Maak niet verplicht",
+                  "type" : "property",
+                  "state" : false,
+                  "property" : {
+                    "type" : "boolean",
+                    "label" : "Required",
+                    "value" : "validate.required"
+                  }
+                }
+              ],
+              "trigger" : {
+                "type" : "javascript",
+                "javascript" : "result = ![\"KLACHT_IS_INGETROKKEN\", \"GEEN_KLACHT_BELEID\"].includes(data.verkenning?.resultaat);"
+              }
+            }
+          ],
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "template" : "<span>{{ item.value }}</span>",
+          "validate" : {
+            "required" : false
+          },
+          "refreshOn" : "rapportageCategorieen.sector",
+          "tableView" : true,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-rapportageCategorieen.afdeling"
+          },
+          "selectValues" : "choiceFieldValues",
+          "clearOnRefresh" : true,
+          "customConditional" : "show = data.rapportageCategorieen.sector ? true : false",
+          "validateWhenHidden" : false
+        },
+        {
+          "key" : "rapportageCategorieen.producten",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/PRODUCTEN",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Producten (kies er maximaal 3)",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "multiple" : true,
+          "template" : "<span>{{ item.value }}</span>",
+          "validate" : {
+            "required" : false
+          },
+          "tableView" : true,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-rapportageCategorieen.producten"
+          },
+          "selectValues" : "choiceFieldValues",
+          "customOptions" : {
+            "searchResultLimit" : 99
+          },
+          "validateWhenHidden" : false
+        },
+        {
+          "key" : "rapportageCategorieen.themas",
+          "data" : {
+            "url" : "../api/v1/choice-fields/name/THEMAS",
+            "method" : "GET",
+            "headers" : [
+              {
+                "key" : "Content-Type",
+                "value" : "application/json"
+              },
+              {
+                "key" : "Authorization",
+                "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+              }
+            ]
+          },
+          "type" : "select",
+          "input" : true,
+          "label" : "Thema's (kies er maximaal 3)",
+          "widget" : "choicesjs",
+          "dataSrc" : "url",
+          "lazyLoad" : false,
+          "multiple" : true,
+          "template" : "<span>{{ item.value }}</span>",
+          "validate" : {
+            "required" : false
+          },
+          "tableView" : true,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-rapportageCategorieen.themas"
+          },
+          "selectValues" : "choiceFieldValues",
+          "customOptions" : {
+            "searchResultLimit" : 99
+          },
+          "validateWhenHidden" : false
+        }
+      ],
+      "clearOnHide" : false,
+      "customConditional" : "show = !data.verkenning || data.verkenning.resultaat !== 'KLACHT_BETREFT_KLACHT_NIET_ONTVANKELIJK';",
+      "validateWhenHidden" : false
+    },
+    {
+      "key" : "verkenning.toelichting",
+      "type" : "textarea",
+      "input" : true,
+      "label" : "Toelichting resultaat verkenning",
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-verkenning.toelichting"
+      },
+      "autoExpand" : true
+    },
+    {
+      "key" : "eersteBeoordeling.afdeling",
+      "type" : "container",
+      "input" : true,
+      "label" : "Container",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-eersteBeoordeling.afdeling"
+      },
+      "components" : [
+        {
+          "key" : "naam",
+          "type" : "textfield",
+          "input" : true,
+          "label" : "Klacht doorsturen naar afdeling",
+          "validate" : {
+            "required" : false
+          },
+          "tableView" : true,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-naam"
+          },
+          "validateWhenHidden" : false
+        },
+        {
+          "key" : "email",
+          "type" : "email",
+          "input" : true,
+          "label" : "E-mailadres afdeling",
+          "validate" : {
+            "required" : false
+          },
+          "tableView" : true,
+          "attributes" : {
+            "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-email"
+          },
+          "validateWhenHidden" : false
+        }
+      ],
+      "customConditional" : "show = data.verkenning.resultaat.startsWith(\"GEEN_KLACHT\")"
+    },
+    {
+      "key" : "pv.aanpassenEscalatiePeriode",
+      "type" : "radio",
+      "input" : true,
+      "label" : "Standaard wordt een klacht na 6 weken geëscaleerd, wil je dit aanpassen?",
+      "inline" : false,
+      "values" : [
+        {
+          "label" : "Ja",
+          "value" : true,
+          "shortcut" : ""
+        },
+        {
+          "label" : "Nee",
+          "value" : false,
+          "shortcut" : ""
+        }
+      ],
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-pv.aanpassenEscalatiePeriode"
+      },
+      "clearOnHide" : false,
+      "defaultValue" : false,
+      "customConditional" : "show = (data.escalatie?.isGeescaleerd == false && data.verkenning?.resultaat === 'KLACHT_BETREFT_KLACHT_NIET_OPGELOST')",
+      "optionsLabelPosition" : "right"
+    },
+    {
+      "key" : "verkenning.teVerwachteAfhandeltermijn",
+      "data" : {
+        "values" : [
+          {
+            "label" : "1 week",
+            "value" : 1
+          },
+          {
+            "label" : "2 weken",
+            "value" : 2
+          },
+          {
+            "label" : "3 weken",
+            "value" : 3
+          },
+          {
+            "label" : "4 weken",
+            "value" : 4
+          },
+          {
+            "label" : "5 weken",
+            "value" : 5
+          },
+          {
+            "label" : "6 weken",
+            "value" : 6
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Escaleer deze klacht na:",
+      "widget" : "choicesjs",
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-verkenning.teVerwachteAfhandeltermijn"
+      },
+      "conditional" : {
+        "eq" : true,
+        "show" : true,
+        "when" : "pv.aanpassenEscalatiePeriode"
+      },
+      "defaultValue" : 6
+    },
+    {
+      "key" : "verkenning.teVerwachteAfhandeltermijn",
+      "data" : {
+        "values" : [
+          {
+            "label" : "1 week",
+            "value" : 1
+          },
+          {
+            "label" : "2 weken",
+            "value" : 2
+          },
+          {
+            "label" : "3 weken",
+            "value" : 3
+          },
+          {
+            "label" : "4 weken",
+            "value" : 4
+          },
+          {
+            "label" : "5 weken",
+            "value" : 5
+          },
+          {
+            "label" : "6 weken",
+            "value" : 6
+          }
+        ]
+      },
+      "type" : "hidden",
+      "input" : true,
+      "label" : "Escaleer deze klacht na:",
+      "widget" : "choicesjs",
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-verkenning.teVerwachteAfhandeltermijn"
+      },
+      "conditional" : {
+        "eq" : false,
+        "show" : true,
+        "when" : "pv.aanpassenEscalatiePeriode"
+      },
+      "defaultValue" : 6
+    },
+    {
+      "key" : "verkenning.oplossing",
+      "type" : "textarea",
+      "input" : true,
+      "label" : "Omschrijving overeengekomen oplossing (wordt gedeeld met de melder)",
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-verkenning.oplossing"
+      },
+      "autoExpand" : true,
+      "conditional" : {
+        "eq" : "KLACHT_BETREFT_KLACHT_OPGELOST",
+        "show" : true,
+        "when" : "verkenning.resultaat"
+      }
+    },
+    {
+      "key" : "verkenning.redenNietOntvankelijk",
+      "type" : "textarea",
+      "input" : true,
+      "label" : "Reden niet ontvankelijk stellen van klacht (wordt gedeeld met de melder)",
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-verkenning.redenNietOntvankelijk"
+      },
+      "autoExpand" : true,
+      "conditional" : {
+        "eq" : "KLACHT_BETREFT_KLACHT_NIET_ONTVANKELIJK",
+        "show" : true,
+        "when" : "verkenning.resultaat"
+      }
+    },
+    {
+      "key" : "pv.formeelAfhandelenKlacht",
+      "type" : "radio",
+      "input" : true,
+      "label" : "Moet de klacht formeel behandeld worden?",
+      "inline" : false,
+      "values" : [
+        {
+          "label" : "Ja",
+          "value" : true,
+          "shortcut" : ""
+        },
+        {
+          "label" : "Nee",
+          "value" : false,
+          "shortcut" : ""
+        }
+      ],
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-pv.formeelAfhandelenKlacht"
+      },
+      "conditional" : {
+        "eq" : "KLACHT_BETREFT_KLACHT_NIET_OPGELOST",
+        "show" : true,
+        "when" : "verkenning.resultaat"
+      },
+      "defaultValue" : false,
+      "optionsLabelPosition" : "right"
+    },
+    {
+      "key" : "pv.geenTerugkoppelingNaarDeMelder",
+      "type" : "checkbox",
+      "input" : true,
+      "label" : "Verstuur geen terugkoppeling naar de melder",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-pv.geenTerugkoppelingNaarDeMelder"
+      },
+      "defaultValue" : true
+    },
+    {
+      "key" : "htmlStandaardTelefoonnummerLabelRequired",
+      "tag" : "div",
+      "type" : "htmlelement",
+      "input" : false,
+      "label" : "HTML",
+      "content" : "<label class=\"col-form-label  field-required\">Telefoonnummer klachten coördinator</label>",
+      "tableView" : false,
+      "refreshOnChange" : true,
+      "customConditional" : "show = data.pv.geenTerugkoppelingNaarDeMelder === false"
+    },
+    {
+      "key" : "htmlStandaardTelefoonnummerLabel",
+      "tag" : "div",
+      "type" : "htmlelement",
+      "input" : false,
+      "label" : "HTML",
+      "content" : "<label class=\"col-form-label \">Telefoonnummer klachten coördinator</label>",
+      "tableView" : false,
+      "refreshOnChange" : true,
+      "customConditional" : "show = data.pv.geenTerugkoppelingNaarDeMelder === true"
+    },
+    {
+      "key" : "standaardTelefoonnummer",
+      "type" : "radio",
+      "input" : false,
+      "label" : "Telefoonnummer klachten coördinator",
+      "logic" : [
+        {
+          "name" : "Validate",
+          "actions" : [
+            {
+              "name" : "Required",
+              "type" : "property",
+              "state" : true,
+              "property" : {
+                "type" : "boolean",
+                "label" : "Required",
+                "value" : "validate.required"
+              }
+            }
+          ],
+          "trigger" : {
+            "type" : "simple",
+            "simple" : {
+              "eq" : false,
+              "show" : true,
+              "when" : "pv.geenTerugkoppelingNaarDeMelder"
+            }
+          }
+        }
+      ],
+      "inline" : false,
+      "values" : [
+        {
+          "label" : "Standaard telefoonnummer (14070)",
+          "value" : true,
+          "shortcut" : ""
+        },
+        {
+          "label" : "Een ander telefoonnummer",
+          "value" : false,
+          "shortcut" : ""
+        }
+      ],
+      "hideLabel" : true,
+      "tableView" : false,
+      "optionsLabelPosition" : "right"
+    },
+    {
+      "key" : "pv.telefoonnummerKlachtenCoordinator",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "Standaard telefoonnummer",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-pv.telefoonnummerKlachtenCoordinator"
+      },
+      "defaultValue" : "14070",
+      "customConditional" : "show = data.standaardTelefoonnummer === true"
+    },
+    {
+      "key" : "pv.telefoonnummerKlachtenCoordinator",
+      "type" : "phoneNumber",
+      "input" : true,
+      "label" : "Een ander telefoonnummer",
+      "logic" : [
+        {
+          "name" : "Validate",
+          "actions" : [
+            {
+              "name" : "Required",
+              "type" : "property",
+              "state" : true,
+              "property" : {
+                "type" : "boolean",
+                "label" : "Required",
+                "value" : "validate.required"
+              }
+            }
+          ],
+          "trigger" : {
+            "type" : "simple",
+            "simple" : {
+              "eq" : false,
+              "show" : true,
+              "when" : "pv.geenTerugkoppelingNaarDeMelder"
+            }
+          }
+        }
+      ],
+      "validate" : {
+        "customMessage" : "Voer een geldig telefoonnummer in"
+      },
+      "hideLabel" : true,
+      "inputMask" : "9999999999",
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-pv.telefoonnummerKlachtenCoordinator"
+      },
+      "validateOn" : "blur",
+      "customClass" : "visible-for-client",
+      "customConditional" : "show = data.standaardTelefoonnummer === false"
+    },
+    {
+      "key" : "verkenning.telefonischContactGeweest",
+      "type" : "radio",
+      "input" : true,
+      "label" : "Is er telefonisch contact geweest met de melder?",
+      "inline" : false,
+      "values" : [
+        {
+          "label" : "Ja",
+          "value" : true,
+          "shortcut" : ""
+        },
+        {
+          "label" : "Nee",
+          "value" : false,
+          "shortcut" : ""
+        }
+      ],
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-verkenning.telefonischContactGeweest"
+      },
+      "optionsLabelPosition" : "right"
+    },
+    {
+      "key" : "verkenning.datumTelefonischContact",
+      "type" : "datetime",
+      "input" : true,
+      "label" : "Date / Time",
+      "logic" : [
+        {
+          "name" : "require",
+          "actions" : [
+            {
+              "name" : "requierd",
+              "type" : "property",
+              "state" : true,
+              "property" : {
+                "type" : "boolean",
+                "label" : "Required",
+                "value" : "validate.required"
+              }
+            }
+          ],
+          "trigger" : {
+            "type" : "simple",
+            "simple" : {
+              "eq" : "true",
+              "show" : true,
+              "when" : "verkenning.telefonischContactGeweest"
+            }
+          }
+        }
+      ],
+      "format" : "yyyy-MM-dd",
+      "hidden" : true,
+      "widget" : {
+        "mode" : "single",
+        "type" : "calendar",
+        "format" : "yyyy-MM-dd",
+        "locale" : "en",
+        "maxDate" : null,
+        "minDate" : null,
+        "time_24hr" : true,
+        "allowInput" : true,
+        "enableTime" : false,
+        "noCalendar" : false,
+        "hourIncrement" : 1,
+        "disableWeekdays" : false,
+        "disableWeekends" : false,
+        "minuteIncrement" : 1,
+        "displayInTimezone" : "viewer",
+        "useLocaleSettings" : false
+      },
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-verkenning.datumTelefonischContact"
+      },
+      "datePicker" : {
+        "disableWeekdays" : false,
+        "disableWeekends" : false
+      },
+      "enableTime" : false,
+      "timePicker" : {
+        "showMeridian" : false
+      },
+      "conditional" : {
+        "eq" : "true",
+        "show" : true,
+        "when" : "verkenning.telefonischContactGeweest"
+      },
+      "defaultDate" : "moment()",
+      "enableMaxDateInput" : false,
+      "enableMinDateInput" : false,
+      "validateWhenHidden" : false
+    },
+    {
+      "key" : "pv.zaakresultaat",
+      "data" : {
+        "values" : [
+          {
+            "label" : "Afgehandeld",
+            "value" : "Afgehandeld"
+          },
+          {
+            "label" : "Afgehandeld – met financiële consequenties",
+            "value" : "Afgehandeld - financieel"
+          },
+          {
+            "label" : "Afgehandeld – met invloed op een te bewaren zaak",
+            "value" : "Afgehandeld - bewaren"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Selecteer hieronder welke variant van het zaakresultaat 'Afgehandeld' van toepassing is op deze klacht",
+      "logic" : [
+        {
+          "name" : "Logic - Required",
+          "actions" : [
+            {
+              "name" : "Required Action",
+              "type" : "property",
+              "state" : true,
+              "property" : {
+                "type" : "boolean",
+                "label" : "Required",
+                "value" : "validate.required"
+              }
+            }
+          ],
+          "trigger" : {
+            "type" : "simple",
+            "simple" : {
+              "eq" : "KLACHT_BETREFT_KLACHT_OPGELOST",
+              "show" : true,
+              "when" : "verkenning.resultaat"
+            }
+          }
+        }
+      ],
+      "widget" : "choicesjs",
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-pv.zaakresultaat"
+      },
+      "conditional" : {
+        "eq" : "KLACHT_BEHANDELEN",
+        "show" : false,
+        "when" : "verkenning.resultaat"
+      }
+    },
+    {
+      "key" : "afhandeldatumIntern",
+      "type" : "datetime",
+      "input" : true,
+      "label" : "Afhandeldatum",
+      "format" : "dd-MM-yyyy",
+      "widget" : {
+        "mode" : "single",
+        "type" : "calendar",
+        "format" : "dd-MM-yyyy",
+        "locale" : "en",
+        "maxDate" : false,
+        "minDate" : false,
+        "time_24hr" : true,
+        "allowInput" : true,
+        "enableTime" : false,
+        "noCalendar" : false,
+        "hourIncrement" : 1,
+        "disableWeekdays" : false,
+        "disableWeekends" : false,
+        "minuteIncrement" : 1,
+        "displayInTimezone" : "viewer",
+        "useLocaleSettings" : true
+      },
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-afhandeldatumIntern"
+      },
+      "datePicker" : {
+        "maxDate" : false,
+        "minDate" : false,
+        "disableWeekdays" : false,
+        "disableWeekends" : false
+      },
+      "enableTime" : false,
+      "timePicker" : {
+        "showMeridian" : false
+      },
+      "conditional" : {
+        "eq" : "KLACHT_BEHANDELEN",
+        "show" : false,
+        "when" : "verkenning.resultaat"
+      },
+      "defaultDate" : "moment()",
+      "useLocaleSettings" : true,
+      "enableMaxDateInput" : false,
+      "enableMinDateInput" : false,
+      "validateWhenHidden" : false
+    },
+    {
+      "key" : "pv.zaakresultaatAfgebroken",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "Zet zaakresultaat 'Afgebroken' wanneer de klacht is geen KLACHT_BEHANDELEN",
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-pv.zaakresultaatAfgebroken"
+      },
+      "defaultValue" : "Afgebroken",
+      "customConditional" : "show = data.verkenning.resultaat != \"KLACHT_BEHANDELEN\""
+    },
+    {
+      "key" : "pv.zaakresultaat",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "Bepaal definitief zaakresultaat op basis van resultaat verkenning",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-pv.zaakresultaatDefinitief"
+      },
+      "calculateValue" : "value = (data.verkenning.resultaat != \"KLACHT_BEHANDELEN\") ? \"Afgebroken\" : data.pv.zaakresultaat;",
+      "customConditional" : "show = data.verkenning.resultaat != \"KLACHT_BEHANDELEN\""
+    },
+    {
+      "key" : "pv.afhandeltermijnDatum",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "AfhandeltermijnDatum",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-pv.afhandeltermijnDatum"
+      },
+      "calculateValue" : "value = moment(data.klacht?.datumOntvangst).add(data.verkenning?.teVerwachteAfhandeltermijn, 'weeks'); "
+    },
+    {
+      "key" : "pv.resultaatVerkenning",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "pv resultaatVerkenning",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-pv.resultaatVerkenning"
+      },
+      "calculateValue" : "value = data.verkenning.resultaat"
+    },
+    {
+      "key" : "pv.formeelAfhandelenKlacht",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "pv formeelAfhandelenKlacht",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-pv.formeelAfhandelenKlacht"
+      },
+      "conditional" : {
+        "eq" : "KLACHT_BETREFT_KLACHT_NIET_OPGELOST",
+        "show" : false,
+        "when" : "verkenning.resultaat"
+      },
+      "calculateValue" : "value = false"
+    },
+    {
+      "key" : "verkenning.formeelAfhandelenKlacht",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "Save pv.formeelAfhandelenKlacht to document",
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.verkennen-klacht.vastleggen-resultaat-verkenning-verkenning.formeelAfhandelenKlacht"
+      },
+      "calculateValue" : "value = data.pv?.formeelAfhandelenKlacht"
+    },
+    {
+      "key" : "submit",
+      "type" : "button",
+      "input" : true,
+      "label" : "Doorgaan",
+      "action" : "custom",
+      "custom" : "component.disabled = true; form.submit();",
+      "tableView" : false,
+      "showValidations" : false,
+      "disableOnInvalid" : true
+    }
+  ]
+}

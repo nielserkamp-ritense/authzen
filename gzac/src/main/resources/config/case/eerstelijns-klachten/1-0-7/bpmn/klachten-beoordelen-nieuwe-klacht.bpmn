@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" camunda:diagramRelationId="003b1cb1-b8b0-4fc5-83a9-a8c30989ad3b" exporter="Camunda Modeler" exporterVersion="5.33.1" expressionLanguage="http://www.w3.org/1999/XPath" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema">
+      
+  
+  <bpmn:collaboration id="Collaboration_1ovjupg" isClosed="false">
+            
+    
+    <bpmn:participant id="BeoordelenNieuweKlachtParticipant" name="Beoordelen nieuwe klacht" processRef="klachten-beoordelen-nieuwe-klacht"/>
+          
+  
+  </bpmn:collaboration>
+      
+  
+  <bpmn:process camunda:historyTimeToLive="P3650D" camunda:versionTag="CD:eerstelijns-klachten:1.0.7" id="klachten-beoordelen-nieuwe-klacht" isClosed="false" isExecutable="true" name="Klachten: Beoordelen nieuwe klacht" processType="None">
+            
+    
+    <bpmn:sequenceFlow id="Flow_08jl3wb" sourceRef="VastleggenResultaatEersteBeoordelingTask" targetRef="Gateway_0z7p1lj">
+                  
+      
+      <bpmn:extensionElements/>
+                
+    
+    </bpmn:sequenceFlow>
+            
+    
+    <bpmn:sequenceFlow id="ToegewezenDienstAangepastSequenceFlow" name="Toegewezen dienst aangepast" sourceRef="Gateway_0z7p1lj" targetRef="BepalenEmailadresVanDienstTask">
+                  
+      
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${resultaatEersteBeoordeling == "TOEGEWEZEN_DIENST_AANPASSEN"}</bpmn:conditionExpression>
+                
+    
+    </bpmn:sequenceFlow>
+            
+    
+    <bpmn:sequenceFlow id="MeldingBetreftKlachtEnVerdereVerkenningIsBenodigdSequenceFlow" name="Melding betreft klacht en verdere verkenning is benodigd" sourceRef="Gateway_0z7p1lj" targetRef="VerdereVerkenningVanDeKlachtBenodigdEndEvent"/>
+            
+    
+    <bpmn:sequenceFlow id="Flow_1tjs8q3" sourceRef="Event_1cs984l" targetRef="Gateway_06ocx5d"/>
+            
+    
+    <bpmn:sequenceFlow id="Flow_00s5ihj" sourceRef="VersturenNotificatieNaarKlachtenteamDienstTask" targetRef="Gateway_06ocx5d"/>
+            
+    
+    <bpmn:sequenceFlow id="Flow_0dfdv26" sourceRef="BepalenEmailadresVanDienstTask" targetRef="VersturenNotificatieNaarKlachtenteamDienstTask"/>
+            
+    
+    <bpmn:exclusiveGateway gatewayDirection="Unspecified" id="Gateway_06ocx5d">
+                  
+      
+      <bpmn:incoming>Flow_1tjs8q3</bpmn:incoming>
+                  
+      
+      <bpmn:incoming>Flow_00s5ihj</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_1v1sqji</bpmn:outgoing>
+                
+    
+    </bpmn:exclusiveGateway>
+            
+    
+    <bpmn:sequenceFlow id="Flow_1v1sqji" sourceRef="Gateway_06ocx5d" targetRef="VastleggenResultaatEersteBeoordelingTask"/>
+            
+    
+    <bpmn:startEvent id="Event_1cs984l" isInterrupting="true" parallelMultiple="false">
+                  
+      
+      <bpmn:outgoing>Flow_1tjs8q3</bpmn:outgoing>
+                
+    
+    </bpmn:startEvent>
+            
+    
+    <bpmn:exclusiveGateway default="MeldingBetreftKlachtEnVerdereVerkenningIsBenodigdSequenceFlow" gatewayDirection="Unspecified" id="Gateway_0z7p1lj">
+                  
+      
+      <bpmn:extensionElements/>
+                  
+      
+      <bpmn:incoming>Flow_08jl3wb</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>ToegewezenDienstAangepastSequenceFlow</bpmn:outgoing>
+                  
+      
+      <bpmn:outgoing>MeldingBetreftKlachtEnVerdereVerkenningIsBenodigdSequenceFlow</bpmn:outgoing>
+                
+    
+    </bpmn:exclusiveGateway>
+            
+    
+    <bpmn:userTask camunda:candidateGroups="ROLE_ADMIN,ROLE_KLACHTEN_KLACHTENCOORDINATOR,ROLE_KLACHTEN_KLACHTENCOORDINATOR_GGD,ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH" completionQuantity="1" id="VastleggenResultaatEersteBeoordelingTask" implementation="##unspecified" isForCompensation="false" name="Vastleggen resultaat eerste beoordeling" startQuantity="1">
+                  
+      
+      <bpmn:extensionElements>
+                        
+        
+        <camunda:inputOutput>
+                              
+          
+          <camunda:outputParameter name="resultaatEersteBeoordeling">${documentDelegateService.findValueByJsonPointerOrDefault("/eersteBeoordeling/resultaat",execution, "")}</camunda:outputParameter>
+                            
+        
+        </camunda:inputOutput>
+                      
+      
+      </bpmn:extensionElements>
+                  
+      
+      <bpmn:incoming>Flow_1v1sqji</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_08jl3wb</bpmn:outgoing>
+                
+    
+    </bpmn:userTask>
+            
+    
+    <bpmn:businessRuleTask camunda:asyncAfter="true" camunda:asyncBefore="true" camunda:decisionRef="klachten-bepalen-emailadres-van-dienst" camunda:decisionRefBinding="versionTag" camunda:decisionRefVersionTag="CD:eerstelijns-klachten:1.0.7" camunda:mapDecisionResult="singleResult" camunda:resultVariable="resultMap" completionQuantity="1" id="BepalenEmailadresVanDienstTask" implementation="##unspecified" isForCompensation="false" name="Bepalen emailadres van dienst" startQuantity="1">
+                  
+      
+      <bpmn:extensionElements>
+                        
+        
+        <camunda:inputOutput>
+                              
+          
+          <camunda:inputParameter name="dienst">${documentDelegateService.findValueByJsonPointer("/rapportageCategorieen/toegewezenDienst/dienst/name", execution)}</camunda:inputParameter>
+                              
+          
+          <camunda:outputParameter name="klachtenteam">${dienst}</camunda:outputParameter>
+                              
+          
+          <camunda:outputParameter name="emailDienst">${resultMap.emailDienst}</camunda:outputParameter>
+                            
+        
+        </camunda:inputOutput>
+                      
+      
+      </bpmn:extensionElements>
+                  
+      
+      <bpmn:incoming>ToegewezenDienstAangepastSequenceFlow</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_0dfdv26</bpmn:outgoing>
+                
+    
+    </bpmn:businessRuleTask>
+            
+    
+    <bpmn:serviceTask camunda:asyncAfter="true" camunda:asyncBefore="true" camunda:expression="${true}" completionQuantity="1" id="VersturenNotificatieNaarKlachtenteamDienstTask" implementation="##WebService" isForCompensation="false" name="Versturen notificatie naar klachtenteam dienst" startQuantity="1">
+                  
+      
+      <bpmn:extensionElements>
+                        
+        
+        <camunda:inputOutput>
+                              
+          
+          <camunda:inputParameter name="zaaknummer">${valueResolverDelegateService.resolveValue(execution, "zaak:identificatie")}</camunda:inputParameter>
+                              
+          
+          <camunda:inputParameter name="berichtNaarKlachtenteam">${documentDelegateService.findValueByJsonPointerOrDefault("/eersteBeoordeling/berichtNaarKlachtenteamDienst",execution,"")}</camunda:inputParameter>
+                              
+          
+          <camunda:outputParameter name="resultaat">${valueResolverDelegateService.handleValue(execution, "doc:/eersteBeoordeling/resultaat", "")}</camunda:outputParameter>
+                            
+        
+        </camunda:inputOutput>
+                        
+        
+        <camunda:properties>
+                              
+          
+          <camunda:property name="mailSendTaskFrom" value="noreply@valtomi.nl"/>
+                              
+          
+          <camunda:property name="mailSendTaskTemplate" value="klachtenproces-notificatie-nieuw-klachtenteam-toegewezen"/>
+                              
+          
+          <camunda:property name="mailSendTaskSubject" value="Melding klacht doorgestuurd naar andere dienst"/>
+                              
+          
+          <camunda:property name="mailSendTaskTo" value="${emailDienst}"/>
+                            
+        
+        </camunda:properties>
+                      
+      
+      </bpmn:extensionElements>
+                  
+      
+      <bpmn:incoming>Flow_0dfdv26</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_00s5ihj</bpmn:outgoing>
+                
+    
+    </bpmn:serviceTask>
+            
+    
+    <bpmn:endEvent id="VerdereVerkenningVanDeKlachtBenodigdEndEvent">
+                  
+      
+      <bpmn:incoming>MeldingBetreftKlachtEnVerdereVerkenningIsBenodigdSequenceFlow</bpmn:incoming>
+                
+    
+    </bpmn:endEvent>
+          
+  
+  </bpmn:process>
+      
+  
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+            
+    
+    <bpmndi:BPMNPlane bpmnElement="Collaboration_1ovjupg" id="BPMNPlane_1">
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="BeoordelenNieuweKlachtParticipant" id="Participant_0kwbbbg_di" isHorizontal="true">
+                        
+        
+        <dc:Bounds height="430" width="860" x="160" y="80"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="Gateway_06ocx5d" id="Gateway_06ocx5d_di" isMarkerVisible="true">
+                        
+        
+        <dc:Bounds height="50" width="50" x="305" y="165"/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="Event_1cs984l" id="Event_1cs984l_di">
+                        
+        
+        <dc:Bounds height="36" width="36" x="222" y="172"/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="Gateway_0z7p1lj" id="BPMNShape_0g03d86" isMarkerVisible="true">
+                        
+        
+        <dc:Bounds height="50" width="50" x="570" y="165"/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="VastleggenResultaatEersteBeoordelingTask" id="BPMNShape_01y9wnz">
+                        
+        
+        <dc:Bounds height="80" width="100" x="420" y="150"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="BepalenEmailadresVanDienstTask" id="BPMNShape_11nipwb">
+                        
+        
+        <dc:Bounds height="80" width="100" x="710" y="250"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="VersturenNotificatieNaarKlachtenteamDienstTask" id="Activity_0mdu41s_di">
+                        
+        
+        <dc:Bounds height="80" width="100" x="860" y="250"/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="VerdereVerkenningVanDeKlachtBenodigdEndEvent" id="Event_13ytwdc_di">
+                        
+        
+        <dc:Bounds height="36" width="36" x="892" y="172"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="40" width="89" x="867" y="120"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_08jl3wb" id="BPMNEdge_0fnnyt9">
+                        
+        
+        <di:waypoint x="520" y="190"/>
+                        
+        
+        <di:waypoint x="570" y="190"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="ToegewezenDienstAangepastSequenceFlow" id="Flow_0eymlm0_di">
+                        
+        
+        <di:waypoint x="595" y="215"/>
+                        
+        
+        <di:waypoint x="595" y="290"/>
+                        
+        
+        <di:waypoint x="710" y="290"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="27" width="85" x="603" y="256"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="MeldingBetreftKlachtEnVerdereVerkenningIsBenodigdSequenceFlow" id="Flow_1uv3gt4_di">
+                        
+        
+        <di:waypoint x="620" y="190"/>
+                        
+        
+        <di:waypoint x="892" y="190"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="53" width="85" x="647" y="133"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_1tjs8q3" id="Flow_1tjs8q3_di">
+                        
+        
+        <di:waypoint x="258" y="190"/>
+                        
+        
+        <di:waypoint x="305" y="190"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_00s5ihj" id="Flow_00s5ihj_di">
+                        
+        
+        <di:waypoint x="910" y="330"/>
+                        
+        
+        <di:waypoint x="910" y="410"/>
+                        
+        
+        <di:waypoint x="330" y="410"/>
+                        
+        
+        <di:waypoint x="330" y="215"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_0dfdv26" id="Flow_0dfdv26_di">
+                        
+        
+        <di:waypoint x="810" y="290"/>
+                        
+        
+        <di:waypoint x="860" y="290"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_1v1sqji" id="Flow_1v1sqji_di">
+                        
+        
+        <di:waypoint x="355" y="190"/>
+                        
+        
+        <di:waypoint x="420" y="190"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                
+    
+    </bpmndi:BPMNPlane>
+          
+  
+  </bpmndi:BPMNDiagram>
+    
+
+</bpmn:definitions>

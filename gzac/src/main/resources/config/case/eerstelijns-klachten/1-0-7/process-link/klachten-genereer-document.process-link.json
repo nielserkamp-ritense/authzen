@@ -1,0 +1,35 @@
+[
+  {
+    "activityId" : "OpslaanDocumentInDocumentenApiTask",
+    "activityType" : "bpmn:ServiceTask:start",
+    "pluginConfigurationId" : "5474fe57-532a-4050-8d89-32e62ca3e895",
+    "pluginActionDefinitionKey" : "store-temp-document",
+    "actionProperties" : {
+      "title" : "Klachten documenten",
+      "description" : "Klachten documenten",
+      "localDocumentLocation" : "resultingTempDocumentId",
+      "storedDocumentUrl" : "gegenereerdeDocumentUrl",
+      "informatieobjecttype" : "https://openzaak-zgw.test.denhaag.nl/catalogi/api/v1/informatieobjecttypen/a0d1b4d7-e74c-4118-9ed0-13f7ed8fb5fe",
+      "confidentialityLevel" : "zaakvertrouwelijk",
+      "taal" : "nld",
+      "status" : "definitief"
+    },
+    "referenceType" : "FIXED",
+    "pluginDefinitionKey" : "documentenapi",
+    "processLinkType" : "plugin"
+  },
+  {
+    "activityId" : "LinkenDocumentAanDeZaakTask",
+    "activityType" : "bpmn:ServiceTask:start",
+    "pluginConfigurationId" : "3079d6fe-42e3-4f8f-a9db-52ce2507b7ee",
+    "pluginActionDefinitionKey" : "link-document-to-zaak",
+    "actionProperties" : {
+      "documentUrl" : "pv:gegenereerdeDocumentUrl",
+      "titel" : "Gegenereerde document",
+      "beschrijving" : "Gegenereerde document"
+    },
+    "referenceType" : "FIXED",
+    "pluginDefinitionKey" : "zakenapi",
+    "processLinkType" : "plugin"
+  }
+]

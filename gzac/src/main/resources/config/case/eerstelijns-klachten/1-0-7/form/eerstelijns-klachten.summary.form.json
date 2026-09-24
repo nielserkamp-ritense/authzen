@@ -1,0 +1,472 @@
+{
+  "display" : "form",
+  "components" : [
+    {
+      "key" : "columns",
+      "type" : "columns",
+      "input" : false,
+      "label" : "Columns",
+      "columns" : [
+        {
+          "pull" : 0,
+          "push" : 0,
+          "size" : "md",
+          "width" : 6,
+          "offset" : 0,
+          "components" : [
+            {
+              "key" : "eersteBeoordeling",
+              "type" : "hidden",
+              "input" : true,
+              "label" : "eerste beoordeling",
+              "tableView" : false,
+              "attributes" : {
+                "data-testid" : "eerstelijns-klachten.summary-eersteBeoordeling"
+              }
+            },
+            {
+              "key" : "ombudsmannummer",
+              "type" : "hidden",
+              "input" : true,
+              "label" : "Ombudsmannummer",
+              "tableView" : false,
+              "attributes" : {
+                "data-testid" : "eerstelijns-klachten.summary-ombudsmannummer"
+              }
+            },
+            {
+              "key" : "leverancierskenmerk",
+              "type" : "hidden",
+              "input" : true,
+              "label" : "leverancierskenmerk",
+              "tableView" : false,
+              "attributes" : {
+                "data-testid" : "eerstelijns-klachten.summary-leverancierskenmerk"
+              }
+            },
+            {
+              "key" : "routeBurgemeesterWethouderkenmerk",
+              "type" : "hidden",
+              "input" : true,
+              "label" : "routeBurgemeesterWethouderkenmerk",
+              "tableView" : false,
+              "attributes" : {
+                "data-testid" : "eerstelijns-klachten.summary-routeBurgemeesterWethouderkenmerk"
+              }
+            },
+            {
+              "key" : "afhandeldatumIntern",
+              "type" : "hidden",
+              "input" : true,
+              "label" : "afhandeldatumIntern",
+              "tableView" : false,
+              "attributes" : {
+                "data-testid" : "eerstelijns-klachten.summary-afhandeldatumIntern"
+              }
+            },
+            {
+              "key" : "rapportageCategorieen",
+              "type" : "hidden",
+              "input" : true,
+              "label" : "rapportage categorieen",
+              "tableView" : false,
+              "attributes" : {
+                "data-testid" : "eerstelijns-klachten.summary-rapportageCategorieen"
+              }
+            },
+            {
+              "key" : "escalatie",
+              "type" : "hidden",
+              "input" : true,
+              "label" : "geescaleerd",
+              "tableView" : false,
+              "attributes" : {
+                "data-testid" : "eerstelijns-klachten.summary-escalatie"
+              }
+            },
+            {
+              "key" : "klachtencoordinator",
+              "type" : "hidden",
+              "input" : true,
+              "label" : "klachtencoordinator",
+              "tableView" : false,
+              "attributes" : {
+                "data-testid" : "eerstelijns-klachten.summary-klachtencoordinator"
+              }
+            },
+            {
+              "key" : "klacht",
+              "type" : "container",
+              "input" : true,
+              "label" : "Container",
+              "title" : "Klacht",
+              "tableView" : false,
+              "attributes" : {
+                "data-testid" : "eerstelijns-klachten.summary-klacht"
+              },
+              "components" : [
+                {
+                  "key" : "html",
+                  "tag" : "div",
+                  "type" : "htmlelement",
+                  "input" : true,
+                  "label" : "Klacht",
+                  "content" : "<h4>Klacht<span class=\"float-right\">{{{ data.escalatie?.isGeescaleerd ? '❗❗❗' : '' }}}</span></h4>\n<section>\n <dl class=\"row mb-0\">\n <dd class=\"col-6\">Klacht ontvangen op</dd>\n <dt class=\"col-6\">{{{ data.klacht.datumOntvangst ? moment(data.klacht.datumOntvangst).format('DD-MM-yyyy') : '-' }}} </dt>\n </dl>\n <dl class=\"row mb-0\">\n <dd class=\"col-6\">Korte omschrijving</dd>\n <dt class=\"col-6\">{{{ (data.klacht.korteOmschrijvingMelding || '-') }}} </dt>\n </dl>\n <dl class=\"row mb-0\">\n <dd class=\"col-6\">Toelichting</dd>\n <dt class=\"col-6\">{{{ (data.klacht?.toelichtingMelding || '-') }}} </dt>\n </dl>\n <dl class=\"row mb-0\">\n <dd class=\"col-6\">Toegewezen aan klachtenteam</dd>\n <dt class=\"col-6\">{{{ data.rapportageCategorieen?.toegewezenDienst?.dienst?.name || '-' }}} </dt>\n </dl>\n <dl class=\"row mb-0\">\n <dd class=\"col-6\">Klachtencoördinator</dd>\n <dt class=\"col-6\">{{{ (data.klachtencoordinator || '-') }}} </dt>\n </dl>\n <dl class=\"row mb-0\">\n <dd class=\"col-6\">Bericht aan klachtenteam</dd>\n <dt class=\"col-6\">{{{ (data.eersteBeoordeling?.berichtNaarKlachtenteamDienst || '-') }}} </dt>\n </dl>\n <dl class=\"row mb-0\">\n <dd class=\"col-6\">Toelichting toewijzing</dd>\n <dt class=\"col-6\">{{{ (data.rapportageCategorieen?.toegewezenDienst?.toelichtingVastleggenDienst || '-') }}} </dt>\n </dl>\n <dl class=\"row mb-0\">\n <dd class=\"col-6\">Kenmerk ombudsman</dd>\n <dt class=\"col-6\">{{{ (data.ombudsmannummer || '-') }}} </dt>\n </dl>\n <dl class=\"row mb-0\">\n <dd class=\"col-6\">Kenmerk leveranciers</dd>\n <dt class=\"col-6\">{{{ (data.leverancierskenmerk || '-') }}} </dt>\n </dl> \n <dl class=\"row mb-0\">\n <dd class=\"col-6\">Via burgemeester of wethouder?</dd>\n <dt class=\"col-6\">{{{ (data.routeBurgemeesterWethouderkenmerk || '-') }}} </dt>\n </dl> ",
+                  "tableView" : false,
+                  "attributes" : {
+                    "data-testid" : "eerstelijns-klachten.summary-html"
+                  },
+                  "refreshOnChange" : false
+                }
+              ]
+            },
+            {
+              "key" : "melder",
+              "type" : "container",
+              "input" : true,
+              "label" : "Container",
+              "title" : "Melder",
+              "tableView" : false,
+              "attributes" : {
+                "data-testid" : "eerstelijns-klachten.summary-melder"
+              },
+              "components" : [
+                {
+                  "key" : "html",
+                  "tag" : "div",
+                  "type" : "htmlelement",
+                  "input" : true,
+                  "label" : "Melder",
+                  "content" : "<h4>Melder</h4>\n<section>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Naam</dd>\n        <dt class=\"col-6\">{{{(data.melder?.personalia?.voornaam + ' ' + (data.melder?.personalia?.voorvoegsels ? data.melder?.personalia?.voorvoegsels + ' ' :'') + data.melder?.personalia?.achternaam)}}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">E-mail</dd>\n        <dt class=\"col-6\">{{{ (data.melder?.contactgegevens?.email || '-') }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Adres</dd>\n        <dt class=\"col-6\">{{{ (data.melder?.adres?.straat ? data.melder.adres.straat + ' ' : '') + (data.melder?.adres?.huisnummer ? data.melder.adres.huisnummer + ( (data.melder?.adres?.huisletter ? data.melder.adres.huisletter + ' ' : ' ') ) : '') + (data.melder?.adres?.huisnummertoevoeging ? data.melder.adres.huisnummertoevoeging + ' ' : '') + (data.melder?.adres?.postcode ? data.melder.adres.postcode + ' ' : '') + (data.melder?.adres?.woonplaats ? data.melder.adres.woonplaats : '')}}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Telefoonnummer</dd>\n        <dt class=\"col-6\">{{{ (data.melder?.contactgegevens?.telefoonnummer || '-') }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Soort melder</dd>\n        <dt class=\"col-6\">{{{ ({INWONER:\"Inwoner\", ORGANISATIE:\"Organisatie\", ANDERS:\"Anders\"} [data.melder?.soortMelder] ) }}}</dt>\n    </dl>\n    </section>",
+                  "tableView" : false,
+                  "attributes" : {
+                    "data-testid" : "eerstelijns-klachten.summary-html"
+                  },
+                  "refreshOnChange" : false
+                }
+              ]
+            },
+            {
+              "key" : "eersteBeoordeling",
+              "type" : "container",
+              "input" : true,
+              "label" : "Container",
+              "title" : "Eerste beoordeling",
+              "tableView" : false,
+              "attributes" : {
+                "data-testid" : "eerstelijns-klachten.summary-eersteBeoordeling"
+              },
+              "components" : [
+                {
+                  "key" : "html1",
+                  "tag" : "div",
+                  "type" : "htmlelement",
+                  "attrs" : [
+                    {
+                      "attr" : "",
+                      "value" : ""
+                    }
+                  ],
+                  "input" : true,
+                  "label" : "Resultaat eerste beoordeling",
+                  "content" : "<h4>Resultaat eerste beoordeling</h4>\n<section>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Resultaat na eerste beoordeling</dd>\n        <dt class=\"col-6\">{{{ {'KLACHT_BETREFT_KLACHT_EN_VERDERE_VERKENNING_IS_BENODIGD':'Klacht in behandeling nemen', 'KLACHT_BETREFT_GEEN_KLACHT':'Klacht betreft geen klacht', 'KLACHT_IS_NIET_ONTVANKELIJK':'Klacht is niet ontvankelijk', 'TOEGEWEZEN_DIENST_AANPASSEN':'Toegewezen dienst aanpassen'}[data.eersteBeoordeling?.resultaat] || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0 {{{ data.eersteBeoordeling?.resultaat === 'KLACHT_BETREFT_GEEN_KLACHT' ? '' : 'd-none'}}}\">\n        <dd class=\"col-6\">Klacht doorgestuurd naar afdeling</dd>\n        <dt class=\"col-6\">{{{ data.eersteBeoordeling?.afdeling?.naam || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0 {{{ data.eersteBeoordeling?.resultaat === 'KLACHT_BETREFT_GEEN_KLACHT' ? '' : 'd-none'}}}\">\n        <dd class=\"col-6\">E-mailadres afdeling</dd>\n        <dt class=\"col-6\">{{{ data.eersteBeoordeling?.afdeling?.email || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0 {{{ data.eersteBeoordeling?.resultaat === 'KLACHT_BETREFT_GEEN_KLACHT' ? '' : 'd-none'}}}\">\n        <dd class=\"col-6\">Bericht naar afdeling</dd>\n        <dt class=\"col-6\">{{{ data.eersteBeoordeling?.berichtNaarAfdeling || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0 {{{ data.eersteBeoordeling?.resultaat === 'KLACHT_IS_NIET_ONTVANKELIJK' ? '' : 'd-none'}}}\">\n        <dd class=\"col-6\">Reden klacht niet ontvankelijk</dd>\n        <dt class=\"col-6\">{{{ data.eersteBeoordeling?.redenGeenKlacht || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Toelichting</dd>\n        <dt class=\"col-6\">{{{ data.eersteBeoordeling?.toelichting || '-' }}} </dt>\n    </dl>\n</section>",
+                  "tableView" : false,
+                  "attributes" : {
+                    "data-testid" : "eerstelijns-klachten.summary-html1"
+                  },
+                  "refreshOnChange" : false
+                }
+              ]
+            },
+            {
+              "key" : "verkenning",
+              "type" : "container",
+              "input" : true,
+              "label" : "verkenning",
+              "tableView" : false,
+              "attributes" : {
+                "data-testid" : "eerstelijns-klachten.summary-verkenning"
+              },
+              "components" : [
+                {
+                  "key" : "html1",
+                  "tag" : "div",
+                  "type" : "htmlelement",
+                  "attrs" : [
+                    {
+                      "attr" : "",
+                      "value" : ""
+                    }
+                  ],
+                  "input" : true,
+                  "label" : "Resultaat verkenning",
+                  "content" : "<h4>Resultaat verkenning</h4>\n<section>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Resultaat verkenning</dd>\n        <dt class=\"col-6\">{{{ { 'KLACHT_BETREFT_KLACHT_NIET_OPGELOST':'Klacht betreft klacht, maar is nog niet opgelost', 'KLACHT_BETREFT_KLACHT_OPGELOST':'Klacht betreft klacht, maar is opgelost', 'KLACHT_BETREFT_KLACHT_NIET_ONTVANKELIJK':'Klacht betreft klacht, maar is niet ontvankelijk', 'KLACHT_IS_INGETROKKEN': 'Klacht is ingetrokken door de melder', 'KLACHT_BEHANDELEN': 'Klacht wordt behandeld', 'GEEN_KLACHT_LEVERANCIER': 'Klacht is geen klacht - Leverancier', 'GEEN_KLACHT_BELEID': 'Klacht is geen klacht - Beleid', 'GEEN_KLACHT_MELDING_OPENBARE_RUIMTE': 'Klacht is geen klacht - Melding openbare ruimte', 'GEEN_KLACHT_MELDING': 'Klacht is geen klacht - Melding', 'GEEN_KLACHT_ALGEMEEN': 'Klacht is geen klacht - Algemeen' }[data.verkenning?.resultaat] || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\" >\n        <dd class=\"col-6\">Toelichting resultaat verkenning</dd>\n        <dt class=\"col-6\">{{{ data.verkenning?.toelichting || '-' }}} </dt>\n    </dl>\n\n    <dl class=\"row mb-0 {{{ data.verkenning?.resultaat === 'KLACHT_BETREFT_KLACHT_NIET_OPGELOST' ? '' : 'd-none' }}}\">\n        <dd class=\"col-6\">Verwachte afhandeltermijn in weken</dd>\n        <dt class=\"col-6\">{{{ data.verkenning?.teVerwachteAfhandeltermijn || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0 {{{ data.verkenning?.resultaat === 'KLACHT_BETREFT_KLACHT_NIET_OPGELOST' ? '' : 'd-none' }}}\">\n        <dd class=\"col-6\">Klacht direct formeel afhandelen?</dd>\n        <dt class=\"col-6\">{{{ data.verkenning?.formeelAfhandelenKlacht === true ? 'Ja' : data.verkenning?.formeelAfhandelenKlacht === false ? 'Nee' : '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0 {{{ data.verkenning?.resultaat === 'KLACHT_BETREFT_KLACHT_OPGELOST' ? '' : 'd-none' }}}\">\n        <dd class=\"col-6\">Overeengekomen oplossing</dd>\n        <dt class=\"col-6\">{{{ data.verkenning?.oplossing || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0 {{{ data.verkenning?.resultaat === 'KLACHT_BETREFT_KLACHT_NIET_ONTVANKELIJK' ? '' : 'd-none'}}}\">\n        <dd class=\"col-6\">Reden klacht niet ontvankelijk</dd>\n        <dt class=\"col-6\">{{{ data.verkenning?.redenNietOntvankelijk || '-' }}} </dt>\n    </dl>\n</section>",
+                  "tableView" : false,
+                  "attributes" : {
+                    "data-testid" : "eerstelijns-klachten.summary-html1"
+                  },
+                  "refreshOnChange" : false
+                }
+              ]
+            },
+            {
+              "key" : "informeleAfhandeling",
+              "type" : "container",
+              "input" : true,
+              "label" : "Container",
+              "title" : "Informele afhandeling behandelaar",
+              "tableView" : false,
+              "attributes" : {
+                "data-testid" : "eerstelijns-klachten.summary-informeleAfhandeling"
+              },
+              "components" : [
+                {
+                  "key" : "html",
+                  "tag" : "div",
+                  "type" : "htmlelement",
+                  "input" : true,
+                  "label" : "informele afhandeling behandelaar",
+                  "content" : "<h4>Informele afhandeling behandelaar</h4>\n<section>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Oordeel</dd>\n        <dt class=\"col-6\">{{{ \n            data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.oordeel?.value ||\n            '-' \n        }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Gemotiveerd oordeel</dd>\n        <dt class=\"col-6\">{{{ \n            data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.gemotiveerdOordeel?.omschrijving || \n            '-' \n        }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\"> Kernprincipe</dd>\n        <dt class=\"col-6\">{{{ \n            data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.kernprincipe?.value ?\n            (\n                (\n                    data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.oordeel?.name == 'GEGROND' ||\n                    data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.oordeel?.name == 'DEELS_GEGROND'\n                ) ? data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.kernprincipe?.value : '-' \n            ) : '-'\n        }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\"> Kernprincipe 2</dd>\n        <dt class=\"col-6\">{{{ \n            data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.kernprincipe2?.value ?\n            (\n                (\n                    data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.oordeel?.name == 'GEGROND' ||\n                    data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.oordeel?.name == 'DEELS_GEGROND'\n                ) ? data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.kernprincipe2?.value : '-' \n            ) : '-'\n        }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\"> Kernprincipe 3</dd>\n        <dt class=\"col-6\">{{{ \n            data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.kernprincipe3?.value ?\n            (\n                (\n                    data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.oordeel?.name == 'GEGROND' ||\n                    data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.oordeel?.name == 'DEELS_GEGROND'\n                ) ? data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.kernprincipe3?.value : '-' \n            ) : '-'\n        }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Geschonden behoorlijkheidsnormen</dd>\n        <dt class=\"col-6\">{{\n            data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.geschondenBehoorlijkheidsnormen ? \n            (\n                (\n                    data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.oordeel?.name == 'GEGROND' ||\n                    data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.oordeel?.name == 'DEELS_GEGROND'\n                ) ? (data.informeleAfhandeling.afhandelingDoorKlachtbehandelaar.onderzoek.geschondenBehoorlijkheidsnormen).map(v => '<li>'+v?.value+'</li>').join('') + '<br>' : '-' \n            ) : '-'\n        }}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Geschonden behoorlijkheidsnormen 2</dd>\n        <dt class=\"col-6\">{{\n            data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.geschondenBehoorlijkheidsnormen2 ? \n            (\n                (\n                    data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.oordeel?.name == 'GEGROND' ||\n                    data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.oordeel?.name == 'DEELS_GEGROND'\n                ) ? (data.informeleAfhandeling.afhandelingDoorKlachtbehandelaar.onderzoek.geschondenBehoorlijkheidsnormen2).map(v => '<li>'+v?.value+'</li>').join('') + '<br>' : '-' \n            ) : '-'\n        }}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Geschonden behoorlijkheidsnormen 3</dd>\n        <dt class=\"col-6\">{{\n            data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.geschondenBehoorlijkheidsnormen3 ? \n            (\n                (\n                    data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.oordeel?.name == 'GEGROND' ||\n                    data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.oordeel?.name == 'DEELS_GEGROND'\n                ) ? (data.informeleAfhandeling.afhandelingDoorKlachtbehandelaar.onderzoek.geschondenBehoorlijkheidsnormen3).map(v => '<li>'+v?.value+'</li>').join('') + '<br>' : '-' \n            ) : '-'\n        }}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Oplossingsvoorstel</dd>\n        <dt class=\"col-6\">{{{ \n            data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.oplossing?.voorstel || \n            '-' \n        }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Oplossingsvoorstel besproken met melder op</dd>\n        <dt class=\"col-6\">{{{ \n            data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.oplossing?.datumBesprokenMetMelder ? \n            moment(data.informeleAfhandeling.afhandelingDoorKlachtbehandelaar.onderzoek.oplossing.datumBesprokenMetMelder).format('DD-MM-yyyy') :\n            '-' \n        }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Melder akkoord met oplossingsvoorstel</dd>\n        <dt class=\"col-6\">{{{\n            ({'JA':'Ja', 'NEE':'Nee'}[data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.onderzoek?.oplossing?.melderAkkoordMetVoorstel]) || \n            '-' \n        }}}</dt>\n    </dl>\n</section>",
+                  "tableView" : false,
+                  "attributes" : {
+                    "data-testid" : "eerstelijns-klachten.summary-html"
+                  },
+                  "refreshOnChange" : false
+                }
+              ],
+              "customConditional" : "show = data.informeleAfhandeling.afhandelingDoorKlachtbehandelaar;"
+            },
+            {
+              "key" : "informeleAfhandeling",
+              "type" : "container",
+              "input" : true,
+              "label" : "Container",
+              "title" : "Informele afhandeling coordinator",
+              "tableView" : false,
+              "attributes" : {
+                "data-testid" : "eerstelijns-klachten.summary-informeleAfhandeling"
+              },
+              "components" : [
+                {
+                  "key" : "html",
+                  "tag" : "div",
+                  "type" : "htmlelement",
+                  "input" : true,
+                  "label" : "informele afhandeling coordinator",
+                  "content" : "<h4>Informele afhandeling coördinator</h4>\n<section>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Gemotiveerd oordeel</dd>\n        <dt class=\"col-6\">{{{ \n            data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.gemotiveerdOordeel?.omschrijving || \n            '-' \n        }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Oordeel</dd>\n        <dt class=\"col-6\">{{{ \n            data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oordeel?.value ||\n            '-' \n        }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\"> Kernprincipe</dd>\n        <dt class=\"col-6\">{{{\n            data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.kernprincipe?.value ?\n            (\n                (\n                    data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oordeel?.name == 'GEGROND' ||\n                    data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oordeel?.name == 'DEELS_GEGROND'\n                ) ? data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.kernprincipe?.value : '-' \n            ) : '-'\n        }}}</dt>\n    </dl>\n        <dl class=\"row mb-0\">\n        <dd class=\"col-6\"> Kernprincipe 2</dd>\n        <dt class=\"col-6\">{{{\n            data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.kernprincipe2?.value ?\n            (\n                (\n                    data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oordeel?.name == 'GEGROND' ||\n                    data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oordeel?.name == 'DEELS_GEGROND'\n                ) ? data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.kernprincipe2?.value : '-' \n            ) : '-'\n        }}}</dt>\n    </dl>\n        <dl class=\"row mb-0\">\n        <dd class=\"col-6\"> Kernprincipe 3</dd>\n        <dt class=\"col-6\">{{{\n            data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.kernprincipe3?.value ?\n            (\n                (\n                    data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oordeel?.name == 'GEGROND' ||\n                    data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oordeel?.name == 'DEELS_GEGROND'\n                ) ? data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.kernprincipe3?.value : '-' \n            ) : '-'\n        }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Geschonden behoorlijkheidsnormen</dd>\n        <dt class=\"col-6\">{{ \n            data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.geschondenBehoorlijkheidsnormen ? \n            (\n                (\n                    data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oordeel?.name == 'GEGROND' ||\n                    data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oordeel?.name == 'DEELS_GEGROND'\n                ) ? (data.informeleAfhandeling.afhandelingDoorKlachtcoordinator.onderzoek.geschondenBehoorlijkheidsnormen).map(v => '<li>'+v?.value+'</li>').join('') + '<br>' : '-' \n            ) : '-'\n        }}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Geschonden behoorlijkheidsnormen 2</dd>\n        <dt class=\"col-6\">{{ \n            data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.geschondenBehoorlijkheidsnormen2 ? \n            (\n                (\n                    data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oordeel?.name == 'GEGROND' ||\n                    data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oordeel?.name == 'DEELS_GEGROND'\n                ) ? (data.informeleAfhandeling.afhandelingDoorKlachtcoordinator.onderzoek.geschondenBehoorlijkheidsnormen2).map(v => '<li>'+v?.value+'</li>').join('') + '<br>' : '-' \n            ) : '-'\n        }}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Geschonden behoorlijkheidsnormen 3</dd>\n        <dt class=\"col-6\">{{ \n            data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.geschondenBehoorlijkheidsnormen3 ? \n            (\n                (\n                    data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oordeel?.name == 'GEGROND' ||\n                    data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oordeel?.name == 'DEELS_GEGROND'\n                ) ? (data.informeleAfhandeling.afhandelingDoorKlachtcoordinator.onderzoek.geschondenBehoorlijkheidsnormen3).map(v => '<li>'+v?.value+'</li>').join('') + '<br>' : '-' \n            ) : '-'\n        }}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Melder akkoord met oplossingsvoorstel</dd>\n        <dt class=\"col-6\">{{{\n            ({'JA':'Ja', 'NEE':'Nee'}[data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oplossing?.melderAkkoordMetVoorstel]) || \n            '-' \n        }}}</dt>\n    </dl>\n    <dl class=\"row mb-0 {{{ data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.toelichting ? '' : 'd-none'}}}\">\n        <dd class=\"col-6\">Toelichting terugkoppeling</dd>\n        <dt class=\"col-6\">{{{ \n            data.informeleAfhandeling?.afhandelingDoorKlachtbehandelaar?.toelichting ||\n            '-' \n        }}} </dt>\n    </dl>\n    <dl class=\"row mb-0 {{{ \n        data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.oplossing?.melderAkkoordMetVoorstel === 'NEE' ? '' : \n        'd-none'\n    }}}\">\n        <dd class=\"col-6\">Gemotiveerd oordeel overnemen als formeel gemotiveerd oordeel?</dd>\n        <dt class=\"col-6\">{{{ \n            ({'JA':'Ja', 'NEE':'Nee'}[data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.gemotiveerdOordeel?.overnemenNaarFormeleAfhandeling]) || \n            '-'\n        }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Toelichting definitieve eindbrief</dd>\n        <dt class=\"col-6\">{{{ data.informeleAfhandeling?.eindbrief?.toelichting || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Eindbrief is gedeeld met</dd>\n        <dt class=\"col-6\">{{ data.informeleAfhandeling?.eindbrief?.gedeeldMet ?\n            ((data.informeleAfhandeling?.eindbrief?.gedeeldMet).map(v => { \n                const formatDate = (isoString) => {\n                    const date = new Date(isoString);\n                    const day = String(date.getDate()).padStart(2, '0'); \n                    const month = String(date.getMonth() + 1).padStart(2, '0'); \n                    const year = date.getFullYear();\n                    return `${day}-${month}-${year}`; \n                }; \n                return '<li>' + v.naam + ' - ' + v.email + ' - ' + formatDate(v.verstuurdOp) + '</li>'; \n            }).join('')) : \n            '-'\n        }}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Oorzaak volgens klachtbehandelaar</dd>\n        <dt class=\"col-6\">{{{ {'beleid':'Beleid', 'persoon':'Persoon', 'proces':'Proces', 'andersNamelijk':'Anders, namelijk'}[data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.geleerdVoorToekomst?.oorzaakKlachtBehandelaar] || '-' }}}</dt>\n    </dl>\n    <dl class=\"row mb-0 {{{ data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.geleerdVoorToekomst?.oorzaakKlachtBehandelaar === 'andersNamelijk' ? '' : 'd-none' }}}\">\n        <dd class=\"col-6\">Toelichting oorzaak volgens klachtbehandelaar</dd>\n        <dt class=\"col-6\">{{{ data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.geleerdVoorToekomst?.oorzaakKBToelichting || '-' }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Oorzaak volgens klachtcoördinator</dd>\n        <dt class=\"col-6\">{{{ {'beleid':'Beleid', 'persoon':'Persoon', 'proces':'Proces', 'andersNamelijk':'Anders, namelijk'}[data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.geleerdVoorToekomst?.oorzaakKlachtCoordinator] || '-' }}}</dt>\n    </dl>\n    <dl class=\"row mb-0 {{{ data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.geleerdVoorToekomst?.oorzaakKlachtCoordinator === 'andersNamelijk' ? '' : 'd-none' }}}\">\n        <dd class=\"col-6\">Toelichting oorzaak volgens klachtcoördinator</dd>\n        <dt class=\"col-6\">{{{ data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.geleerdVoorToekomst?.oorzaakKCToelichting || '-' }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Wat hebben wij geleerd voor de toekomst?</dd>\n        <dt class=\"col-6\">{{{ data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.geleerdVoorToekomst?.toelichting || '-' }}}</dt>\n    </dl>\n</section>",
+                  "tableView" : false,
+                  "attributes" : {
+                    "data-testid" : "eerstelijns-klachten.summary-html"
+                  },
+                  "refreshOnChange" : false
+                }
+              ]
+            },
+            {
+              "key" : "formeleAfhandeling",
+              "type" : "container",
+              "input" : true,
+              "label" : "Container",
+              "title" : "Formele afhandeling",
+              "tableView" : false,
+              "attributes" : {
+                "data-testid" : "eerstelijns-klachten.summary-formeleAfhandeling"
+              },
+              "components" : [
+                {
+                  "key" : "html",
+                  "tag" : "div",
+                  "type" : "htmlelement",
+                  "input" : true,
+                  "label" : "Formele afhandeling",
+                  "content" : "<h4>Formele afhandeling</h4>\n<section>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Gehanteerde gespreksvorm</dd>\n        <dt class=\"col-6\">{{{ {'INDIVIDUEEL':'Individueel', 'DRIEGESPREK':'Driegesprek'}[data.formeleAfhandeling?.verslagHoorwederhoor?.gespreksvorm] || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Datum gesprek</dd>\n        <dt class=\"col-6\">{{{ data.formeleAfhandeling?.verslagHoorwederhoor?.datumGesprek ? moment(data.formeleAfhandeling?.verslagHoorwederhoor?.datumGesprek).format('DD-MM-yyyy') : '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Toelichting gesprek</dd>\n        <dt class=\"col-6\">{{{ data.formeleAfhandeling?.verslagHoorwederhoor?.toelichting || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Gespreksverslag is gedeeld met</dd>\n        <dt class=\"col-6\">{{ data.formeleAfhandeling?.verslagHoorwederhoor?.gedeeldMet ?\n            ((data.formeleAfhandeling?.verslagHoorwederhoor?.gedeeldMet).map(v => { const formatDate = (isoString) => { const date = new Date(isoString); const day = String(date.getDate()).padStart(2, '0'); const month = String(date.getMonth() + 1).padStart(2, '0'); const year = date.getFullYear(); return `${day}-${month}-${year}`; }; return '<li>' + v.naam + ' - ' + v.email + ' - ' + formatDate(v.verstuurdOp) + '</li>'; }).join('')) : '-'}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n    <dd class=\"col-6\">Verdiepend onderzoek uitgevoerd</dd>\n    <dt class=\"col-6\">{{{ ({'JA': 'Ja', 'NEE': 'Nee'}[data.formeleAfhandeling?.onderzoek?.onderzoekUitgevoerd]) || '-' }}} </dt>\n</dl>\n    <dl class=\"row mb-0 {{{ data.formeleAfhandeling?.onderzoek?.onderzoekUitgevoerd === 'JA' ? '' : 'd-none'}}}\">\n        <dd class=\"col-6\">Toelichting verdiepend onderzoek</dd>\n        <dt class=\"col-6\">{{{ data.formeleAfhandeling?.onderzoek?.toelichting || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Gemotiveerd oordeel</dd>\n        <dt class=\"col-6\">{{{ data.formeleAfhandeling?.onderzoek?.gemotiveerdOordeel?.omschrijving || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Oordeel</dd>\n        <dt class=\"col-6\">{{{ data.formeleAfhandeling?.onderzoek?.oordeel?.value || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Kernprincipe</dd>\n        <dt class=\"col-6\">{{\n            data.formeleAfhandeling?.onderzoek?.kernprincipe ? data.formeleAfhandeling?.onderzoek?.kernprincipe?.value : '-'\n            }}</dt>\n    </dl>\n        <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Kernprincipe 2</dd>\n        <dt class=\"col-6\">{{\n            data.formeleAfhandeling?.onderzoek?.kernprincipe ? data.formeleAfhandeling?.onderzoek?.kernprincipe2?.value : '-'\n            }}</dt>\n    </dl>\n        <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Kernprincipe 3</dd>\n        <dt class=\"col-6\">{{\n            data.formeleAfhandeling?.onderzoek?.kernprincipe ? data.formeleAfhandeling?.onderzoek?.kernprincipe3?.value : '-'\n            }}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Geschonden behoorlijkheidsnormen</dd>\n        <dt class=\"col-6\">{{\n            data.formeleAfhandeling?.onderzoek?.geschondenBehoorlijkheidsnormen ?\n            ((data.formeleAfhandeling?.onderzoek?.geschondenBehoorlijkheidsnormen).map(v => '<li>'+v?.value+'</li>').join('') + '<br>')\n            : '-'\n            }}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Geschonden behoorlijkheidsnormen 2</dd>\n        <dt class=\"col-6\">{{\n            data.formeleAfhandeling?.onderzoek?.geschondenBehoorlijkheidsnormen2 ?\n            ((data.formeleAfhandeling?.onderzoek?.geschondenBehoorlijkheidsnormen2).map(v => '<li>'+v?.value+'</li>').join('') + '<br>')\n            : '-'\n            }}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Geschonden behoorlijkheidsnormen 3</dd>\n        <dt class=\"col-6\">{{\n            data.formeleAfhandeling?.onderzoek?.geschondenBehoorlijkheidsnormen3 ?\n            ((data.formeleAfhandeling?.onderzoek?.geschondenBehoorlijkheidsnormen3).map(v => '<li>'+v?.value+'</li>').join('') + '<br>')\n            : '-'\n            }}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Toelichting definitieve eindbrief</dd>\n        <dt class=\"col-6\">{{{ data.formeleAfhandeling?.eindbrief?.toelichting || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Eindbrief is gedeeld met</dd>\n        <dt class=\"col-6\">{{ data.formeleAfhandeling?.eindbrief?.gedeeldMet ?\n            ((data.formeleAfhandeling?.eindbrief?.gedeeldMet).map(v => { const formatDate = (isoString) => { const date = new Date(isoString); const day = String(date.getDate()).padStart(2, '0'); const month = String(date.getMonth() + 1).padStart(2, '0'); const year = date.getFullYear(); return `${day}-${month}-${year}`; }; return '<li>' + v.naam + ' - ' + v.email + ' - ' + formatDate(v.verstuurdOp) + '</li>'; }).join('')) : '-' }}\n        </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Oorzaak volgens klachtbehandelaar</dd>\n        <dt class=\"col-6\">{{{ {'beleid':'Beleid', 'persoon':'Persoon', 'proces':'Proces', 'andersNamelijk':'Anders, namelijk'}[data.formeleAfhandeling?.onderzoek?.geleerdVoorToekomst?.oorzaakKlachtBehandelaar] || '-' }}}</dt>\n    </dl>\n    <dl class=\"row mb-0 {{{ data.formeleAfhandeling?.onderzoek?.geleerdVoorToekomst?.oorzaakKlachtBehandelaar === 'andersNamelijk' ? '' : 'd-none' }}}\">\n        <dd class=\"col-6\">Toelichting oorzaak volgens klachtbehandelaar</dd>\n        <dt class=\"col-6\">{{{ data.formeleAfhandeling?.onderzoek?.geleerdVoorToekomst?.oorzaakKBToelichting || '-' }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Oorzaak volgens klachtcoördinator</dd>\n        <dt class=\"col-6\">{{{ {'beleid':'Beleid', 'persoon':'Persoon', 'proces':'Proces', 'andersNamelijk':'Anders, namelijk'}[data.formeleAfhandeling?.onderzoek?.geleerdVoorToekomst?.oorzaakKlachtCoordinator] || '-' }}}</dt>\n    </dl>\n    <dl class=\"row mb-0 {{{ data.formeleAfhandeling?.onderzoek?.geleerdVoorToekomst?.oorzaakKlachtCoordinator === 'andersNamelijk' ? '' : 'd-none' }}}\">\n        <dd class=\"col-6\">Toelichting oorzaak volgens klachtcoördinator</dd>\n        <dt class=\"col-6\">{{{ data.formeleAfhandeling?.onderzoek?.geleerdVoorToekomst?.oorzaakKCToelichting || '-' }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Wat hebben wij geleerd voor de toekomst?</dd>\n        <dt class=\"col-6\">{{{ data.formeleAfhandeling?.onderzoek?.geleerdVoorToekomst?.toelichting || '-' }}}</dt>\n    </dl>\n</section>\n",
+                  "tableView" : false,
+                  "attributes" : {
+                    "data-testid" : "eerstelijns-klachten.summary-html"
+                  },
+                  "refreshOnChange" : false
+                }
+              ]
+            },
+            {
+              "key" : "aardigheidje",
+              "type" : "container",
+              "input" : true,
+              "label" : "Verstuurd aardigheidje",
+              "title" : "Klacht",
+              "tableView" : false,
+              "attributes" : {
+                "data-testid" : "eerstelijns-klachten.summary-aardigheidje"
+              },
+              "components" : [
+                {
+                  "key" : "html",
+                  "tag" : "div",
+                  "type" : "htmlelement",
+                  "input" : true,
+                  "label" : "Verstuurd aardigheidje",
+                  "content" : "<h4>Verstuurd aardigheidje</h4>\n<section>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Datum aardigheidje verstuurd</dd>\n        <dt class=\"col-6\">{{{ data.formeleAfhandeling?.aardigheidje?.verstuurdOp ? moment(data.formeleAfhandeling?.aardigheidje?.verstuurdOp).format('DD-MM-yyyy') : '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Omschrijving aardigheidje</dd>\n        <dt class=\"col-6\">{{{ data.formeleAfhandeling?.aardigheidje?.omschrijving || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Kosten aardigheidje</dd>\n        <dt class=\"col-6\">{{{ data.formeleAfhandeling?.aardigheidje?.kosten ? Number(data.formeleAfhandeling.aardigheidje.kosten).toLocaleString('nl-NL', {style:\"currency\", currency:\"EUR\"}) : '-' }}} </dt>\n    </dl>\n</section>",
+                  "tableView" : false,
+                  "attributes" : {
+                    "data-testid" : "eerstelijns-klachten.summary-html"
+                  },
+                  "refreshOnChange" : false
+                }
+              ],
+              "conditional" : {
+                "eq" : "JA",
+                "show" : true,
+                "when" : "formeleAfhandeling.aardigheidje.isVerstuurd"
+              }
+            }
+          ],
+          "currentWidth" : 6
+        },
+        {
+          "pull" : 0,
+          "push" : 0,
+          "size" : "md",
+          "width" : 6,
+          "offset" : 0,
+          "components" : [
+            {
+              "key" : "openZaak",
+              "type" : "container",
+              "input" : true,
+              "label" : "Container",
+              "title" : "Openzaak",
+              "tableView" : false,
+              "attributes" : {
+                "data-testid" : "eerstelijns-klachten.summary-openZaak"
+              },
+              "components" : [
+                {
+                  "key" : "html",
+                  "tag" : "div",
+                  "type" : "htmlelement",
+                  "input" : true,
+                  "label" : "HTML",
+                  "content" : "<h4>OpenZaak informatie</h4>\n<section>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">OpenZaak ID</dd>\n        <dt class=\"col-6\">{{{ data.openZaak?.identificatie || '-' }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Zaakstatus</dd>\n        <dt class=\"col-6\">{{{ data.openZaak?.statusOmschrijving || '-' }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Zaakresultaat</dd>\n        <dt class=\"col-6\">{{{ data.openZaak?.resultaatOmschrijving || '-' }}}</dt>\n   <dd class=\"col-6\">Afhandeldatum intern</dd>\n        <dt class=\"col-6\">{{{ data.afhandeldatumIntern ? moment(data.afhandeldatumIntern).format('DD-MM-yyyy') : '-' }}}</dt>\n  </dl>\n</section>",
+                  "tableView" : false,
+                  "attributes" : {
+                    "data-testid" : "eerstelijns-klachten.summary-html"
+                  }
+                }
+              ]
+            },
+            {
+              "key" : "openZaak",
+              "type" : "container",
+              "input" : true,
+              "label" : "Container",
+              "title" : "Indeling",
+              "tableView" : false,
+              "attributes" : {
+                "data-testid" : "eerstelijns-klachten.summary-openZaak"
+              },
+              "components" : [
+                {
+                  "key" : "html",
+                  "tag" : "div",
+                  "type" : "htmlelement",
+                  "input" : true,
+                  "label" : "HTML",
+                  "content" : "<h4>Indeling</h4>\n<section>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Dienst</dd>\n        <dt class=\"col-6\">{{{ data.rapportageCategorieen?.toegewezenDienst?.dienst?.name || '-' }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Sector</dd>\n        <dt class=\"col-6\">{{{ data.rapportageCategorieen?.sector?.value || '-' }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Afdeling</dd>\n        <dt class=\"col-6\">{{{ data.rapportageCategorieen?.afdeling?.value || '-' }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Autorisatiegroep</dd>\n        <dt class=\"col-6\">{{{ data.verkenning?.autorisatieGroep?.value || '-' }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Producten</dd>\n        <dt class=\"col-6\">{{\n            data.rapportageCategorieen?.producten ? \n            ( (data.rapportageCategorieen.producten).map(v => '<li>'+v?.value+'</li>').join('') + '<br>' ) :  '-'\n        }}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Thema's</dd>\n        <dt class=\"col-6\">{{\n            data.rapportageCategorieen?.themas ? \n            ( (data.rapportageCategorieen.themas).map(v => '<li>'+v?.value+'</li>').join('') + '<br>' ) :  '-'\n        }}</dt>\n    </dl>\n</section>",
+                  "tableView" : false,
+                  "attributes" : {
+                    "data-testid" : "eerstelijns-klachten.summary-html"
+                  }
+                }
+              ]
+            },
+            {
+              "key" : "behandelingDoorKlachtencommissie",
+              "type" : "container",
+              "input" : true,
+              "label" : "Afhandeling door klachtencommissie",
+              "title" : "Afhandeling door klachtencommissie",
+              "tableView" : false,
+              "attributes" : {
+                "data-testid" : "eerstelijns-klachten.summary-behandelingDoorKlachtencommissie"
+              },
+              "components" : [
+                {
+                  "key" : "html1",
+                  "tag" : "div",
+                  "type" : "htmlelement",
+                  "input" : true,
+                  "label" : "Afhandeling door klachtencommissie",
+                  "content" : "<h4>Afhandeling door klachtencommissie</h4>\n<section>\n      <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Oordeel</dd>\n        <dt class=\"col-6\">{{{ \n            data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.oordeel?.value ? \n                _.upperFirst((data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.oordeel?.value)?.toLowerCase())\n                : '-' \n        }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Datum van overdracht</dd>\n        <dt class=\"col-6\">{{{ \n            data.behandelingDoorKlachtencommissie?.overdracht?.datum ? \n                moment(data.behandelingDoorKlachtencommissie.overdracht.datum).format('DD-MM-yyyy') \n                : '-' \n        }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Toelichting overdracht</dd>\n        <dt class=\"col-6\">{{{ data.behandelingDoorKlachtencommissie?.overdracht?.toelichting || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Datum ontvangst resultaat</dd>\n        <dt class=\"col-6\">{{{ \n            data.behandelingDoorKlachtencommissie?.klachtencommissie?.resultaat?.datumOntvangst ? \n                moment(data.behandelingDoorKlachtencommissie.klachtencommissie.resultaat.datumOntvangst).format('DD-MM-yyyy') \n                : '-' \n        }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Toelichting resultaat</dd>\n        <dt class=\"col-6\">{{{ data.behandelingDoorKlachtencommissie?.klachtencommissie?.resultaat?.toelichting || '-' }}} </dt>\n    </dl>\n\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Kernprincipe</dd>\n        <dt class=\"col-6\">{{ \n            data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.kernprincipe2 ? \n                data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.kernprincipe2?.value : \n                '-' \n        }}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Kernprincipe 2</dd>\n        <dt class=\"col-6\">{{ \n            data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.kernprincipe3 ? \n                data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.kernprincipe3?.value : \n                '-' \n        }}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Kernprincipe 3</dd>\n        <dt class=\"col-6\">{{ \n            data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.kernprincipe ? \n                data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.kernprincipe?.value : \n                '-' \n        }}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Geschonden behoorlijkheidsnormen</dd>\n        <dt class=\"col-6\">{{ \n            data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.geschondenBehoorlijkheidsnormen ? \n                ((data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.geschondenBehoorlijkheidsnormen).map(v => '<li>'+v?.value+'</li>').join('') + '<br>') \n                : '-' \n        }}\n    </dl>\n        <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Geschonden behoorlijkheidsnormen 2</dd>\n        <dt class=\"col-6\">{{ \n            data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.geschondenBehoorlijkheidsnormen2 ? \n                ((data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.geschondenBehoorlijkheidsnormen2).map(v => '<li>'+v?.value+'</li>').join('') + '<br>') \n                : '-' \n        }}\n    </dl>\n        <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Geschonden behoorlijkheidsnormen 3</dd>\n        <dt class=\"col-6\">{{ \n            data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.geschondenBehoorlijkheidsnormen3 ? \n                ((data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.geschondenBehoorlijkheidsnormen3).map(v => '<li>'+v?.value+'</li>').join('') + '<br>') \n                : '-' \n        }}\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Eindbrief verstuurd naar melder</dd>\n        <dt class=\"col-6\">{{{ {true:'Ja', false:'Nee'}[data.behandelingDoorKlachtencommissie?.klachtencommissie?.resultaat?.versturenEindbriefNaarMelder] || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Toelichting verstuurde eindbrief</dd>\n        <dt class=\"col-6\">{{{ data.behandelingDoorKlachtencommissie?.eindbrief?.toelichting || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Eindbrief is gedeeld met</dd>\n        <dt class=\"col-6\">{{ data.behandelingDoorKlachtencommissie?.eindbrief?.gedeeldMet ? ((data.behandelingDoorKlachtencommissie?.eindbrief?.gedeeldMet).map(v => { const formatDate = (isoString) => { const date = new Date(isoString); const day = String(date.getDate()).padStart(2, '0'); const month = String(date.getMonth() + 1).padStart(2, '0'); const year = date.getFullYear(); return `${day}-${month}-${year}`; }; return '<li>' + v.naam + ' - ' + v.email + ' - ' + formatDate(v.datumVerstuurd) + '</li>'; }).join('')) : '-' }}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Reactie van directie ontvangen op</dd>\n        <dt class=\"col-6\">{{{ data.behandelingDoorKlachtencommissie?.directie?.resultaat?.datumOntvangst ? \n            moment(data.behandelingDoorKlachtencommissie.directie.resultaat.datumOntvangst).format('DD-MM-yyyy') \n            : '-' }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Toelichting terug naar hoofdproces</dd>\n        <dt class=\"col-6\">{{{ data.behandelingDoorKlachtencommissie?.redenTeruggaanNaarHoofdproces || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Oorzaak volgens klachtbehandelaar</dd>\n        <dt class=\"col-6\">{{{ {'beleid':'Beleid', 'persoon':'Persoon', 'proces':'Proces', 'andersNamelijk':'Anders, namelijk'}[data.behandelingDoorKlachtencommissie?.onderzoek?.geleerdVoorToekomst?.oorzaakKlachtBehandelaar] || '-' }}}</dt>\n    </dl>\n    <dl class=\"row mb-0 {{{ data.behandelingDoorKlachtencommissie?.onderzoek?.geleerdVoorToekomst?.oorzaakKlachtBehandelaar === 'andersNamelijk' ? '' : 'd-none' }}}\">\n        <dd class=\"col-6\">Toelichting oorzaak volgens klachtbehandelaar</dd>\n        <dt class=\"col-6\">{{{ data.behandelingDoorKlachtencommissie?.onderzoek?.geleerdVoorToekomst?.oorzaakKBToelichting || '-' }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Oorzaak volgens klachtcoördinator</dd>\n        <dt class=\"col-6\">{{{ {'beleid':'Beleid', 'persoon':'Persoon', 'proces':'Proces', 'andersNamelijk':'Anders, namelijk'}[data.behandelingDoorKlachtencommissie?.onderzoek?.geleerdVoorToekomst?.oorzaakKlachtCoordinator] || '-' }}}</dt>\n    </dl>\n    <dl class=\"row mb-0 {{{ data.behandelingDoorKlachtencommissie?.onderzoek?.geleerdVoorToekomst?.oorzaakKlachtCoordinator === 'andersNamelijk' ? '' : 'd-none' }}}\">\n        <dd class=\"col-6\">Toelichting oorzaak volgens klachtcoördinator</dd>\n        <dt class=\"col-6\">{{{ data.behandelingDoorKlachtencommissie?.onderzoek?.geleerdVoorToekomst?.oorzaakKCToelichting || '-' }}}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Wat hebben wij geleerd voor de toekomst?</dd>\n        <dt class=\"col-6\">{{{ data.behandelingDoorKlachtencommissie?.onderzoek?.geleerdVoorToekomst?.toelichting || '-' }}}</dt>\n    </dl>\n</section>",
+                  "tableView" : false,
+                  "attributes" : {
+                    "data-testid" : "eerstelijns-klachten.summary-html1"
+                  },
+                  "refreshOnChange" : false
+                }
+              ]
+            },
+            {
+              "key" : "behandelingDoorKlachtencommissie.klachtenCoordinator",
+              "type" : "container",
+              "input" : true,
+              "label" : "Afhandeling door klachtencommissie afwijkend oordeel",
+              "title" : "Afhandeling door klachtencommissie afwijkend oordeel",
+              "tableView" : false,
+              "attributes" : {
+                "data-testid" : "eerstelijns-klachten.summary-behandelingDoorKlachtencommissie.klachtenCoordinator"
+              },
+              "components" : [
+                {
+                  "key" : "html1",
+                  "tag" : "div",
+                  "type" : "htmlelement",
+                  "input" : true,
+                  "label" : "Afhandeling door klachtencommissie afwijkend oordeel",
+                  "content" : "<h4>Afwijkend oordeel afhandeling klachtencommissie</h4>\n<section>\n\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Reden afwijkend oordeel</dd>\n        <dt class=\"col-6\">{{{ data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.redenAfwijkendOordeel || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Gemotiveerd oordeel</dd>\n        <dt class=\"col-6\">{{{ data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling?.gemotiveerdOordeel?.omschrijving || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Oordeel</dd>\n        <dt class=\"col-6\">{{ \n            data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling?.oordeel ? \n                data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling?.oordeel?.value : \n                '-' \n        }}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Kernprincipe</dd>\n        <dt class=\"col-6\">{{ \n            data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling?.kernprincipe ? \n                data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling.kernprincipe?.value : \n                '-' \n        }}</dt>\n    </dl>\n        <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Kernprincipe 2</dd>\n        <dt class=\"col-6\">{{ \n            data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling?.kernprincipe2 ? \n                data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling?.kernprincipe2?.value : \n                '-' \n        }}</dt>\n    </dl>\n        <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Kernprincipe 3</dd>\n        <dt class=\"col-6\">{{ \n            data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling?.kernprincipe3 ? \n                data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling?.kernprincipe3?.value : \n                '-' \n        }}</dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Geschonden behoorlijkheidsnormen</dd>\n        <dt class=\"col-6\">{{ \n            data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling?.geschondenBehoorlijkheidsnormen ? \n                ((data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling?.geschondenBehoorlijkheidsnormen).map(v => '<li>'+v?.value+'</li>').join('') + '<br>') \n                : '-' \n        }}\n    </dl>\n        <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Geschonden behoorlijkheidsnormen 2</dd>\n        <dt class=\"col-6\">{{ \n            data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling?.geschondenBehoorlijkheidsnormen2 ? \n                ((data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling?.geschondenBehoorlijkheidsnormen2).map(v => '<li>'+v?.value+'</li>').join('') + '<br>') \n                : '-' \n        }}\n    </dl>\n        <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Geschonden behoorlijkheidsnormen 3</dd>\n        <dt class=\"col-6\">{{ \n            data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling?.geschondenBehoorlijkheidsnormen3 ? \n                ((data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling?.geschondenBehoorlijkheidsnormen3).map(v => '<li>'+v?.value+'</li>').join('') + '<br>') \n                : '-' \n        }}\n    </dl>\n</section>",
+                  "tableView" : false,
+                  "attributes" : {
+                    "data-testid" : "eerstelijns-klachten.summary-html1"
+                  },
+                  "refreshOnChange" : false
+                }
+              ]
+            },
+            {
+              "key" : "behandelingDoorKlachtencommissie",
+              "type" : "container",
+              "input" : true,
+              "label" : "Verstuurd aardigheidje",
+              "title" : "Verstuurd aardigheidje",
+              "tableView" : false,
+              "attributes" : {
+                "data-testid" : "eerstelijns-klachten.summary-behandelingDoorKlachtencommissie"
+              },
+              "components" : [
+                {
+                  "key" : "html",
+                  "tag" : "div",
+                  "type" : "htmlelement",
+                  "input" : true,
+                  "label" : "Verstuurd aardigheidje",
+                  "content" : "<h4>Verstuurd aardigheidje</h4>\n<section>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Datum aardigheidje verstuurd</dd>\n        <dt class=\"col-6\">{{{ data.behandelingDoorKlachtencommissie?.aardigheidje?.verstuurdOp ? moment(data.behandelingDoorKlachtencommissie.aardigheidje.verstuurdOp).format('DD-MM-yyyy') : '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Omschrijving aardigheidje</dd>\n        <dt class=\"col-6\">{{{ data.behandelingDoorKlachtencommissie?.aardigheidje?.omschrijving || '-' }}} </dt>\n    </dl>\n    <dl class=\"row mb-0\">\n        <dd class=\"col-6\">Kosten aardigheidje</dd>\n        <dt class=\"col-6\">{{{ data.behandelingDoorKlachtencommissie?.aardigheidje?.kosten ? Number(data.behandelingDoorKlachtencommissie.aardigheidje.kosten).toLocaleString('nl-NL', {style:\"currency\", currency:\"EUR\"}) : '-' }}} </dt>\n    </dl>\n</section>",
+                  "tableView" : false,
+                  "attributes" : {
+                    "data-testid" : "eerstelijns-klachten.summary-html"
+                  },
+                  "refreshOnChange" : false
+                }
+              ],
+              "conditional" : {
+                "eq" : "JA",
+                "show" : true,
+                "when" : "behandelingDoorKlachtencommissie.aardigheidje.isVerstuurd"
+              }
+            }
+          ],
+          "currentWidth" : 6
+        }
+      ],
+      "tableView" : false
+    }
+  ]
+}

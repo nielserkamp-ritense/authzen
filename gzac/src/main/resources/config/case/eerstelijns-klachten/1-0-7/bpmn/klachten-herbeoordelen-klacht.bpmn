@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" exporter="Camunda Modeler" exporterVersion="5.30.0" expressionLanguage="http://www.w3.org/1999/XPath" id="Definitions_1mluvtt" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.20.0" targetNamespace="http://bpmn.io/schema/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema">
+      
+  
+  <bpmn:collaboration id="Collaboration_1inzqzm" isClosed="false">
+            
+    
+    <bpmn:participant id="HerbeoordelenKlachtParticipant" name="Herbeoordelen Klacht" processRef="klachten-herbeoordelen-klacht"/>
+          
+  
+  </bpmn:collaboration>
+      
+  
+  <bpmn:process camunda:historyTimeToLive="P3650D" camunda:versionTag="CD:eerstelijns-klachten:1.0.7" id="klachten-herbeoordelen-klacht" isClosed="false" isExecutable="true" name="Klachten: Terugzetten naar eerste beoordeling" processType="None">
+            
+    
+    <bpmn:startEvent id="StartHerbeoordelenKlachtStartEvent" isInterrupting="true" name="Start herbeoordelen klacht" parallelMultiple="false">
+                  
+      
+      <bpmn:outgoing>Flow_1lpe4es</bpmn:outgoing>
+                
+    
+    </bpmn:startEvent>
+            
+    
+    <bpmn:sequenceFlow id="Flow_1lpe4es" sourceRef="StartHerbeoordelenKlachtStartEvent" targetRef="Activity_0kuzxyw"/>
+            
+    
+    <bpmn:sequenceFlow id="Flow_0dhf1r7" sourceRef="Activity_0kuzxyw" targetRef="UpdateZaakstatusCallActivity"/>
+            
+    
+    <bpmn:serviceTask camunda:asyncAfter="true" camunda:expression="${true}" completionQuantity="1" id="Activity_0kuzxyw" implementation="##WebService" isForCompensation="false" name="verwijderen keuzevelden" startQuantity="1">
+                  
+      
+      <bpmn:extensionElements>
+                        
+        
+        <camunda:inputOutput>
+                              
+          
+          <camunda:outputParameter name="afdeling">${documentWriterService.removeValueAtPath("/rapportageCategorieen/afdeling", execution.businessKey)}</camunda:outputParameter>
+                              
+          
+          <camunda:outputParameter name="sector">${documentWriterService.removeValueAtPath("/rapportageCategorieen/sector", execution.businessKey)}</camunda:outputParameter>
+                              
+          
+          <camunda:outputParameter name="producten">${documentWriterService.removeValueAtPath("/rapportageCategorieen/producten", execution.businessKey)}</camunda:outputParameter>
+                              
+          
+          <camunda:outputParameter name="themas">${documentWriterService.removeValueAtPath("/rapportageCategorieen/themas", execution.businessKey)}</camunda:outputParameter>
+                              
+          
+          <camunda:outputParameter name="verkenning">${documentWriterService.removeValueAtPath("/verkenning", execution.businessKey)}</camunda:outputParameter>
+                              
+          
+          <camunda:outputParameter name="behandelingDoorKlachtencommissie">${documentWriterService.removeValueAtPath("/behandelingDoorKlachtencommissie", execution.businessKey)}</camunda:outputParameter>
+                              
+          
+          <camunda:outputParameter name="eersteBeoordeling">${documentWriterService.removeValueAtPath("/eersteBeoordeling", execution.businessKey)}</camunda:outputParameter>
+                              
+          
+          <camunda:outputParameter name="formeleAfhandeling">${documentWriterService.removeValueAtPath("/formeleAfhandeling", execution.businessKey)}</camunda:outputParameter>
+                              
+          
+          <camunda:outputParameter name="informeleAfhandeling">${documentWriterService.removeValueAtPath("/informeleAfhandeling", execution.businessKey)}</camunda:outputParameter>
+                            
+        
+        </camunda:inputOutput>
+                      
+      
+      </bpmn:extensionElements>
+                  
+      
+      <bpmn:incoming>Flow_1lpe4es</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_0dhf1r7</bpmn:outgoing>
+                
+    
+    </bpmn:serviceTask>
+            
+    
+    <bpmn:callActivity calledElement="generic-update-zaakstatus-en-interne-status-plugin-eerstelijns-klachten" camunda:asyncAfter="true" camunda:asyncBefore="true" camunda:calledElementBinding="versionTag" camunda:calledElementVersionTag="CD:eerstelijns-klachten:1.0.7" completionQuantity="1" id="UpdateZaakstatusCallActivity" isForCompensation="false" name="Update zaakstatus" startQuantity="1">
+                  
+      
+      <bpmn:extensionElements>
+                        
+        
+        <camunda:in businessKey="#{execution.processBusinessKey}"/>
+                        
+        
+        <camunda:inputOutput>
+                              
+          
+          <camunda:inputParameter name="zaakstatus">Ontvangen</camunda:inputParameter>
+                              
+          
+          <camunda:inputParameter name="interneStatus">ontvangen</camunda:inputParameter>
+                            
+        
+        </camunda:inputOutput>
+                        
+        
+        <camunda:in source="zaakstatus" target="zaakstatus"/>
+                        
+        
+        <camunda:in source="interneStatus" target="interneStatus"/>
+                      
+      
+      </bpmn:extensionElements>
+                  
+      
+      <bpmn:incoming>Flow_0dhf1r7</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_1g8r0wn</bpmn:outgoing>
+                
+    
+    </bpmn:callActivity>
+            
+    
+    <bpmn:sequenceFlow id="Flow_1g8r0wn" sourceRef="UpdateZaakstatusCallActivity" targetRef="StopLopendeInstantiesEndEvent"/>
+            
+    
+    <bpmn:endEvent camunda:asyncBefore="true" id="StopLopendeInstantiesEndEvent" name="Stop lopende instanties">
+                  
+      
+      <bpmn:incoming>Flow_1g8r0wn</bpmn:incoming>
+                  
+      
+      <bpmn:signalEventDefinition id="SignalEventDefinition_06c34gu" signalRef="Signal_1ysfx0w"/>
+                
+    
+    </bpmn:endEvent>
+          
+  
+  </bpmn:process>
+      
+  
+  <bpmn:signal id="Signal_1ysfx0w" name="klachten-stop-lopende-instantie-${execution.processBusinessKey}"/>
+      
+  
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+            
+    
+    <bpmndi:BPMNPlane bpmnElement="Collaboration_1inzqzm" id="BPMNPlane_1">
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="HerbeoordelenKlachtParticipant" id="Participant_1hpk0dh_di" isHorizontal="true">
+                        
+        
+        <dc:Bounds height="180" width="518" x="190" y="100"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="StartHerbeoordelenKlachtStartEvent" id="BPMNShape_1kfh1o9">
+                        
+        
+        <dc:Bounds height="36" width="36" x="262" y="167"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="40" width="71" x="245" y="210"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="Activity_0kuzxyw" id="Activity_0nvopkt_di">
+                        
+        
+        <dc:Bounds height="80" width="100" x="340" y="145"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="UpdateZaakstatusCallActivity" id="Activity_1xuo62m_di">
+                        
+        
+        <dc:Bounds height="80" width="100" x="490" y="145"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="StopLopendeInstantiesEndEvent" id="Event_1d04y7u_di">
+                        
+        
+        <dc:Bounds height="36" width="36" x="632" y="167"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="27" width="65" x="619" y="210"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_1lpe4es" id="Flow_1lpe4es_di">
+                        
+        
+        <di:waypoint x="298" y="185"/>
+                        
+        
+        <di:waypoint x="340" y="185"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_0dhf1r7" id="Flow_0dhf1r7_di">
+                        
+        
+        <di:waypoint x="440" y="185"/>
+                        
+        
+        <di:waypoint x="490" y="185"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_1g8r0wn" id="Flow_1g8r0wn_di">
+                        
+        
+        <di:waypoint x="590" y="185"/>
+                        
+        
+        <di:waypoint x="632" y="185"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                
+    
+    </bpmndi:BPMNPlane>
+          
+  
+  </bpmndi:BPMNDiagram>
+    
+
+</bpmn:definitions>

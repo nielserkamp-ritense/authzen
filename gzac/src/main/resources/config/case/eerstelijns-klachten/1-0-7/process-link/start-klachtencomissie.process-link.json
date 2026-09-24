@@ -1,0 +1,12 @@
+[
+  {
+    "activityId" : "klachten-klachtencomissie-subproces-start",
+    "activityType" : "bpmn:StartEvent:start",
+    "formDefinitionName" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.start",
+    "viewModelEnabled" : false,
+    "formDisplayType" : "modal",
+    "formSize" : "medium",
+    "subtitles" : [],
+    "processLinkType" : "form"
+  }
+]

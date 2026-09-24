@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:ns0="http://operaton.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.22.0" expressionLanguage="https://www.omg.org/spec/DMN/20191111/FEEL/" id="bepalen-document-variabelen" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0" name="Klachten: Bepalen document variabelen" namespace="http://camunda.org/schema/1.0/dmn" typeLanguage="https://www.omg.org/spec/DMN/20191111/FEEL/">
+    
+  <decision camunda:versionTag="CD:eerstelijns-klachten:1.0.7" id="klachten-bepalen-document-variabelen" name="Bepalen document variabelen">
+        
+    <decisionTable hitPolicy="UNIQUE" id="DecisionTable_0ni1gla" preferredOrientation="Rule-as-Row">
+            
+      <input camunda:inputVariable="dienst" id="Input_1" label="Dienst">
+                
+        <inputExpression id="InputExpression_1" typeRef="string">
+                    
+          <text/>
+                  
+        </inputExpression>
+              
+      </input>
+            
+      <output biodi:width="249" id="OutputClause_0yv5aam" label="Dienst omschrijving" name="dienstOmschrijving" typeRef="string"/>
+            
+      <output id="OutputClause_1ab8532" label="Dienst telefoon" name="dienstTelefoon" typeRef="string"/>
+            
+      <rule id="DecisionRule_1lze2vz">
+                
+        <description/>
+                
+        <inputEntry id="UnaryTests_19me17q">
+                    
+          <text>"OCW"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_18b1h8n">
+                    
+          <text>"Dienst Onderwijs, Cultuur en Welzijn"</text>
+                  
+        </outputEntry>
+                
+        <outputEntry id="LiteralExpression_0uwps14">
+                    
+          <text>"(070) 35 37 500"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_0nojebu">
+                
+        <description/>
+                
+        <inputEntry id="UnaryTests_17wcs11">
+                    
+          <text>"SZW"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_1mx2pna">
+                    
+          <text>"Dienst Sociale Zaken en Werkgelegenheidsprojecten"</text>
+                  
+        </outputEntry>
+                
+        <outputEntry id="LiteralExpression_1t4obw7">
+                    
+          <text>"14070"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_0lv1ttu">
+                
+        <description/>
+                
+        <inputEntry id="UnaryTests_1ybu5wu">
+                    
+          <text>"DPZ"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_1uf7tgz">
+                    
+          <text>"Dienst Publiekszaken"</text>
+                  
+        </outputEntry>
+                
+        <outputEntry id="LiteralExpression_0sbgflh">
+                    
+          <text>"14070"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_1t21gkd">
+                
+        <description/>
+                
+        <inputEntry id="UnaryTests_0uq5ns1">
+                    
+          <text>"DSB"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_023xadt">
+                    
+          <text>"Dienst Stadsbeheer"</text>
+                  
+        </outputEntry>
+                
+        <outputEntry id="LiteralExpression_1j6upq0">
+                    
+          <text>"14070"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_0bvpbfi">
+                
+        <description/>
+                
+        <inputEntry id="UnaryTests_0nwymz4">
+                    
+          <text>"DSO"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_0hpdaw3">
+                    
+          <text>"Dienst Stedelijke Ontwikkeling"</text>
+                  
+        </outputEntry>
+                
+        <outputEntry id="LiteralExpression_1r838f1">
+                    
+          <text>"14070"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_1u8cglk">
+                
+        <description/>
+                
+        <inputEntry id="UnaryTests_0zztpu3">
+                    
+          <text>"DBV"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_0r2llgz">
+                    
+          <text>"Dienst Bedrijfsvoering"</text>
+                  
+        </outputEntry>
+                
+        <outputEntry id="LiteralExpression_09edhzf">
+                    
+          <text>"14070"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_1iidll9">
+                
+        <description/>
+                
+        <inputEntry id="UnaryTests_1g036lj">
+                    
+          <text>"BSD"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_09q4kec">
+                    
+          <text>"Bestuursdienst"</text>
+                  
+        </outputEntry>
+                
+        <outputEntry id="LiteralExpression_090pcsi">
+                    
+          <text>"14070"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_0loci2j">
+                
+        <inputEntry id="UnaryTests_0oz9x7i">
+                    
+          <text>"GGD"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_05sg2me">
+                    
+          <text>"GGD Haaglanden (GGD)"</text>
+                  
+        </outputEntry>
+                
+        <outputEntry id="LiteralExpression_0wpw0kz">
+                    
+          <text>"14070"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+            
+      <rule id="DecisionRule_1d00o6v">
+                
+        <inputEntry id="UnaryTests_165fy3k">
+                    
+          <text>"VTH"</text>
+                  
+        </inputEntry>
+                
+        <outputEntry id="LiteralExpression_1ezulsf">
+                    
+          <text>"Veilig Thuis Haaglanden (VTH)"</text>
+                  
+        </outputEntry>
+                
+        <outputEntry id="LiteralExpression_1oxt7j9">
+                    
+          <text>"14070"</text>
+                  
+        </outputEntry>
+              
+      </rule>
+          
+    </decisionTable>
+      
+  </decision>
+    
+  <dmndi:DMNDI>
+        
+    <dmndi:DMNDiagram>
+            
+      <dmndi:DMNShape dmnElementRef="klachten-bepalen-document-variabelen" isCollapsed="false">
+                
+        <dc:Bounds height="80" width="180" x="160" y="100"/>
+              
+      </dmndi:DMNShape>
+          
+    </dmndi:DMNDiagram>
+      
+  </dmndi:DMNDI>
+  
+</definitions>

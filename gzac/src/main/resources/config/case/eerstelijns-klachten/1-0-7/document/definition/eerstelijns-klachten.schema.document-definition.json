@@ -1,0 +1,859 @@
+{
+  "$id" : "eerstelijns-klachten.schema",
+  "type" : "object",
+  "title" : "Eerstelijns klachten",
+  "$schema" : "http://json-schema.org/draft-07/schema#",
+  "properties" : {
+    "klacht" : {
+      "type" : "object",
+      "properties" : {
+        "onderwerp" : {
+          "type" : "string"
+        },
+        "trefwoord" : {
+          "type" : "string"
+        },
+        "vervaldatum" : {
+          "type" : "string"
+        },
+        "soortMelding" : {
+          "enum" : [
+            "KLACHT",
+            "MELDING",
+            "ANDERS"
+          ],
+          "type" : "string"
+        },
+        "datumOntvangst" : {
+          "type" : "string"
+        },
+        "relevanteBestanden" : {
+          "$ref" : "#/definitions/documenten"
+        },
+        "toelichtingMelding" : {
+          "type" : "string"
+        },
+        "korteOmschrijvingMelding" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false
+    },
+    "melder" : {
+      "$ref" : "#/definitions/melder",
+      "type" : "object"
+    },
+    "openZaak" : {
+      "type" : "object",
+      "properties" : {
+        "status" : {
+          "type" : "string",
+          "description" : "Zaak status uit openzaak"
+        },
+        "resultaat" : {
+          "type" : "string",
+          "description" : "Resultaat uit openzaak"
+        },
+        "zaaknummer" : {
+          "type" : "string",
+          "description" : "Zaaknummer uit openzaak"
+        },
+        "identificatie" : {
+          "type" : "string",
+          "description" : "Zaaknummer uit openzaak"
+        },
+        "statusOmschrijving" : {
+          "type" : "string",
+          "description" : "Zaak status uit openzaak"
+        },
+        "resultaatOmschrijving" : {
+          "type" : "string",
+          "description" : "Resultaat uit openzaak"
+        }
+      },
+      "description" : "OpenZaak",
+      "additionalProperties" : false
+    },
+    "escalatie" : {
+      "type" : "object",
+      "properties" : {
+        "isGeescaleerd" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "verkenning" : {
+      "type" : "object",
+      "properties" : {
+        "oplossing" : {
+          "type" : "string"
+        },
+        "resultaat" : {
+          "type" : "string"
+        },
+        "toelichting" : {
+          "type" : "string"
+        },
+        "autorisatieGroep" : {
+          "$ref" : "#/definitions/choiceFieldValue"
+        },
+        "redenNietOntvankelijk" : {
+          "type" : "string"
+        },
+        "datumTelefonischContact" : {
+          "type" : "string"
+        },
+        "formeelAfhandelenKlacht" : {
+          "type" : "boolean"
+        },
+        "telefonischContactGeweest" : {
+          "type" : "boolean"
+        },
+        "teVerwachteAfhandeltermijn" : {
+          "type" : "number"
+        },
+        "berichtNaarKlachtenteamDienst" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false
+    },
+    "ombudsmannummer" : {
+      "type" : "string"
+    },
+    "eersteBeoordeling" : {
+      "type" : "object",
+      "properties" : {
+        "afdeling" : {
+          "$ref" : "#/definitions/afdeling",
+          "type" : "object"
+        },
+        "resultaat" : {
+          "type" : "string"
+        },
+        "toelichting" : {
+          "type" : "string"
+        },
+        "redenGeenKlacht" : {
+          "type" : "string"
+        },
+        "berichtNaarAfdeling" : {
+          "type" : "string"
+        },
+        "berichtNaarKlachtenteamDienst" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false
+    },
+    "formeleAfhandeling" : {
+      "type" : "object",
+      "properties" : {
+        "eindbrief" : {
+          "$ref" : "#/definitions/eindbrief",
+          "type" : "object"
+        },
+        "onderzoek" : {
+          "$ref" : "#/definitions/onderzoek",
+          "type" : "object"
+        },
+        "aardigheidje" : {
+          "$ref" : "#/definitions/aardigheidje",
+          "type" : "object"
+        },
+        "verslagHoorwederhoor" : {
+          "$ref" : "#/definitions/verslagHoorwederhoor",
+          "type" : "object"
+        }
+      },
+      "additionalProperties" : false
+    },
+    "afhandeldatumIntern" : {
+      "type" : "string"
+    },
+    "klachtencoordinator" : {
+      "type" : "string"
+    },
+    "leverancierskenmerk" : {
+      "type" : "string"
+    },
+    "informeleAfhandeling" : {
+      "type" : "object",
+      "properties" : {
+        "eindbrief" : {
+          "$ref" : "#/definitions/eindbrief",
+          "type" : "object"
+        },
+        "gespreksverslagDocument" : {
+          "$ref" : "#/definitions/documenten",
+          "type" : "array"
+        },
+        "overdrachtPlaatsgevondenOp" : {
+          "type" : "string"
+        },
+        "afhandelingDoorKlachtbehandelaar" : {
+          "type" : "object",
+          "properties" : {
+            "onderzoek" : {
+              "$ref" : "#/definitions/onderzoek",
+              "type" : "object"
+            },
+            "toelichting" : {
+              "type" : "string"
+            },
+            "akkoordTerugkoppeling" : {
+              "type" : "boolean"
+            },
+            "terugkoppelingNaarCoordinator" : {
+              "type" : "object",
+              "properties" : {
+                "toelichting" : {
+                  "type" : "string"
+                },
+                "akkoordCoordinator" : {
+                  "type" : "boolean"
+                }
+              },
+              "additionalProperties" : false
+            }
+          },
+          "additionalProperties" : false
+        },
+        "afhandelingDoorKlachtcoordinator" : {
+          "type" : "object",
+          "properties" : {
+            "onderzoek" : {
+              "$ref" : "#/definitions/onderzoek",
+              "type" : "object"
+            }
+          },
+          "additionalProperties" : false
+        }
+      },
+      "additionalProperties" : false
+    },
+    "rapportageCategorieen" : {
+      "type" : "object",
+      "properties" : {
+        "sector" : {
+          "$ref" : "#/definitions/choiceFieldValue"
+        },
+        "themas" : {
+          "items" : {
+            "$ref" : "#/definitions/choiceFieldValue"
+          }
+        },
+        "afdeling" : {
+          "$ref" : "#/definitions/choiceFieldValue"
+        },
+        "producten" : {
+          "items" : {
+            "$ref" : "#/definitions/choiceFieldValue"
+          }
+        },
+        "toegewezenDienst" : {
+          "type" : "object",
+          "properties" : {
+            "dienst" : {
+              "$ref" : "#/definitions/choiceFieldValue"
+            },
+            "toelichtingVastleggenDienst" : {
+              "type" : "string"
+            }
+          },
+          "additionalProperties" : false
+        }
+      },
+      "additionalProperties" : false
+    },
+    "behandelingDoorKlachtencommissie" : {
+      "type" : "object",
+      "properties" : {
+        "directie" : {
+          "type" : "object",
+          "properties" : {
+            "resultaat" : {
+              "$ref" : "#/definitions/resultaat"
+            }
+          },
+          "additionalProperties" : false
+        },
+        "eindbrief" : {
+          "$ref" : "#/definitions/eindbrief",
+          "type" : "object"
+        },
+        "onderzoek" : {
+          "$ref" : "#/definitions/onderzoek",
+          "type" : "object"
+        },
+        "overdracht" : {
+          "type" : "object",
+          "properties" : {
+            "datum" : {
+              "type" : "string"
+            },
+            "toelichting" : {
+              "type" : "string"
+            }
+          },
+          "additionalProperties" : false
+        },
+        "aardigheidje" : {
+          "$ref" : "#/definitions/aardigheidje",
+          "type" : "object"
+        },
+        "afwijkendOordeel" : {
+          "type" : "boolean"
+        },
+        "klachtencommissie" : {
+          "type" : "object",
+          "properties" : {
+            "resultaat" : {
+              "$ref" : "#/definitions/resultaat",
+              "type" : "object"
+            },
+            "beoordeling" : {
+              "$ref" : "#/definitions/beoordeling",
+              "type" : "object"
+            },
+            "redenAfwijkendOordeel" : {
+              "type" : "string"
+            }
+          },
+          "additionalProperties" : false
+        },
+        "klachtenCoordinator" : {
+          "type" : "object",
+          "properties" : {
+            "beoordeling" : {
+              "$ref" : "#/definitions/beoordeling",
+              "type" : "object"
+            },
+            "redenAfwijkendOordeel" : {
+              "type" : "string"
+            }
+          },
+          "additionalProperties" : false
+        },
+        "redenTeruggaanNaarHoofdproces" : {
+          "type" : "string"
+        },
+        "isTaakKlachtenCommissieBeschikbaar" : {
+          "type " : "boolean"
+        }
+      },
+      "additionalProperties" : false
+    },
+    "routeBurgemeesterWethouderkenmerk" : {
+      "type" : "boolean"
+    }
+  },
+  "definitions" : {
+    "adres" : {
+      "type" : "object",
+      "properties" : {
+        "adres" : {
+          "type" : "string",
+          "description" : "Straat + huisnummer"
+        },
+        "straat" : {
+          "type" : "string"
+        },
+        "postcode" : {
+          "type" : "string",
+          "description" : "Postcode"
+        },
+        "huisletter" : {
+          "type" : "string"
+        },
+        "huisnummer" : {
+          "type" : "number"
+        },
+        "woonplaats" : {
+          "type" : "string",
+          "description" : "Woonplaats"
+        },
+        "volledigAdres" : {
+          "type" : "string"
+        },
+        "huisnummertoevoeging" : {
+          "type" : "string"
+        }
+      }
+    },
+    "melder" : {
+      "type" : "object",
+      "properties" : {
+        "adres" : {
+          "$ref" : "#/definitions/adres",
+          "type" : "object",
+          "description" : "Adres melder"
+        },
+        "personalia" : {
+          "$ref" : "#/definitions/persoonsgegevens",
+          "type" : "object",
+          "description" : "Personalia melder"
+        },
+        "soortMelder" : {
+          "enum" : [
+            "INWONER",
+            "ORGANISATIE",
+            "ANDERS"
+          ],
+          "type" : "string"
+        },
+        "contactgegevens" : {
+          "$ref" : "#/definitions/contactgegevens",
+          "type" : "object",
+          "description" : "Contactgegevens melder"
+        }
+      },
+      "description" : "Melder van melding",
+      "additionalProperties" : false
+    },
+    "afdeling" : {
+      "type" : "object",
+      "properties" : {
+        "naam" : {
+          "type" : "string"
+        },
+        "email" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false
+    },
+    "eindbrief" : {
+      "type" : "object",
+      "properties" : {
+        "document" : {
+          "$ref" : "#/definitions/documenten",
+          "type" : "array"
+        },
+        "gedeeldMet" : {
+          "$ref" : "#/definitions/gedeeldMet",
+          "type" : "object"
+        },
+        "toelichting" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false
+    },
+    "onderzoek" : {
+      "type" : "object",
+      "properties" : {
+        "oordeel" : {
+          "$ref" : "#/definitions/choiceFieldValue"
+        },
+        "oplossing" : {
+          "type" : "object",
+          "properties" : {
+            "voorstel" : {
+              "type" : "string"
+            },
+            "datumBesprokenMetMelder" : {
+              "type" : "string"
+            },
+            "melderAkkoordMetVoorstel" : {
+              "type" : "string"
+            },
+            "melderAkkoordMetVoorstelToelichting" : {
+              "type" : "string"
+            }
+          },
+          "additionalProperties" : false
+        },
+        "resultaat" : {
+          "type" : "string"
+        },
+        "toelichting" : {
+          "type" : "string"
+        },
+        "kernprincipe" : {
+          "$ref" : "#/definitions/choiceFieldValue"
+        },
+        "kernprincipe2" : {
+          "$ref" : "#/definitions/choiceFieldValue"
+        },
+        "kernprincipe3" : {
+          "$ref" : "#/definitions/choiceFieldValue"
+        },
+        "verslagDocument" : {
+          "$ref" : "#/definitions/documenten",
+          "type" : "array"
+        },
+        "gemotiveerdOordeel" : {
+          "type" : "object",
+          "properties" : {
+            "omschrijving" : {
+              "type" : "string"
+            },
+            "overnemenNaarFormeleAfhandeling" : {
+              "type" : "string"
+            }
+          },
+          "additionalProperties" : false
+        },
+        "geleerdVoorToekomst" : {
+          "type" : "object",
+          "properties" : {
+            "toelichting" : {
+              "type" : "string"
+            },
+            "oorzaakKBToelichting" : {
+              "type" : "string"
+            },
+            "oorzaakKCToelichting" : {
+              "type" : "string"
+            },
+            "oorzaakKlachtBehandelaar" : {
+              "type" : "string"
+            },
+            "oorzaakKlachtCoordinator" : {
+              "type" : "string"
+            }
+          },
+          "additionalProperties" : false
+        },
+        "onderzoekUitgevoerd" : {
+          "type" : "string"
+        },
+        "dienstverleningsprincipe" : {
+          "$ref" : "#/definitions/choiceFieldValue"
+        },
+        "dienstverleningsprincipe2" : {
+          "$ref" : "#/definitions/choiceFieldValue"
+        },
+        "dienstverleningsprincipe3" : {
+          "$ref" : "#/definitions/choiceFieldValue"
+        },
+        "geschondenBehoorlijkheidsnormen" : {
+          "items" : {
+            "$ref" : "#/definitions/choiceFieldValue"
+          }
+        },
+        "geschondenBehoorlijkheidsnormen2" : {
+          "items" : {
+            "$ref" : "#/definitions/choiceFieldValue"
+          }
+        },
+        "geschondenBehoorlijkheidsnormen3" : {
+          "items" : {
+            "$ref" : "#/definitions/choiceFieldValue"
+          }
+        },
+        "geschondenDienstverleningsprincipes" : {
+          "items" : {
+            "$ref" : "#/definitions/choiceFieldValue"
+          }
+        },
+        "geschondenDienstverleningsprincipes2" : {
+          "items" : {
+            "$ref" : "#/definitions/choiceFieldValue"
+          }
+        },
+        "geschondenDienstverleningsprincipes3" : {
+          "items" : {
+            "$ref" : "#/definitions/choiceFieldValue"
+          }
+        },
+        "nogEenKernprincipeBehoorlijkheidsnormToevoegen" : {
+          "type" : "string"
+        },
+        "nogEenKernprincipeBehoorlijkheidsnormToevoegen2" : {
+          "type" : "string"
+        },
+        "nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen" : {
+          "type" : "string"
+        },
+        "nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen2" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false
+    },
+    "resultaat" : {
+      "type" : "object",
+      "properties" : {
+        "toelichting" : {
+          "type" : "string"
+        },
+        "datumOntvangst" : {
+          "type" : "string"
+        },
+        "ontvangenDocumenten" : {
+          "$ref" : "#/definitions/documenten",
+          "type" : "array"
+        },
+        "versturenEindbriefNaarMelder" : {
+          "type" : "boolean"
+        }
+      },
+      "additionalProperties" : false
+    },
+    "documenten" : {
+      "type" : "array",
+      "items" : {
+        "file" : {
+          "type" : "object",
+          "properties" : {
+            "id" : {
+              "type" : "string"
+            },
+            "filename" : {
+              "type" : "string"
+            },
+            "sizeInBytes" : {
+              "type" : "number"
+            }
+          }
+        }
+      },
+      "additionalProperties" : false
+    },
+    "gedeeldMet" : {
+      "type" : "array",
+      "items" : {
+        "naam" : {
+          "type" : "string"
+        },
+        "email" : {
+          "type" : "string"
+        },
+        "verstuurdOp" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false
+    },
+    "beoordeling" : {
+      "type" : "object",
+      "properties" : {
+        "oordeel" : {
+          "$ref" : "#/definitions/choiceFieldValue"
+        },
+        "oplossing" : {
+          "type" : "object",
+          "properties" : {
+            "voorstel" : {
+              "type" : "string"
+            },
+            "datumBesprokenMetMelder" : {
+              "type" : "string"
+            },
+            "melderAkkoordMetVoorstel" : {
+              "type" : "string"
+            }
+          },
+          "additionalProperties" : false
+        },
+        "kernprincipe" : {
+          "$ref" : "#/definitions/choiceFieldValue"
+        },
+        "kernprincipe2" : {
+          "$ref" : "#/definitions/choiceFieldValue"
+        },
+        "kernprincipe3" : {
+          "$ref" : "#/definitions/choiceFieldValue"
+        },
+        "gemotiveerdOordeel" : {
+          "type" : "object",
+          "properties" : {
+            "omschrijving" : {
+              "type" : "string"
+            },
+            "overnemenNaarFormeleAfhandeling" : {
+              "type" : "string"
+            }
+          },
+          "additionalProperties" : false
+        },
+        "Dienstverleningsprincipe" : {
+          "$ref" : "#/definitions/choiceFieldValue"
+        },
+        "Dienstverleningsprincipe2" : {
+          "$ref" : "#/definitions/choiceFieldValue"
+        },
+        "Dienstverleningsprincipe3" : {
+          "$ref" : "#/definitions/choiceFieldValue"
+        },
+        "geschondenBehoorlijkheidsnormen" : {
+          "items" : {
+            "$ref" : "#/definitions/choiceFieldValue"
+          }
+        },
+        "geschondenBehoorlijkheidsnormen2" : {
+          "items" : {
+            "$ref" : "#/definitions/choiceFieldValue"
+          }
+        },
+        "geschondenBehoorlijkheidsnormen3" : {
+          "items" : {
+            "$ref" : "#/definitions/choiceFieldValue"
+          }
+        },
+        "geschondenDienstverleningsprincipes" : {
+          "items" : {
+            "$ref" : "#/definitions/choiceFieldValue"
+          }
+        },
+        "geschondenDienstverleningsprincipes2" : {
+          "items" : {
+            "$ref" : "#/definitions/choiceFieldValue"
+          }
+        },
+        "geschondenDienstverleningsprincipes3" : {
+          "items" : {
+            "$ref" : "#/definitions/choiceFieldValue"
+          }
+        },
+        "nogEenKernprincipeBehoorlijkheidsnormToevoegen" : {
+          "type" : "string"
+        },
+        "nogEenKernprincipeBehoorlijkheidsnormToevoegen2" : {
+          "type" : "string"
+        },
+        "nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen" : {
+          "type" : "string"
+        },
+        "nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen2" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false
+    },
+    "aardigheidje" : {
+      "type" : "object",
+      "properties" : {
+        "kosten" : {
+          "type" : "number"
+        },
+        "isVerstuurd" : {
+          "type" : "string"
+        },
+        "verstuurdOp" : {
+          "type" : "string"
+        },
+        "omschrijving" : {
+          "type" : "string"
+        }
+      },
+      "additionalProperties" : false
+    },
+    "contactgegevens" : {
+      "type" : "object",
+      "properties" : {
+        "email" : {
+          "oneOf" : [
+            {
+              "type" : "string"
+            },
+            {
+              "type" : "null"
+            }
+          ]
+        },
+        "telefoonnummer" : {
+          "type" : "string",
+          "description" : "Telefoonnummer overdag"
+        },
+        "communicatieViaPost" : {
+          "type" : "boolean"
+        },
+        "communicatieVoorkeur" : {
+          "enum" : [
+            "E-MAIL",
+            "POST"
+          ],
+          "type" : "string"
+        }
+      }
+    },
+    "choiceFieldValue" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "number"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "value" : {
+          "type" : "string"
+        },
+        "sortOrder" : {
+          "type" : "number"
+        },
+        "deprecated" : {
+          "type" : "boolean"
+        },
+        "choiceField" : {
+          "type" : "object"
+        }
+      },
+      "additionalProperties" : false
+    },
+    "persoonsgegevens" : {
+      "type" : "object",
+      "properties" : {
+        "bsn" : {
+          "type" : "string"
+        },
+        "voornaam" : {
+          "type" : "string"
+        },
+        "achternaam" : {
+          "type" : "string"
+        },
+        "voorletters" : {
+          "type" : "string"
+        },
+        "voorvoegsels" : {
+          "type" : "string"
+        },
+        "geboortedatum" : {
+          "type" : "string"
+        },
+        "tussenvoegsel" : {
+          "type" : "string"
+        },
+        "volledigeNaam" : {
+          "type" : "string"
+        },
+        "geslachtsAanduiding" : {
+          "enum" : [
+            "MAN",
+            "VROUW",
+            "ONBEKEND"
+          ],
+          "type" : "string"
+        }
+      }
+    },
+    "verslagHoorwederhoor" : {
+      "type" : "object",
+      "properties" : {
+        "gedeeldMet" : {
+          "$ref" : "#/definitions/gedeeldMet",
+          "type" : "object"
+        },
+        "toelichting" : {
+          "type" : "string"
+        },
+        "datumGesprek" : {
+          "type" : "string"
+        },
+        "gespreksvorm" : {
+          "type" : "string"
+        },
+        "verslagDocument" : {
+          "$ref" : "#/definitions/documenten",
+          "type" : "array"
+        }
+      },
+      "additionalProperties" : false
+    }
+  },
+  "additionalProperties" : false
+}

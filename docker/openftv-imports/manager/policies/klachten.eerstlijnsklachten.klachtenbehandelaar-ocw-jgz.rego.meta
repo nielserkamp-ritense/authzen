@@ -1,0 +1,5 @@
+id: "klachten-eerstlijnsklachten-klachtenbehandelaar-ocw-jgz"
+language: "rego"
+metadata:
+  description: "eerstelijnsklachten-klachtenbehandelaar-ocw-jgz-permission-v5"
+  tags: ["klachten"]

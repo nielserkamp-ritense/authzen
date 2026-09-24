@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" camunda:diagramRelationId="003b1cb1-b8b0-4fc5-83a9-a8c30989ad3b" exporter="Camunda Modeler" exporterVersion="5.33.1" expressionLanguage="http://www.w3.org/1999/XPath" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" typeLanguage="http://www.w3.org/2001/XMLSchema">
+      
+  
+  <bpmn:collaboration id="Collaboration_1ovjupg" isClosed="false">
+            
+    
+    <bpmn:participant id="KlachtenFormeelAfhandelenKlachtParticipant" name="Klachten: Formeel afhandelen klacht" processRef="klachten-formeel-afhandelen-klacht"/>
+          
+  
+  </bpmn:collaboration>
+      
+  
+  <bpmn:process camunda:historyTimeToLive="P3650D" camunda:versionTag="CD:eerstelijns-klachten:1.0.7" id="klachten-formeel-afhandelen-klacht" isClosed="false" isExecutable="true" name="Klachten: Formeel afhandelen klacht" processType="None">
+            
+    
+    <bpmn:laneSet id="LaneSet_03fshmt">
+                  
+      
+      <bpmn:lane id="Lane_1uxil6l">
+                        
+        
+        <bpmn:flowNodeRef>Event_1xnsosy</bpmn:flowNodeRef>
+                        
+        
+        <bpmn:flowNodeRef>Gateway_1rmhpg3</bpmn:flowNodeRef>
+                        
+        
+        <bpmn:flowNodeRef>VastleggenGespreksverslagHoorEnWederhoorTask</bpmn:flowNodeRef>
+                        
+        
+        <bpmn:flowNodeRef>VastleggenOnderzoeksverslagEnofGemotiveerdOordeelTask</bpmn:flowNodeRef>
+                        
+        
+        <bpmn:flowNodeRef>OordeelUitInformeleBehandelingOvernemenGateway</bpmn:flowNodeRef>
+                        
+        
+        <bpmn:flowNodeRef>VastleggenDefinitiefEindbriefTask</bpmn:flowNodeRef>
+                        
+        
+        <bpmn:flowNodeRef>Event_026gndz</bpmn:flowNodeRef>
+                      
+      
+      </bpmn:lane>
+                
+    
+    </bpmn:laneSet>
+            
+    
+    <bpmn:sequenceFlow id="Flow_14kzg7r" sourceRef="Event_1xnsosy" targetRef="OordeelUitInformeleBehandelingOvernemenGateway"/>
+            
+    
+    <bpmn:sequenceFlow id="Flow_0iygw6c" sourceRef="VastleggenDefinitiefEindbriefTask" targetRef="Event_026gndz"/>
+            
+    
+    <bpmn:sequenceFlow id="Flow_180qwxz" sourceRef="VastleggenGespreksverslagHoorEnWederhoorTask" targetRef="Gateway_1rmhpg3"/>
+            
+    
+    <bpmn:sequenceFlow id="JaSequenceFlow" name="Ja" sourceRef="OordeelUitInformeleBehandelingOvernemenGateway" targetRef="Gateway_1rmhpg3">
+                  
+      
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${oordeelOvernemen == true}</bpmn:conditionExpression>
+                
+    
+    </bpmn:sequenceFlow>
+            
+    
+    <bpmn:sequenceFlow id="Flow_05iegt7" sourceRef="Gateway_1rmhpg3" targetRef="VastleggenOnderzoeksverslagEnofGemotiveerdOordeelTask"/>
+            
+    
+    <bpmn:sequenceFlow id="JSequenceFlow" name="Nee" sourceRef="OordeelUitInformeleBehandelingOvernemenGateway" targetRef="VastleggenGespreksverslagHoorEnWederhoorTask"/>
+            
+    
+    <bpmn:sequenceFlow id="Flow_1rxqhvz" sourceRef="VastleggenOnderzoeksverslagEnofGemotiveerdOordeelTask" targetRef="VastleggenDefinitiefEindbriefTask"/>
+            
+    
+    <bpmn:startEvent camunda:asyncAfter="true" id="Event_1xnsosy" isInterrupting="true" name="Start" parallelMultiple="false">
+                  
+      
+      <bpmn:outgoing>Flow_14kzg7r</bpmn:outgoing>
+                
+    
+    </bpmn:startEvent>
+            
+    
+    <bpmn:exclusiveGateway camunda:asyncAfter="true" camunda:asyncBefore="true" gatewayDirection="Unspecified" id="Gateway_1rmhpg3">
+                  
+      
+      <bpmn:incoming>Flow_180qwxz</bpmn:incoming>
+                  
+      
+      <bpmn:incoming>JaSequenceFlow</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_05iegt7</bpmn:outgoing>
+                
+    
+    </bpmn:exclusiveGateway>
+            
+    
+    <bpmn:userTask camunda:asyncAfter="true" camunda:candidateGroups="ROLE_ADMIN,ROLE_KLACHTEN_KLACHTENCOORDINATOR,ROLE_KLACHTEN_KLACHTENCOORDINATOR_GGD,ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH" completionQuantity="1" id="VastleggenGespreksverslagHoorEnWederhoorTask" implementation="##unspecified" isForCompensation="false" name="Vastleggen gespreksverslag hoor- en wederhoor" startQuantity="1">
+                  
+      
+      <bpmn:incoming>JSequenceFlow</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_180qwxz</bpmn:outgoing>
+                
+    
+    </bpmn:userTask>
+            
+    
+    <bpmn:userTask camunda:asyncAfter="true" camunda:candidateGroups="ROLE_ADMIN,ROLE_KLACHTEN_KLACHTENCOORDINATOR,ROLE_KLACHTEN_KLACHTENCOORDINATOR_GGD,ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH" completionQuantity="1" id="VastleggenOnderzoeksverslagEnofGemotiveerdOordeelTask" implementation="##unspecified" isForCompensation="false" name="Vastleggen onderzoeksverslag en/of gemotiveerd oordeel" startQuantity="1">
+                  
+      
+      <bpmn:incoming>Flow_05iegt7</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_1rxqhvz</bpmn:outgoing>
+                
+    
+    </bpmn:userTask>
+            
+    
+    <bpmn:exclusiveGateway camunda:asyncAfter="true" camunda:asyncBefore="true" default="JSequenceFlow" gatewayDirection="Unspecified" id="OordeelUitInformeleBehandelingOvernemenGateway" name="Oordeel uit informele behandeling overnemen?">
+                  
+      
+      <bpmn:incoming>Flow_14kzg7r</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>JaSequenceFlow</bpmn:outgoing>
+                  
+      
+      <bpmn:outgoing>JSequenceFlow</bpmn:outgoing>
+                
+    
+    </bpmn:exclusiveGateway>
+            
+    
+    <bpmn:userTask camunda:asyncAfter="true" camunda:candidateGroups="ROLE_ADMIN,ROLE_KLACHTEN_IB_POST,ROLE_KLACHTEN_KLACHTBEHANDELAAR_BSD_BESTUURSDIENST,ROLE_KLACHTEN_KLACHTBEHANDELAAR_DBV,ROLE_KLACHTEN_KLACHTBEHANDELAAR_DPZ,ROLE_KLACHTEN_KLACHTBEHANDELAAR_DSB_DIENST_STADSBEHEER,ROLE_KLACHTEN_KLACHTBEHANDELAAR_DSO,ROLE_KLACHTEN_KLACHTBEHANDELAAR_OCW_ALGEMEEN,ROLE_KLACHTEN_KLACHTBEHANDELAAR_OCW_JGZ,ROLE_KLACHTEN_KLACHTBEHANDELAAR_OCW_JH,ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW,ROLE_KLACHTEN_KLACHTENCOORDINATOR,ROLE_KLACHTEN_KLACHTENCOORDINATOR_GGD,ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH" completionQuantity="1" id="VastleggenDefinitiefEindbriefTask" implementation="##unspecified" isForCompensation="false" name="Vastleggen definitieve eindbrief" startQuantity="1">
+                  
+      
+      <bpmn:incoming>Flow_1rxqhvz</bpmn:incoming>
+                  
+      
+      <bpmn:outgoing>Flow_0iygw6c</bpmn:outgoing>
+                
+    
+    </bpmn:userTask>
+            
+    
+    <bpmn:endEvent id="Event_026gndz" name="End">
+                  
+      
+      <bpmn:incoming>Flow_0iygw6c</bpmn:incoming>
+                
+    
+    </bpmn:endEvent>
+          
+  
+  </bpmn:process>
+      
+  
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+            
+    
+    <bpmndi:BPMNPlane bpmnElement="Collaboration_1ovjupg" id="BPMNPlane_1">
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="KlachtenFormeelAfhandelenKlachtParticipant" id="Participant_0ja8rao_di" isHorizontal="true">
+                        
+        
+        <dc:Bounds height="220" width="890" x="170" y="80"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="Lane_1uxil6l" id="Lane_1uxil6l_di" isHorizontal="true">
+                        
+        
+        <dc:Bounds height="220" width="860" x="200" y="80"/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="Event_1xnsosy" id="Event_1xnsosy_di">
+                        
+        
+        <dc:Bounds height="36" width="36" x="252" y="172"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="14" width="24" x="260" y="215"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="Gateway_1rmhpg3" id="Gateway_1rmhpg3_di" isMarkerVisible="true">
+                        
+        
+        <dc:Bounds height="50" width="50" x="585" y="165"/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="VastleggenGespreksverslagHoorEnWederhoorTask" id="BPMNShape_1m4cp4a">
+                        
+        
+        <dc:Bounds height="80" width="100" x="450" y="150"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="VastleggenOnderzoeksverslagEnofGemotiveerdOordeelTask" id="BPMNShape_0w6mmun">
+                        
+        
+        <dc:Bounds height="80" width="100" x="670" y="150"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="OordeelUitInformeleBehandelingOvernemenGateway" id="Gateway_0q5hum8_di" isMarkerVisible="true">
+                        
+        
+        <dc:Bounds height="50" width="50" x="335" y="165"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="53" width="62" x="329" y="225"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="VastleggenDefinitiefEindbriefTask" id="Activity_0nanms3_di">
+                        
+        
+        <dc:Bounds height="80" width="100" x="820" y="150"/>
+                        
+        
+        <bpmndi:BPMNLabel/>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNShape bpmnElement="Event_026gndz" id="BPMNShape_0868353">
+                        
+        
+        <dc:Bounds height="36" width="36" x="962" y="172"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="14" width="20" x="970" y="215"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNShape>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_14kzg7r" id="Flow_14kzg7r_di">
+                        
+        
+        <di:waypoint x="288" y="190"/>
+                        
+        
+        <di:waypoint x="335" y="190"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_0iygw6c" id="Flow_0iygw6c_di">
+                        
+        
+        <di:waypoint x="920" y="190"/>
+                        
+        
+        <di:waypoint x="962" y="190"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_180qwxz" id="Flow_180qwxz_di">
+                        
+        
+        <di:waypoint x="550" y="190"/>
+                        
+        
+        <di:waypoint x="585" y="190"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="JaSequenceFlow" id="Flow_1fue473_di">
+                        
+        
+        <di:waypoint x="360" y="165"/>
+                        
+        
+        <di:waypoint x="360" y="110"/>
+                        
+        
+        <di:waypoint x="610" y="110"/>
+                        
+        
+        <di:waypoint x="610" y="165"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="14" width="12" x="374" y="123"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_05iegt7" id="Flow_05iegt7_di">
+                        
+        
+        <di:waypoint x="635" y="190"/>
+                        
+        
+        <di:waypoint x="670" y="190"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="JSequenceFlow" id="Flow_0lw0zdo_di">
+                        
+        
+        <di:waypoint x="385" y="190"/>
+                        
+        
+        <di:waypoint x="450" y="190"/>
+                        
+        
+        <bpmndi:BPMNLabel>
+                              
+          
+          <dc:Bounds height="14" width="21" x="409" y="172"/>
+                            
+        
+        </bpmndi:BPMNLabel>
+                      
+      
+      </bpmndi:BPMNEdge>
+                  
+      
+      <bpmndi:BPMNEdge bpmnElement="Flow_1rxqhvz" id="Flow_1rxqhvz_di">
+                        
+        
+        <di:waypoint x="770" y="190"/>
+                        
+        
+        <di:waypoint x="820" y="190"/>
+                      
+      
+      </bpmndi:BPMNEdge>
+                
+    
+    </bpmndi:BPMNPlane>
+          
+  
+  </bpmndi:BPMNDiagram>
+    
+
+</bpmn:definitions>

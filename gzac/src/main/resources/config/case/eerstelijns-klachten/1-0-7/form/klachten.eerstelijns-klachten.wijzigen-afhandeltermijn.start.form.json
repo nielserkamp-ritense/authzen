@@ -1,0 +1,56 @@
+{
+  "display" : "form",
+  "components" : [
+    {
+      "key" : "pv.afhandeltermijnDatum",
+      "type" : "datetime",
+      "input" : true,
+      "label" : "Nieuwe afhandeltermijn",
+      "format" : "dd-MM-yyyy",
+      "widget" : {
+        "mode" : "single",
+        "type" : "calendar",
+        "format" : "dd-MM-yyyy",
+        "locale" : "en",
+        "maxDate" : null,
+        "minDate" : null,
+        "time_24hr" : false,
+        "allowInput" : true,
+        "enableTime" : false,
+        "noCalendar" : false,
+        "hourIncrement" : 1,
+        "disableWeekdays" : false,
+        "disableWeekends" : false,
+        "minuteIncrement" : 1,
+        "displayInTimezone" : "viewer",
+        "useLocaleSettings" : false
+      },
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.wijzigen-afhandeltermijn.start-pv.afhandeltermijnDatum"
+      },
+      "datePicker" : {
+        "disableWeekdays" : false,
+        "disableWeekends" : false
+      },
+      "enableTime" : false,
+      "defaultDate" : "moment()",
+      "enableMaxDateInput" : false,
+      "enableMinDateInput" : false
+    },
+    {
+      "key" : "submit",
+      "type" : "button",
+      "input" : true,
+      "label" : "Doorgaan",
+      "action" : "custom",
+      "custom" : "form.submit(); component.disabled = true;",
+      "tableView" : false,
+      "showValidations" : false,
+      "disableOnInvalid" : true
+    }
+  ]
+}

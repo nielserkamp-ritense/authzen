@@ -1,0 +1,296 @@
+{
+  "display" : "form",
+  "components" : [
+    {
+      "key" : "rapportageCategorieen.toegewezenDienst.dienst.name",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "Toegewezen klachtteam",
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.toewijzen-zaak-aan-zaakbehandelaar-rapportageCategorieen.toegewezenDienst.dienst.name"
+      }
+    },
+    {
+      "key" : "verkenning.autorisatieGroep",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "Autorisatie groep",
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.toewijzen-zaak-aan-zaakbehandelaar-verkenning.autorisatieGroep"
+      }
+    },
+    {
+      "key" : "pv.klachtteam",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "klachtteam mapping to retrieve the correct role",
+      "tableView" : true,
+      "calculateValue" : "const dienstMap = {BSD: 'BSD_BESTUURSDIENST', DBV: 'DBV', DPZ: 'DPZ', DSB: 'DSB_DIENST_STADSBEHEER', DSO: 'DSO',  SZW: 'SZW'}; const dienstName = data.rapportageCategorieen?.toegewezenDienst?.dienst?.name; if (dienstName === 'OCW') {  const autorisatieGroep = data.verkenning?.autorisatieGroep?.name;  value = autorisatieGroep === 'AUTORISATIEGROEPEN_OCW_JGZ_JEUGDGEZONDHEIDSZORG' ? 'OCW_JGZ' : autorisatieGroep === 'AUTORISATIEGROEPEN_OCW_JEUGDHULP' ? 'OCW_JH' : 'OCW_ALGEMEEN';} else {  value = dienstMap[dienstName];}",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.toewijzen-zaak-aan-zaakbehandelaar-pv.klachtteam"
+      }
+    },
+    {
+      "key" : "pv.zaakbehandelaarKlacht",
+      "data" : {
+        "values" : [
+          {
+            "label" : "Mijzelf",
+            "value" : "MIJZELF"
+          },
+          {
+            "label" : "Andere klachtencoördinator",
+            "value" : "ANDERE_KLACHTENCOORDINATOR"
+          },
+          {
+            "label" : "Een klachtenbehandelaar van de dienst",
+            "value" : "EEN_KLACHTENBEHANDELAAR_VAN_DE_DIENST"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Klacht toewijzen aan",
+      "widget" : "choicesjs",
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : true,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.toewijzen-zaak-aan-zaakbehandelaar-pv.zaakbehandelaarKlacht"
+      }
+    },
+    {
+      "key" : "pv.zaakbehandelaarEmail",
+      "data" : {
+        "url" : "../api/v1/users/authority/ROLE_KLACHTEN_KLACHTENCOORDINATOR",
+        "method" : "GET",
+        "headers" : [
+          {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          },
+          {
+            "key" : "Authorization",
+            "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Naam nieuwe zaakbehandelaar klacht",
+      "logic" : [
+        {
+          "name" : "requiered",
+          "actions" : [
+            {
+              "name" : "required if ggd or vth",
+              "type" : "property",
+              "state" : true,
+              "property" : {
+                "type" : "boolean",
+                "label" : "Required",
+                "value" : "validate.required"
+              }
+            }
+          ],
+          "trigger" : {
+            "type" : "javascript",
+            "javascript" : "result = (data.pv?.zaakbehandelaarKlacht === 'ANDERE_KLACHTENCOORDINATOR' && data.rapportageCategorieen?.toegewezenDienst?.dienst?.name !== 'GGD' && data.rapportageCategorieen?.toegewezenDienst?.dienst?.name !== 'VTH');"
+          }
+        }
+      ],
+      "widget" : "choicesjs",
+      "dataSrc" : "url",
+      "lazyLoad" : false,
+      "template" : "<span>{{ item.fullName }}</span>",
+      "tableView" : true,
+      "disableLimit" : false,
+      "valueProperty" : "email",
+      "customConditional" : "show = (data.pv?.zaakbehandelaarKlacht === 'ANDERE_KLACHTENCOORDINATOR' && data.rapportageCategorieen?.toegewezenDienst?.dienst?.name !== 'GGD' && data.rapportageCategorieen?.toegewezenDienst?.dienst?.name !== 'VTH')",
+      "noRefreshOnScroll" : false,
+      "validateWhenHidden" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.toewijzen-zaak-aan-zaakbehandelaar-pv.zaakbehandelaarEmail"
+      }
+    },
+    {
+      "key" : "pv.zaakbehandelaarEmail",
+      "data" : {
+        "url" : "../api/v1/users/authority/ROLE_KLACHTEN_KLACHTENCOORDINATOR_GGD",
+        "method" : "GET",
+        "headers" : [
+          {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          },
+          {
+            "key" : "Authorization",
+            "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Naam nieuwe zaakbehandelaar klacht",
+      "widget" : "choicesjs",
+      "dataSrc" : "url",
+      "lazyLoad" : false,
+      "template" : "<span>{{ item.fullName }}</span>",
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : true,
+      "valueProperty" : "email",
+      "customConditional" : "show = (data.pv.zaakbehandelaarKlacht === 'ANDERE_KLACHTENCOORDINATOR' && data.rapportageCategorieen?.toegewezenDienst?.dienst?.name === 'GGD')",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.toewijzen-zaak-aan-zaakbehandelaar-pv.zaakbehandelaarEmail"
+      }
+    },
+    {
+      "key" : "pv.zaakbehandelaarEmail",
+      "data" : {
+        "url" : "../api/v1/users/authority/ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+        "method" : "GET",
+        "headers" : [
+          {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          },
+          {
+            "key" : "Authorization",
+            "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Naam nieuwe zaakbehandelaar klacht",
+      "widget" : "choicesjs",
+      "dataSrc" : "url",
+      "lazyLoad" : false,
+      "template" : "<span>{{ item.fullName }}</span>",
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : true,
+      "valueProperty" : "email",
+      "customConditional" : "show = (data.pv.zaakbehandelaarKlacht === 'ANDERE_KLACHTENCOORDINATOR' && data.rapportageCategorieen?.toegewezenDienst?.dienst?.name === 'VTH')",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.toewijzen-zaak-aan-zaakbehandelaar-pv.zaakbehandelaarEmail"
+      }
+    },
+    {
+      "key" : "pv.zaakbehandelaarEmail",
+      "data" : {
+        "url" : "../api/v1/users/authority/ROLE_KLACHTEN_KLACHTBEHANDELAAR_{{data.pv.klachtteam}}",
+        "method" : "GET",
+        "headers" : [
+          {
+            "key" : "Content-Type",
+            "value" : "application/json"
+          },
+          {
+            "key" : "Authorization",
+            "value" : "Bearer {{localStorage.getItem('formioToken')}}"
+          }
+        ]
+      },
+      "type" : "select",
+      "input" : true,
+      "label" : "Naam nieuwe zaakbehandelaar klacht",
+      "widget" : "choicesjs",
+      "dataSrc" : "url",
+      "lazyLoad" : false,
+      "template" : "<span>{{ item.fullName }}</span>",
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : true,
+      "conditional" : {
+        "eq" : "EEN_KLACHTENBEHANDELAAR_VAN_DE_DIENST",
+        "show" : true,
+        "when" : "pv.zaakbehandelaarKlacht"
+      },
+      "valueProperty" : "email",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.toewijzen-zaak-aan-zaakbehandelaar-pv.zaakbehandelaarEmail"
+      }
+    },
+    {
+      "key" : "informeleAfhandeling.overdrachtPlaatsgevondenOp",
+      "type" : "datetime",
+      "input" : true,
+      "label" : "Datum klacht overgedragen aan klachtenbehandelaar",
+      "format" : "dd-MM-yyyy",
+      "widget" : {
+        "mode" : "single",
+        "type" : "calendar",
+        "format" : "dd-MM-yyyy",
+        "locale" : "en",
+        "maxDate" : null,
+        "minDate" : null,
+        "time_24hr" : true,
+        "allowInput" : true,
+        "enableTime" : true,
+        "noCalendar" : false,
+        "hourIncrement" : 1,
+        "disableWeekdays" : false,
+        "disableWeekends" : false,
+        "minuteIncrement" : 1,
+        "displayInTimezone" : "viewer",
+        "useLocaleSettings" : false
+      },
+      "validate" : {
+        "required" : true
+      },
+      "tableView" : false,
+      "datePicker" : {
+        "disableWeekdays" : false,
+        "disableWeekends" : false
+      },
+      "timePicker" : {
+        "showMeridian" : false
+      },
+      "conditional" : {
+        "eq" : "EEN_KLACHTENBEHANDELAAR_VAN_DE_DIENST",
+        "show" : true,
+        "when" : "pv.zaakbehandelaarKlacht"
+      },
+      "defaultDate" : "moment()",
+      "enableMaxDateInput" : false,
+      "enableMinDateInput" : false,
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.toewijzen-zaak-aan-zaakbehandelaar-informeleAfhandeling.overdrachtPlaatsgevondenOp"
+      }
+    },
+    {
+      "key" : "pv.zaakbehandelaarEmail",
+      "type" : "hidden",
+      "input" : true,
+      "label" : "Naam nieuwe zaakbehandelaar klacht",
+      "conditional" : {
+        "eq" : "MIJZELF",
+        "show" : true,
+        "when" : "pv.zaakbehandelaarKlacht"
+      },
+      "customDefaultValue" : "value = JSON.parse(localStorage.getItem('userIdentity')).email",
+      "attributes" : {
+        "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.toewijzen-zaak-aan-zaakbehandelaar-pv.zaakbehandelaarEmail"
+      }
+    },
+    {
+      "key" : "submit",
+      "type" : "button",
+      "input" : true,
+      "label" : "Doorgaan",
+      "action" : "custom",
+      "custom" : "component.disabled = true; form.submit();",
+      "tableView" : false,
+      "showValidations" : false,
+      "disableOnInvalid" : true
+    }
+  ]
+}

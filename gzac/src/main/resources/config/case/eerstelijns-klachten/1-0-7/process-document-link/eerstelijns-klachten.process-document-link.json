@@ -1,0 +1,77 @@
+[
+  {
+    "processDefinitionKey" : "klachten-verkennen-klacht",
+    "canInitializeDocument" : false,
+    "startableByUser" : false
+  },
+  {
+    "processDefinitionKey" : "klachten-wijzigen-algemene-informatie",
+    "canInitializeDocument" : false,
+    "startableByUser" : true
+  },
+  {
+    "processDefinitionKey" : "klachten-verwerken-behandeling-door-klachtencommissie",
+    "canInitializeDocument" : false,
+    "startableByUser" : false
+  },
+  {
+    "processDefinitionKey" : "klachten-registratie-en-afhandeling-eerstelijns-klachten",
+    "canInitializeDocument" : true,
+    "startableByUser" : false
+  },
+  {
+    "processDefinitionKey" : "klachten-wijzigen-afhandeltermijn",
+    "canInitializeDocument" : false,
+    "startableByUser" : true
+  },
+  {
+    "processDefinitionKey" : "start-klachtencomissie",
+    "canInitializeDocument" : false,
+    "startableByUser" : true
+  },
+  {
+    "processDefinitionKey" : "generic-afsluiten-zaak-met-interne-status-eerstelijns-klachten",
+    "canInitializeDocument" : false,
+    "startableByUser" : false
+  },
+  {
+    "processDefinitionKey" : "generic-update-zaakstatus-en-interne-status-plugin-eerstelijns-klachten",
+    "canInitializeDocument" : false,
+    "startableByUser" : false
+  },
+  {
+    "processDefinitionKey" : "klachten-beoordelen-nieuwe-klacht",
+    "canInitializeDocument" : false,
+    "startableByUser" : false
+  },
+  {
+    "processDefinitionKey" : "klachten-formeel-afhandelen-klacht",
+    "canInitializeDocument" : false,
+    "startableByUser" : false
+  },
+  {
+    "processDefinitionKey" : "klachten-genereer-document",
+    "canInitializeDocument" : false,
+    "startableByUser" : false
+  },
+  {
+    "processDefinitionKey" : "klachten-informeel-afhandelen-klacht",
+    "canInitializeDocument" : false,
+    "startableByUser" : false
+  },
+  {
+    "processDefinitionKey" : "klachten-informeren-externe-betrokkenen",
+    "canInitializeDocument" : false,
+    "startableByUser" : false
+  },
+  {
+    "processDefinitionKey" : "klachten-herbeoordelen-klacht",
+    "canInitializeDocument" : false,
+    "startableByUser" : true
+  },
+  {
+    "processDefinitionKey" : "klachten-terug-naar-hoofd-proces",
+    "canInitializeDocument" : false,
+    "startableByUser" : true
+  }
+]
