@@ -1,0 +1,1440 @@
+[
+        {
+            "resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+            "actions": ["view", "view_list"],
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "id.key",
+                    "operator": "in",
+                    "value": [
+                        "eerstelijns-klachten",
+                        "tweedelijns-klachten",
+                        "interventieverzoek"
+                    ]
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.dashboard.domain.Dashboard",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "actions": [
+                "view",
+                "view_list"
+            ],
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.case_.domain.tab.CaseWidgetTabWidget",
+            "action": "view",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.valtimo.contract.authentication.User",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "actions": [
+                "view_list",
+                "view"
+            ],
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.valtimo.operaton.domain.OperatonExecution",
+            "action": "create",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.resource.authorization.ResourcePermission",
+            "action": [
+                "create",
+                "view_list",
+                "view",
+                "modify",
+                "delete"
+            ],
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "view",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "eerstelijns-klachten"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "OCW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "SZW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DPZ",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DSB",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DSO",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DBV",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "BSD",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "GGD",
+                    "clazz": "java.lang.String"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "view",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "tweedelijns-klachten"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "view",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "interventieverzoek"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "OCW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "SZW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DPZ",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DSB",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DSO",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DBV",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "BSD",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "GGD",
+                    "clazz": "java.lang.String"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "view_list",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "eerstelijns-klachten"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "OCW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "SZW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DPZ",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DSB",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DSO",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DBV",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "BSD",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "GGD",
+                    "clazz": "java.lang.String"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "view_list",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "tweedelijns-klachten"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "view_list",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "interventieverzoek"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "OCW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "SZW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DPZ",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DSB",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DSO",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DBV",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "BSD",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "GGD",
+                    "clazz": "java.lang.String"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "create",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "eerstelijns-klachten"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "create",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "tweedelijns-klachten"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "create",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "interventieverzoek"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "modify",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "eerstelijns-klachten"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "OCW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "SZW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DPZ",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DSB",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DSO",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DBV",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "BSD",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "GGD",
+                    "clazz": "java.lang.String"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "modify",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "tweedelijns-klachten"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "modify",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "interventieverzoek"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "OCW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "SZW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DPZ",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DSB",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DSO",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DBV",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "BSD",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "GGD",
+                    "clazz": "java.lang.String"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "claim",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "eerstelijns-klachten"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "OCW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "SZW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DPZ",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DSB",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DSO",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DBV",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "BSD",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "GGD",
+                    "clazz": "java.lang.String"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "claim",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "tweedelijns-klachten"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "claim",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "interventieverzoek"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "OCW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "SZW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DPZ",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DSB",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DSO",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DBV",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "BSD",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "GGD",
+                    "clazz": "java.lang.String"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "assign",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "eerstelijns-klachten"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "OCW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "SZW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DPZ",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DSB",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DSO",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DBV",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "BSD",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "GGD",
+                    "clazz": "java.lang.String"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "assign",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "tweedelijns-klachten"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "assign",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "interventieverzoek"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "OCW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "SZW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DPZ",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DSB",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DSO",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DBV",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "BSD",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "GGD",
+                    "clazz": "java.lang.String"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "assignable",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "eerstelijns-klachten"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "OCW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "SZW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DPZ",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DSB",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DSO",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DBV",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "BSD",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "GGD",
+                    "clazz": "java.lang.String"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "assignable",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "tweedelijns-klachten"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "assignable",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "interventieverzoek"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "OCW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "SZW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DPZ",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DSB",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DSO",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "DBV",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "BSD",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "GGD",
+                    "clazz": "java.lang.String"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "assignable",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "OCW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "SZW",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DPZ",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DSB",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DSO",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "DBV",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "BSD",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "GGD",
+                    "clazz": "java.lang.String"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition",
+            "action": "view",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "id.name",
+                    "operator": "==",
+                    "value": "eerstelijns-klachten"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition",
+            "action": "view",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "id.name",
+                    "operator": "==",
+                    "value": "tweedelijns-klachten"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition",
+            "action": "view",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "id.name",
+                    "operator": "==",
+                    "value": "interventieverzoek"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition",
+            "action": "view_list",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "id.name",
+                    "operator": "==",
+                    "value": "eerstelijns-klachten"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition",
+            "action": "view_list",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "id.name",
+                    "operator": "==",
+                    "value": "tweedelijns-klachten"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition",
+            "action": "view_list",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "id.name",
+                    "operator": "==",
+                    "value": "interventieverzoek"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.searchfield.SearchField",
+            "action": "view_list",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "id.caseDefinitionKey",
+                    "operator": "==",
+                    "value": "eerstelijns-klachten"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.searchfield.SearchField",
+            "action": "view_list",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "id.caseDefinitionKey",
+                    "operator": "==",
+                    "value": "tweedelijns-klachten"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.searchfield.SearchField",
+            "action": "view_list",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "id.caseDefinitionKey",
+                    "operator": "==",
+                    "value": "interventieverzoek"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
+            "action": "view_list",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "container",
+                    "resourceType": "com.ritense.valtimo.operaton.domain.OperatonIdentityLink",
+                    "conditions": [
+                        {
+                            "type": "field",
+                            "field": "groupId",
+                            "operator": "==",
+                            "value": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
+            "action": "complete",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "container",
+                    "resourceType": "com.ritense.valtimo.operaton.domain.OperatonIdentityLink",
+                    "conditions": [
+                        {
+                            "type": "field",
+                            "field": "groupId",
+                            "operator": "==",
+                            "value": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
+            "action": "assign",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "container",
+                    "resourceType": "com.ritense.valtimo.operaton.domain.OperatonIdentityLink",
+                    "conditions": [
+                        {
+                            "type": "field",
+                            "field": "groupId",
+                            "operator": "==",
+                            "value": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
+            "action": "assignable",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "container",
+                    "resourceType": "com.ritense.valtimo.operaton.domain.OperatonIdentityLink",
+                    "conditions": [
+                        {
+                            "type": "field",
+                            "field": "groupId",
+                            "operator": "==",
+                            "value": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
+            "action": "claim",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "container",
+                    "resourceType": "com.ritense.valtimo.operaton.domain.OperatonIdentityLink",
+                    "conditions": [
+                        {
+                            "type": "field",
+                            "field": "groupId",
+                            "operator": "==",
+                            "value": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
+            "action": "view",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": [
+                {
+                    "type": "container",
+                    "resourceType": "com.ritense.valtimo.operaton.domain.OperatonIdentityLink",
+                    "conditions": [
+                        {
+                            "type": "field",
+                            "field": "groupId",
+                            "operator": "==",
+                            "value": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.case.domain.CaseTab",
+            "action": "view",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.note.domain.Note",
+            "action": "view",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.note.domain.Note",
+            "action": "view_list",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.note.domain.Note",
+            "action": "create",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.note.domain.Note",
+            "action": "modify",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.note.domain.Note",
+            "action": "delete",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
+            "conditions": []
+        }
+    ]

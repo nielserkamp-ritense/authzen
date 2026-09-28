@@ -1,0 +1,86 @@
+[
+        {
+            "resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+            "action": "view_list",
+            "roleKey": "ROLE_KLACHTEN_KCC",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "id.key",
+                    "operator": "==",
+                    "value": "eerstelijns-klachten"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+            "action": "view",
+            "roleKey": "ROLE_KLACHTEN_KCC",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "id.key",
+                    "operator": "==",
+                    "value": "eerstelijns-klachten"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "view_list",
+            "roleKey": "ROLE_KLACHTEN_KCC",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "eerstelijns-klachten"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition",
+            "action": "view",
+            "roleKey": "ROLE_KLACHTEN_KCC",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "id.name",
+                    "operator": "==",
+                    "value": "eerstelijns-klachten"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition",
+            "action": "view_list",
+            "roleKey": "ROLE_KLACHTEN_KCC",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "id.name",
+                    "operator": "==",
+                    "value": "eerstelijns-klachten"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.resource.authorization.ResourcePermission",
+            "action": ["view_list", "view"],
+            "roleKey": "ROLE_KLACHTEN_KCC",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.searchfield.SearchField",
+            "action": "view_list",
+            "roleKey": "ROLE_KLACHTEN_KCC",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "id.caseDefinitionKey",
+                    "operator": "==",
+                    "value": "eerstelijns-klachten"
+                }
+            ]
+        }
+    ]

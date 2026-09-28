@@ -1,0 +1,248 @@
+[
+        {
+            "resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+            "action": ["view", "view_list"],
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "id.key",
+                    "operator": "in",
+                    "value": [
+                        "eerstelijns-klachten",
+                        "tweedelijns-klachten",
+                        "interventieverzoek"
+                    ]
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.dashboard.domain.Dashboard",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR",
+            "actions": [
+                "view",
+                "view_list"
+            ],
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.valtimo.operaton.domain.OperatonExecution",
+            "action": "create",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.case_.domain.tab.CaseWidgetTabWidget",
+            "action": "view",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.resource.authorization.ResourcePermission",
+            "action": ["create", "view_list", "view", "modify", "delete"],
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": ["view", "view_list", "modify", "claim", "assign", "assignable"],
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "eerstelijns-klachten"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "GGD",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "VTH",
+                    "clazz": "java.lang.String"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": ["view", "view_list", "modify", "claim", "assign", "assignable"],
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "tweedelijns-klachten"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": ["view", "view_list", "modify", "claim", "assign", "assignable"],
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "==",
+                    "value": "interventieverzoek"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "GGD",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.interventieverzoek.dienst.name",
+                    "operator": "!=",
+                    "value": "VTH",
+                    "clazz": "java.lang.String"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "create",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "documentDefinitionId.name",
+                    "operator": "in",
+                    "value": [
+                        "eerstelijns-klachten",
+                        "tweedelijns-klachten",
+                        "interventieverzoek"
+                    ]
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+            "action": "assignable",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR",
+            "conditions": [
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "GGD",
+                    "clazz": "java.lang.String"
+                },
+                {
+                    "type": "expression",
+                    "field": "content.content",
+                    "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                    "operator": "!=",
+                    "value": "VTH",
+                    "clazz": "java.lang.String"
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition",
+            "action": ["view", "view_list"],
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "id.name",
+                    "operator": "in",
+                    "value": [
+                        "eerstelijns-klachten",
+                        "tweedelijns-klachten",
+                        "interventieverzoek"
+                    ]
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.valtimo.contract.authentication.User",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR",
+            "actions": ["view","view_list"],
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.document.domain.impl.searchfield.SearchField",
+            "action": "view_list",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR",
+            "conditions": [
+                {
+                    "type": "field",
+                    "field": "id.caseDefinitionKey",
+                    "operator": "in",
+                    "value": [
+                        "eerstelijns-klachten",
+                        "tweedelijns-klachten",
+                        "interventieverzoek"
+                    ]
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
+            "action": ["view_list", "complete", "assign", "assignable", "claim", "view"],
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR",
+            "conditions": [
+                {
+                    "type": "container",
+                    "resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+                    "conditions": [
+                        {
+                            "type": "field",
+                            "field": "documentDefinitionId.name",
+                            "operator": "in",
+                            "value": [
+                                "eerstelijns-klachten",
+                                "tweedelijns-klachten",
+                                "interventieverzoek"
+                            ]
+                        },
+                        {
+                            "type": "expression",
+                            "field": "content.content",
+                            "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                            "operator": "!=",
+                            "value": "GGD",
+                            "clazz": "java.lang.String"
+                        },
+                        {
+                            "type": "expression",
+                            "field": "content.content",
+                            "path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+                            "operator": "!=",
+                            "value": "VTH",
+                            "clazz": "java.lang.String"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "resourceType": "com.ritense.case.domain.CaseTab",
+            "action": "view",
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR",
+            "conditions": []
+        },
+        {
+            "resourceType": "com.ritense.note.domain.Note",
+            "action": ["view", "view_list", "create", "modify", "delete"],
+            "roleKey": "ROLE_KLACHTEN_KLACHTENCOORDINATOR",
+            "conditions": []
+        }
+    ]
