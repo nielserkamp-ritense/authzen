@@ -29,6 +29,7 @@ klachtencoordinator_ggd_case_tab_1 if {
 allow if klachtencoordinator_ggd_case_tab_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.case.domain.CaseTab",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": []},
@@ -51,6 +52,7 @@ klachtencoordinator_ggd_case_definition_1 if {
 allow if klachtencoordinator_ggd_case_definition_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
 	"actions": ["view", "view_list"],
 	"conditionContainer": {"conditions": [
@@ -84,6 +86,7 @@ klachtencoordinator_ggd_case_widget_tab_widget_1 if {
 allow if klachtencoordinator_ggd_case_widget_tab_widget_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.case_.domain.tab.CaseWidgetTabWidget",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": []},
@@ -106,6 +109,7 @@ klachtencoordinator_ggd_dashboard_1 if {
 allow if klachtencoordinator_ggd_dashboard_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.dashboard.domain.Dashboard",
 	"actions": ["view", "view_list"],
 	"conditionContainer": {"conditions": []},
@@ -128,6 +132,7 @@ klachtencoordinator_ggd_json_schema_document_1 if {
 allow if klachtencoordinator_ggd_json_schema_document_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": [
@@ -219,6 +224,7 @@ klachtencoordinator_ggd_json_schema_document_2 if {
 allow if klachtencoordinator_ggd_json_schema_document_2
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": [
@@ -246,6 +252,7 @@ klachtencoordinator_ggd_json_schema_document_3 if {
 allow if klachtencoordinator_ggd_json_schema_document_3
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": [
@@ -337,6 +344,7 @@ klachtencoordinator_ggd_json_schema_document_4 if {
 allow if klachtencoordinator_ggd_json_schema_document_4
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
@@ -428,6 +436,7 @@ klachtencoordinator_ggd_json_schema_document_5 if {
 allow if klachtencoordinator_ggd_json_schema_document_5
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
@@ -455,6 +464,7 @@ klachtencoordinator_ggd_json_schema_document_6 if {
 allow if klachtencoordinator_ggd_json_schema_document_6
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
@@ -546,6 +556,7 @@ klachtencoordinator_ggd_json_schema_document_7 if {
 allow if klachtencoordinator_ggd_json_schema_document_7
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["create"],
 	"conditionContainer": {"conditions": [
@@ -573,6 +584,7 @@ klachtencoordinator_ggd_json_schema_document_8 if {
 allow if klachtencoordinator_ggd_json_schema_document_8
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["create"],
 	"conditionContainer": {"conditions": [
@@ -600,6 +612,7 @@ klachtencoordinator_ggd_json_schema_document_9 if {
 allow if klachtencoordinator_ggd_json_schema_document_9
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["create"],
 	"conditionContainer": {"conditions": [
@@ -627,6 +640,7 @@ klachtencoordinator_ggd_json_schema_document_10 if {
 allow if klachtencoordinator_ggd_json_schema_document_10
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["modify"],
 	"conditionContainer": {"conditions": [
@@ -718,6 +732,7 @@ klachtencoordinator_ggd_json_schema_document_11 if {
 allow if klachtencoordinator_ggd_json_schema_document_11
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["modify"],
 	"conditionContainer": {"conditions": [
@@ -745,6 +760,7 @@ klachtencoordinator_ggd_json_schema_document_12 if {
 allow if klachtencoordinator_ggd_json_schema_document_12
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["modify"],
 	"conditionContainer": {"conditions": [
@@ -836,6 +852,7 @@ klachtencoordinator_ggd_json_schema_document_13 if {
 allow if klachtencoordinator_ggd_json_schema_document_13
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["claim"],
 	"conditionContainer": {"conditions": [
@@ -927,6 +944,7 @@ klachtencoordinator_ggd_json_schema_document_14 if {
 allow if klachtencoordinator_ggd_json_schema_document_14
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["claim"],
 	"conditionContainer": {"conditions": [
@@ -954,6 +972,7 @@ klachtencoordinator_ggd_json_schema_document_15 if {
 allow if klachtencoordinator_ggd_json_schema_document_15
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["claim"],
 	"conditionContainer": {"conditions": [
@@ -1045,6 +1064,7 @@ klachtencoordinator_ggd_json_schema_document_16 if {
 allow if klachtencoordinator_ggd_json_schema_document_16
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["assign"],
 	"conditionContainer": {"conditions": [
@@ -1136,6 +1156,7 @@ klachtencoordinator_ggd_json_schema_document_17 if {
 allow if klachtencoordinator_ggd_json_schema_document_17
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["assign"],
 	"conditionContainer": {"conditions": [
@@ -1163,6 +1184,7 @@ klachtencoordinator_ggd_json_schema_document_18 if {
 allow if klachtencoordinator_ggd_json_schema_document_18
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["assign"],
 	"conditionContainer": {"conditions": [
@@ -1254,6 +1276,7 @@ klachtencoordinator_ggd_json_schema_document_19 if {
 allow if klachtencoordinator_ggd_json_schema_document_19
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["assignable"],
 	"conditionContainer": {"conditions": [
@@ -1345,6 +1368,7 @@ klachtencoordinator_ggd_json_schema_document_20 if {
 allow if klachtencoordinator_ggd_json_schema_document_20
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["assignable"],
 	"conditionContainer": {"conditions": [
@@ -1372,6 +1396,7 @@ klachtencoordinator_ggd_json_schema_document_21 if {
 allow if klachtencoordinator_ggd_json_schema_document_21
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["assignable"],
 	"conditionContainer": {"conditions": [
@@ -1463,6 +1488,7 @@ klachtencoordinator_ggd_json_schema_document_22 if {
 allow if klachtencoordinator_ggd_json_schema_document_22
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["assignable"],
 	"conditionContainer": {"conditions": [
@@ -1550,6 +1576,7 @@ klachtencoordinator_ggd_json_schema_document_definition_1 if {
 allow if klachtencoordinator_ggd_json_schema_document_definition_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": [
@@ -1577,6 +1604,7 @@ klachtencoordinator_ggd_json_schema_document_definition_2 if {
 allow if klachtencoordinator_ggd_json_schema_document_definition_2
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": [
@@ -1604,6 +1632,7 @@ klachtencoordinator_ggd_json_schema_document_definition_3 if {
 allow if klachtencoordinator_ggd_json_schema_document_definition_3
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": [
@@ -1631,6 +1660,7 @@ klachtencoordinator_ggd_json_schema_document_definition_4 if {
 allow if klachtencoordinator_ggd_json_schema_document_definition_4
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
@@ -1658,6 +1688,7 @@ klachtencoordinator_ggd_json_schema_document_definition_5 if {
 allow if klachtencoordinator_ggd_json_schema_document_definition_5
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
@@ -1685,6 +1716,7 @@ klachtencoordinator_ggd_json_schema_document_definition_6 if {
 allow if klachtencoordinator_ggd_json_schema_document_definition_6
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
@@ -1714,6 +1746,7 @@ klachtencoordinator_ggd_search_field_1 if {
 allow if klachtencoordinator_ggd_search_field_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.searchfield.SearchField",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
@@ -1741,6 +1774,7 @@ klachtencoordinator_ggd_search_field_2 if {
 allow if klachtencoordinator_ggd_search_field_2
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.searchfield.SearchField",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
@@ -1768,6 +1802,7 @@ klachtencoordinator_ggd_search_field_3 if {
 allow if klachtencoordinator_ggd_search_field_3
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.searchfield.SearchField",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
@@ -1797,6 +1832,7 @@ klachtencoordinator_ggd_note_1 if {
 allow if klachtencoordinator_ggd_note_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.note.domain.Note",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": []},
@@ -1817,6 +1853,7 @@ klachtencoordinator_ggd_note_2 if {
 allow if klachtencoordinator_ggd_note_2
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.note.domain.Note",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": []},
@@ -1837,6 +1874,7 @@ klachtencoordinator_ggd_note_3 if {
 allow if klachtencoordinator_ggd_note_3
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.note.domain.Note",
 	"actions": ["create"],
 	"conditionContainer": {"conditions": []},
@@ -1857,6 +1895,7 @@ klachtencoordinator_ggd_note_4 if {
 allow if klachtencoordinator_ggd_note_4
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.note.domain.Note",
 	"actions": ["modify"],
 	"conditionContainer": {"conditions": []},
@@ -1877,6 +1916,7 @@ klachtencoordinator_ggd_note_5 if {
 allow if klachtencoordinator_ggd_note_5
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.note.domain.Note",
 	"actions": ["delete"],
 	"conditionContainer": {"conditions": []},
@@ -1899,6 +1939,7 @@ klachtencoordinator_ggd_resource_permission_1 if {
 allow if klachtencoordinator_ggd_resource_permission_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.resource.authorization.ResourcePermission",
 	"actions": ["create", "delete", "modify", "view", "view_list"],
 	"conditionContainer": {"conditions": []},
@@ -1921,6 +1962,7 @@ klachtencoordinator_ggd_user_1 if {
 allow if klachtencoordinator_ggd_user_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.contract.authentication.User",
 	"actions": ["view", "view_list"],
 	"conditionContainer": {"conditions": []},
@@ -1943,6 +1985,7 @@ klachtencoordinator_ggd_operaton_execution_1 if {
 allow if klachtencoordinator_ggd_operaton_execution_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.operaton.domain.OperatonExecution",
 	"actions": ["create"],
 	"conditionContainer": {"conditions": []},
@@ -1965,6 +2008,7 @@ klachtencoordinator_ggd_operaton_task_1 if {
 allow if klachtencoordinator_ggd_operaton_task_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
@@ -1998,6 +2042,7 @@ klachtencoordinator_ggd_operaton_task_2 if {
 allow if klachtencoordinator_ggd_operaton_task_2
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
 	"actions": ["complete"],
 	"conditionContainer": {"conditions": [
@@ -2031,6 +2076,7 @@ klachtencoordinator_ggd_operaton_task_3 if {
 allow if klachtencoordinator_ggd_operaton_task_3
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
 	"actions": ["assign"],
 	"conditionContainer": {"conditions": [
@@ -2064,6 +2110,7 @@ klachtencoordinator_ggd_operaton_task_4 if {
 allow if klachtencoordinator_ggd_operaton_task_4
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
 	"actions": ["assignable"],
 	"conditionContainer": {"conditions": [
@@ -2097,6 +2144,7 @@ klachtencoordinator_ggd_operaton_task_5 if {
 allow if klachtencoordinator_ggd_operaton_task_5
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
 	"actions": ["claim"],
 	"conditionContainer": {"conditions": [
@@ -2130,6 +2178,7 @@ klachtencoordinator_ggd_operaton_task_6 if {
 allow if klachtencoordinator_ggd_operaton_task_6
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": [

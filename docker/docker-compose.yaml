@@ -667,6 +667,8 @@ services:
       - gzac
     ports:
       - 8080:8080
+      - 5005:5005
+    entrypoint: ["java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar", "/app.war"]
     depends_on:
       gzac-keycloak:
         condition: service_healthy

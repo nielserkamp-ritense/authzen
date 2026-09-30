@@ -30,6 +30,7 @@ case_tab_view_admin if {
 allow if case_tab_view_admin
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.case.domain.CaseTab",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": []},
@@ -50,6 +51,7 @@ case_tab_view_user if {
 allow if case_tab_view_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.case.domain.CaseTab",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": []},
@@ -72,9 +74,21 @@ case_definition_view_admin if {
 allow if case_definition_view_admin
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
 	"actions": ["view", "view_list"],
-	"conditionContainer": {"conditions": []},
+	"conditionContainer": {"conditions": [
+	{
+        "type": "container",
+        "resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+        "conditions": [{
+            "type": "field",
+            "field": "zaakTypeUrl",
+            "operator": "==",
+            "value": "bezwaar",
+        }],
+	}
+	]},
 	"role": "ROLE_ADMIN",
 	"contextResourceType": null,
 	"contextConditionContainer": {"conditions": []},
@@ -92,6 +106,7 @@ case_definition_view_user if {
 allow if case_definition_view_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
 	"actions": ["view", "view_list"],
 	"conditionContainer": {"conditions": []},
@@ -114,6 +129,7 @@ case_widget_tab_widget_view_admin if {
 allow if case_widget_tab_widget_view_admin
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.case_.domain.tab.CaseWidgetTabWidget",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": []},
@@ -134,6 +150,7 @@ case_widget_tab_widget_view_user if {
 allow if case_widget_tab_widget_view_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.case_.domain.tab.CaseWidgetTabWidget",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": []},
@@ -156,6 +173,7 @@ dashboard_view_admin if {
 allow if dashboard_view_admin
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.dashboard.domain.Dashboard",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": [{
@@ -182,6 +200,7 @@ dashboard_view_user if {
 allow if dashboard_view_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.dashboard.domain.Dashboard",
 	"actions": ["view", "view_list"],
 	"conditionContainer": {"conditions": [{
@@ -225,6 +244,7 @@ document_all_admin if {
 allow if document_all_admin
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": [
 		"assign",
@@ -270,6 +290,7 @@ document_claim_team_user if {
 allow if document_claim_team_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["assign", "assignable", "claim"],
 	"conditionContainer": {"conditions": [
@@ -316,6 +337,7 @@ document_claim_unassigned_user if {
 allow if document_claim_unassigned_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["assign", "assignable", "claim"],
 	"conditionContainer": {"conditions": [
@@ -359,6 +381,7 @@ document_create_user if {
 allow if document_create_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["create"],
 	"conditionContainer": {"conditions": [{
@@ -389,6 +412,7 @@ document_view_team_user if {
 allow if document_view_team_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["export", "modify", "view", "view_list"],
 	"conditionContainer": {"conditions": [
@@ -427,6 +451,7 @@ document_view_assignee_user if {
 allow if document_view_assignee_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["export", "modify", "view", "view_list"],
 	"conditionContainer": {"conditions": [
@@ -466,6 +491,7 @@ document_definition_all_admin if {
 allow if document_definition_all_admin
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition",
 	"actions": ["create", "delete", "modify", "view", "view_list"],
 	"conditionContainer": {"conditions": []},
@@ -486,6 +512,7 @@ document_definition_view_user if {
 allow if document_definition_view_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition",
 	"actions": ["view", "view_list"],
 	"conditionContainer": {"conditions": []},
@@ -508,6 +535,7 @@ search_field_view_list_admin if {
 allow if search_field_view_list_admin
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.searchfield.SearchField",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": []},
@@ -528,6 +556,7 @@ search_field_view_list_user if {
 allow if search_field_view_list_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.searchfield.SearchField",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": []},
@@ -552,6 +581,7 @@ document_snapshot_view_user if {
 allow if document_snapshot_view_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.snapshot.JsonSchemaDocumentSnapshot",
 	"actions": ["view", "view_list"],
 	"conditionContainer": {"conditions": []},
@@ -574,6 +604,7 @@ zgw_document_all_admin if {
 allow if zgw_document_all_admin
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.documentenapi.authorization.ZgwDocument",
 	"actions": ["create", "delete", "modify", "view", "view_list"],
 	"conditionContainer": {"conditions": []},
@@ -594,6 +625,7 @@ zgw_document_bezwaar_user if {
 allow if zgw_document_bezwaar_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.documentenapi.authorization.ZgwDocument",
 	"actions": ["create", "delete", "modify", "view", "view_list"],
 	"conditionContainer": {"conditions": [{
@@ -627,6 +659,7 @@ iko_view_admin if {
 allow if iko_view_admin
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.iko.domain.IkoView",
 	"actions": ["view", "view_list"],
 	"conditionContainer": {"conditions": []},
@@ -652,6 +685,7 @@ note_all_admin if {
 allow if note_all_admin
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.note.domain.Note",
 	"actions": ["create", "delete", "modify", "view_list"],
 	"conditionContainer": {"conditions": []},
@@ -672,6 +706,7 @@ note_create_user if {
 allow if note_create_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.note.domain.Note",
 	"actions": ["create", "view_list"],
 	"conditionContainer": {"conditions": [{
@@ -706,6 +741,7 @@ note_own_modify_user if {
 allow if note_own_modify_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.note.domain.Note",
 	"actions": ["delete", "modify"],
 	"conditionContainer": {"conditions": [
@@ -749,6 +785,7 @@ object_all_admin if {
 allow if object_all_admin
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.objectenapi.security.Object",
 	"actions": ["create", "delete", "modify", "view", "view_list"],
 	"conditionContainer": {"conditions": []},
@@ -769,6 +806,7 @@ object_view_user if {
 allow if object_view_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.objectenapi.security.Object",
 	"actions": ["view", "view_list"],
 	"conditionContainer": {"conditions": []},
@@ -791,6 +829,7 @@ object_management_view_list_admin if {
 allow if object_management_view_list_admin
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.objectmanagement.domain.ObjectManagement",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": []},
@@ -811,6 +850,7 @@ object_management_view_list_user if {
 allow if object_management_view_list_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.objectmanagement.domain.ObjectManagement",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [{
@@ -841,6 +881,7 @@ team_all_admin if {
 allow if team_all_admin
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.team.domain.Team",
 	"actions": ["assign", "create", "delete", "modify", "view", "view_list"],
 	"conditionContainer": {"conditions": []},
@@ -861,6 +902,7 @@ team_member_user if {
 allow if team_member_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.team.domain.Team",
 	"actions": ["assign", "delete", "modify", "view", "view_list"],
 	"conditionContainer": {"conditions": [{
@@ -891,6 +933,7 @@ managed_user_view_admin if {
 allow if managed_user_view_admin
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.contract.authentication.User",
 	"actions": ["view", "view_list"],
 	"conditionContainer": {"conditions": []},
@@ -916,6 +959,7 @@ managed_user_view_user if {
 allow if managed_user_view_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.contract.authentication.User",
 	"actions": ["view", "view_list"],
 	"conditionContainer": {"conditions": [{
@@ -943,6 +987,7 @@ operaton_execution_create_admin if {
 allow if operaton_execution_create_admin
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.operaton.domain.OperatonExecution",
 	"actions": ["create"],
 	"conditionContainer": {"conditions": []},
@@ -963,6 +1008,7 @@ operaton_execution_create_user if {
 allow if operaton_execution_create_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.operaton.domain.OperatonExecution",
 	"actions": ["create"],
 	"conditionContainer": {"conditions": [{
@@ -998,6 +1044,7 @@ operaton_task_all_admin if {
 allow if operaton_task_all_admin
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
 	"actions": ["assign", "claim", "complete", "view", "view_list"],
 	"conditionContainer": {"conditions": []},
@@ -1018,6 +1065,7 @@ operaton_task_assignable_role_admin if {
 allow if operaton_task_assignable_role_admin
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
 	"actions": ["assignable"],
 	"conditionContainer": {"conditions": [{
@@ -1047,6 +1095,7 @@ operaton_task_assignable_teams_admin if {
 allow if operaton_task_assignable_teams_admin
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
 	"actions": ["assignable"],
 	"conditionContainer": {"conditions": [{
@@ -1076,6 +1125,7 @@ operaton_task_all_role_user if {
 allow if operaton_task_all_role_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
 	"actions": ["assign", "assignable", "claim", "complete", "view", "view_list"],
 	"conditionContainer": {"conditions": [{
@@ -1105,6 +1155,7 @@ operaton_task_all_teams_user if {
 allow if operaton_task_all_teams_user
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
 	"actions": ["assign", "assignable", "claim", "complete", "view", "view_list"],
 	"conditionContainer": {"conditions": [{
@@ -1140,6 +1191,7 @@ operaton_timer_complete_admin if {
 allow if operaton_timer_complete_admin
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.operaton.domain.OperatonTimer",
 	"actions": ["complete"],
 	"conditionContainer": {"conditions": []},
@@ -1165,6 +1217,7 @@ zaak_view_admin if {
 allow if zaak_view_admin
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.zakenapi.security.Zaak",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": [{

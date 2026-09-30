@@ -29,6 +29,7 @@ klachtbehandelaar_ocw_algemeen_case_tab_1 if {
 allow if klachtbehandelaar_ocw_algemeen_case_tab_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.case.domain.CaseTab",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": []},
@@ -51,6 +52,7 @@ klachtbehandelaar_ocw_algemeen_case_definition_1 if {
 allow if klachtbehandelaar_ocw_algemeen_case_definition_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
@@ -78,6 +80,7 @@ klachtbehandelaar_ocw_algemeen_case_definition_2 if {
 allow if klachtbehandelaar_ocw_algemeen_case_definition_2
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": [
@@ -107,6 +110,7 @@ klachtbehandelaar_ocw_algemeen_json_schema_document_1 if {
 allow if klachtbehandelaar_ocw_algemeen_json_schema_document_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": [
@@ -166,6 +170,7 @@ klachtbehandelaar_ocw_algemeen_json_schema_document_2 if {
 allow if klachtbehandelaar_ocw_algemeen_json_schema_document_2
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
@@ -225,6 +230,7 @@ klachtbehandelaar_ocw_algemeen_json_schema_document_3 if {
 allow if klachtbehandelaar_ocw_algemeen_json_schema_document_3
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["modify"],
 	"conditionContainer": {"conditions": [
@@ -284,6 +290,7 @@ klachtbehandelaar_ocw_algemeen_json_schema_document_4 if {
 allow if klachtbehandelaar_ocw_algemeen_json_schema_document_4
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["claim"],
 	"conditionContainer": {"conditions": [
@@ -343,6 +350,7 @@ klachtbehandelaar_ocw_algemeen_json_schema_document_5 if {
 allow if klachtbehandelaar_ocw_algemeen_json_schema_document_5
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["assign"],
 	"conditionContainer": {"conditions": [
@@ -402,6 +410,7 @@ klachtbehandelaar_ocw_algemeen_json_schema_document_6 if {
 allow if klachtbehandelaar_ocw_algemeen_json_schema_document_6
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["assignable"],
 	"conditionContainer": {"conditions": [
@@ -463,6 +472,7 @@ klachtbehandelaar_ocw_algemeen_json_schema_document_definition_1 if {
 allow if klachtbehandelaar_ocw_algemeen_json_schema_document_definition_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": [
@@ -490,6 +500,7 @@ klachtbehandelaar_ocw_algemeen_json_schema_document_definition_2 if {
 allow if klachtbehandelaar_ocw_algemeen_json_schema_document_definition_2
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
@@ -519,6 +530,7 @@ klachtbehandelaar_ocw_algemeen_search_field_1 if {
 allow if klachtbehandelaar_ocw_algemeen_search_field_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.searchfield.SearchField",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
@@ -548,6 +560,7 @@ klachtbehandelaar_ocw_algemeen_note_1 if {
 allow if klachtbehandelaar_ocw_algemeen_note_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.note.domain.Note",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": [
@@ -581,6 +594,7 @@ klachtbehandelaar_ocw_algemeen_note_2 if {
 allow if klachtbehandelaar_ocw_algemeen_note_2
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.note.domain.Note",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
@@ -614,6 +628,7 @@ klachtbehandelaar_ocw_algemeen_note_3 if {
 allow if klachtbehandelaar_ocw_algemeen_note_3
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.note.domain.Note",
 	"actions": ["create"],
 	"conditionContainer": {"conditions": [
@@ -647,6 +662,7 @@ klachtbehandelaar_ocw_algemeen_note_4 if {
 allow if klachtbehandelaar_ocw_algemeen_note_4
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.note.domain.Note",
 	"actions": ["modify"],
 	"conditionContainer": {"conditions": [
@@ -680,6 +696,7 @@ klachtbehandelaar_ocw_algemeen_note_5 if {
 allow if klachtbehandelaar_ocw_algemeen_note_5
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.note.domain.Note",
 	"actions": ["delete"],
 	"conditionContainer": {"conditions": [
@@ -715,6 +732,7 @@ klachtbehandelaar_ocw_algemeen_resource_permission_1 if {
 allow if klachtbehandelaar_ocw_algemeen_resource_permission_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.resource.authorization.ResourcePermission",
 	"actions": ["create", "delete", "modify", "view", "view_list"],
 	"conditionContainer": {"conditions": []},
@@ -737,6 +755,7 @@ klachtbehandelaar_ocw_algemeen_operaton_task_1 if {
 allow if klachtbehandelaar_ocw_algemeen_operaton_task_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
@@ -770,6 +789,7 @@ klachtbehandelaar_ocw_algemeen_operaton_task_2 if {
 allow if klachtbehandelaar_ocw_algemeen_operaton_task_2
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
 	"actions": ["complete"],
 	"conditionContainer": {"conditions": [
@@ -803,6 +823,7 @@ klachtbehandelaar_ocw_algemeen_operaton_task_3 if {
 allow if klachtbehandelaar_ocw_algemeen_operaton_task_3
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
 	"actions": ["assign"],
 	"conditionContainer": {"conditions": [
@@ -836,6 +857,7 @@ klachtbehandelaar_ocw_algemeen_operaton_task_4 if {
 allow if klachtbehandelaar_ocw_algemeen_operaton_task_4
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
 	"actions": ["assignable"],
 	"conditionContainer": {"conditions": [
@@ -869,6 +891,7 @@ klachtbehandelaar_ocw_algemeen_operaton_task_5 if {
 allow if klachtbehandelaar_ocw_algemeen_operaton_task_5
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
 	"actions": ["claim"],
 	"conditionContainer": {"conditions": [
@@ -902,6 +925,7 @@ klachtbehandelaar_ocw_algemeen_operaton_task_6 if {
 allow if klachtbehandelaar_ocw_algemeen_operaton_task_6
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.valtimo.operaton.domain.OperatonTask",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": [

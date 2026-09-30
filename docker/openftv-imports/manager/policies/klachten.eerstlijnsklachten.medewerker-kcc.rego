@@ -29,6 +29,7 @@ kcc_case_definition_1 if {
 allow if kcc_case_definition_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
@@ -56,6 +57,7 @@ kcc_case_definition_2 if {
 allow if kcc_case_definition_2
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": [
@@ -85,6 +87,7 @@ kcc_json_schema_document_1 if {
 allow if kcc_json_schema_document_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
@@ -114,6 +117,7 @@ kcc_json_schema_document_definition_1 if {
 allow if kcc_json_schema_document_definition_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition",
 	"actions": ["view"],
 	"conditionContainer": {"conditions": [
@@ -141,6 +145,7 @@ kcc_json_schema_document_definition_2 if {
 allow if kcc_json_schema_document_definition_2
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
@@ -170,6 +175,7 @@ kcc_search_field_1 if {
 allow if kcc_search_field_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.document.domain.impl.searchfield.SearchField",
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
@@ -199,6 +205,7 @@ kcc_resource_permission_1 if {
 allow if kcc_resource_permission_1
 
 filter contains {
+    "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.resource.authorization.ResourcePermission",
 	"actions": ["view", "view_list"],
 	"conditionContainer": {"conditions": []},
