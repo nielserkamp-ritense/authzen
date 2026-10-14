@@ -1,5 +1,2 @@
-cd gzac
-./gradlew build
-
-cd ../docker
+cd docker
 docker compose --profile gzac up --build

@@ -601,8 +601,8 @@ services:
 
   gzac-backend:
     build:
-      context: ../gzac
-      dockerfile: ./Dockerfile
+      context: ..
+      dockerfile: gzac/Dockerfile
     container_name: authzen-gzac-backend
     environment:
       - VALTIMO_DOCKER_FILTER_ENABLED=true
