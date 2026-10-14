@@ -887,6 +887,216 @@
     },
     "notBefore" : 0,
     "groups" : [ ]
+  }, {
+    "username" : "klachten-kcc",
+    "firstName" : "Medewerker KCC",
+    "lastName" : "Demo",
+    "email" : "klachten-kcc@example.com",
+    "emailVerified" : true,
+    "enabled" : true,
+    "credentials" : [ {
+      "type" : "password",
+      "value" : "klachten-kcc",
+      "temporary" : false
+    } ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ROLE_USER", "default-roles-valtimo", "ROLE_KLACHTEN_KCC" ],
+    "groups" : [ ]
+  }, {
+    "username" : "klachten-ibpost",
+    "firstName" : "Medewerker IB/Post",
+    "lastName" : "Demo",
+    "email" : "klachten-ibpost@example.com",
+    "emailVerified" : true,
+    "enabled" : true,
+    "credentials" : [ {
+      "type" : "password",
+      "value" : "klachten-ibpost",
+      "temporary" : false
+    } ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ROLE_USER", "default-roles-valtimo", "ROLE_KLACHTEN_IB_POST" ],
+    "groups" : [ ]
+  }, {
+    "username" : "klachten-behandelaar-bsd",
+    "firstName" : "Klachtenbehandelaar BSD-Bestuursdienst",
+    "lastName" : "Demo",
+    "email" : "klachten-behandelaar-bsd@example.com",
+    "emailVerified" : true,
+    "enabled" : true,
+    "credentials" : [ {
+      "type" : "password",
+      "value" : "klachten-behandelaar-bsd",
+      "temporary" : false
+    } ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ROLE_USER", "default-roles-valtimo", "ROLE_KLACHTEN_KLACHTBEHANDELAAR_BSD_BESTUURSDIENST" ],
+    "groups" : [ ]
+  }, {
+    "username" : "klachten-behandelaar-dbv",
+    "firstName" : "Klachtenbehandelaar DBV",
+    "lastName" : "Demo",
+    "email" : "klachten-behandelaar-dbv@example.com",
+    "emailVerified" : true,
+    "enabled" : true,
+    "credentials" : [ {
+      "type" : "password",
+      "value" : "klachten-behandelaar-dbv",
+      "temporary" : false
+    } ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ROLE_USER", "default-roles-valtimo", "ROLE_KLACHTEN_KLACHTBEHANDELAAR_DBV" ],
+    "groups" : [ ]
+  }, {
+    "username" : "klachten-behandelaar-dpz",
+    "firstName" : "Klachtenbehandelaar DPZ",
+    "lastName" : "Demo",
+    "email" : "klachten-behandelaar-dpz@example.com",
+    "emailVerified" : true,
+    "enabled" : true,
+    "credentials" : [ {
+      "type" : "password",
+      "value" : "klachten-behandelaar-dpz",
+      "temporary" : false
+    } ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ROLE_USER", "default-roles-valtimo", "ROLE_KLACHTEN_KLACHTBEHANDELAAR_DPZ" ],
+    "groups" : [ ]
+  }, {
+    "username" : "klachten-behandelaar-dsb",
+    "firstName" : "Klachtenbehandelaar DSB",
+    "lastName" : "Demo",
+    "email" : "klachten-behandelaar-dsb@example.com",
+    "emailVerified" : true,
+    "enabled" : true,
+    "credentials" : [ {
+      "type" : "password",
+      "value" : "klachten-behandelaar-dsb",
+      "temporary" : false
+    } ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ROLE_USER", "default-roles-valtimo", "ROLE_KLACHTEN_KLACHTBEHANDELAAR_DSB_DIENST_STADSBEHEER" ],
+    "groups" : [ ]
+  }, {
+    "username" : "klachten-behandelaar-dso",
+    "firstName" : "Klachtenbehandelaar DSO",
+    "lastName" : "Demo",
+    "email" : "klachten-behandelaar-dso@example.com",
+    "emailVerified" : true,
+    "enabled" : true,
+    "credentials" : [ {
+      "type" : "password",
+      "value" : "klachten-behandelaar-dso",
+      "temporary" : false
+    } ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ROLE_USER", "default-roles-valtimo", "ROLE_KLACHTEN_KLACHTBEHANDELAAR_DSO" ],
+    "groups" : [ ]
+  }, {
+    "username" : "klachten-behandelaar-ocw",
+    "firstName" : "Klachtenbehandelaar OCW",
+    "lastName" : "Demo",
+    "email" : "klachten-behandelaar-ocw@example.com",
+    "emailVerified" : true,
+    "enabled" : true,
+    "credentials" : [ {
+      "type" : "password",
+      "value" : "klachten-behandelaar-ocw",
+      "temporary" : false
+    } ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ROLE_USER", "default-roles-valtimo", "ROLE_KLACHTEN_KLACHTBEHANDELAAR_OCW_ALGEMEEN" ],
+    "groups" : [ ]
+  }, {
+    "username" : "klachten-behandelaar-ocw-jgz",
+    "firstName" : "Klachtenbehandelaar OCW-JGZ",
+    "lastName" : "Demo",
+    "email" : "klachten-behandelaar-ocw-jgz@example.com",
+    "emailVerified" : true,
+    "enabled" : true,
+    "credentials" : [ {
+      "type" : "password",
+      "value" : "klachten-behandelaar-ocw-jgz",
+      "temporary" : false
+    } ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ROLE_USER", "default-roles-valtimo", "ROLE_KLACHTEN_KLACHTBEHANDELAAR_OCW_JGZ" ],
+    "groups" : [ ]
+  }, {
+    "username" : "klachten-behandelaar-ocw-jh",
+    "firstName" : "Klachtenbehandelaar OCW-JH",
+    "lastName" : "Demo",
+    "email" : "klachten-behandelaar-ocw-jh@example.com",
+    "emailVerified" : true,
+    "enabled" : true,
+    "credentials" : [ {
+      "type" : "password",
+      "value" : "klachten-behandelaar-ocw-jh",
+      "temporary" : false
+    } ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ROLE_USER", "default-roles-valtimo", "ROLE_KLACHTEN_KLACHTBEHANDELAAR_OCW_JH" ],
+    "groups" : [ ]
+  }, {
+    "username" : "klachten-behandelaar-szw",
+    "firstName" : "Klachtenbehandelaar SZW",
+    "lastName" : "Demo",
+    "email" : "klachten-behandelaar-szw@example.com",
+    "emailVerified" : true,
+    "enabled" : true,
+    "credentials" : [ {
+      "type" : "password",
+      "value" : "klachten-behandelaar-szw",
+      "temporary" : false
+    } ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ROLE_USER", "default-roles-valtimo", "ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW" ],
+    "groups" : [ ]
+  }, {
+    "username" : "klachten-coordinator",
+    "firstName" : "Klachtencoördinator",
+    "lastName" : "Demo",
+    "email" : "klachten-coordinator@example.com",
+    "emailVerified" : true,
+    "enabled" : true,
+    "credentials" : [ {
+      "type" : "password",
+      "value" : "klachten-coordinator",
+      "temporary" : false
+    } ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ROLE_USER", "default-roles-valtimo", "ROLE_KLACHTEN_KLACHTENCOORDINATOR" ],
+    "groups" : [ ]
+  }, {
+    "username" : "klachten-coordinator-ggd",
+    "firstName" : "Klachtencoördinator GGD",
+    "lastName" : "Demo",
+    "email" : "klachten-coordinator-ggd@example.com",
+    "emailVerified" : true,
+    "enabled" : true,
+    "credentials" : [ {
+      "type" : "password",
+      "value" : "klachten-coordinator-ggd",
+      "temporary" : false
+    } ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ROLE_USER", "default-roles-valtimo", "ROLE_KLACHTEN_KLACHTENCOORDINATOR_GGD" ],
+    "groups" : [ ]
+  }, {
+    "username" : "klachten-coordinator-vth",
+    "firstName" : "Klachtencoördinator VTH",
+    "lastName" : "Demo",
+    "email" : "klachten-coordinator-vth@example.com",
+    "emailVerified" : true,
+    "enabled" : true,
+    "credentials" : [ {
+      "type" : "password",
+      "value" : "klachten-coordinator-vth",
+      "temporary" : false
+    } ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ROLE_USER", "default-roles-valtimo", "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH" ],
+    "groups" : [ ]
   } ],
   "scopeMappings" : [ {
     "clientScope" : "offline_access",
