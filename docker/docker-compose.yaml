@@ -37,7 +37,7 @@ services:
       - ./openftv-imports/pdp/policies:/etc/pdp/policies-rego:ro
       - ./openftv-imports/pdp/pip:/etc/pdp/pip:ro
     healthcheck:
-      test: ["CMD-SHELL", "wget -q -O- http://localhost:8080/healthz || exit 1"]
+      test: ["CMD-SHELL", "wget -q -O- http://127.0.0.1:8080/healthz || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 30
@@ -60,18 +60,6 @@ services:
       timeout: 10s
       retries: 5
       start_period: 2s
-
-  openftv-dataspace:
-    container_name: authzen_openftv_dataspace
-    build:
-      context: ../open-ftv
-      dockerfile: ./mock/datasources/generic/generic.Dockerfile
-    ports:
-      - "9010:8443"
-    environment:
-      - GEN_DS_DATA_PATH=/tmp/data
-    volumes:
-      - ./openftv-imports/dataspace:/tmp/data
 
   openftv-keycloak:
     container_name: authzen_openftv_keycloak
@@ -150,7 +138,8 @@ services:
     profiles:
       - gzac
     depends_on:
-      - gzac-keycloak-database
+      gzac-keycloak-database:
+        condition: service_healthy
     image: quay.io/keycloak/keycloak:26.6
     ports:
       - "8081:8080"
@@ -189,6 +178,11 @@ services:
     environment:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: keycloak
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   gzac-database:
     container_name: authzen-gzac-database
@@ -203,6 +197,11 @@ services:
       POSTGRES_DB: gzac
     volumes:
       - ./gzac-imports/gzac/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   gzac-opensearch:
     container_name: autzhen-gzac-opensearch
@@ -215,8 +214,6 @@ services:
       - discovery.type=single-node
       - OPENSEARCH_INITIAL_ADMIN_PASSWORD=2cr8zkOoEXQJ3xUk!Aa1
       - OPENSEARCH_JAVA_OPTS=-Xms256m -Xmx256m
-    volumes:
-      - authzen-gzac-opensearch-data:/usr/share/opensearch/data
     healthcheck:
       test: [ "CMD-SHELL", "curl -sf -u admin:2cr8zkOoEXQJ3xUk!Aa1 https://localhost:9200/_cluster/health -k || exit 1" ]
       interval: 10s
@@ -242,8 +239,13 @@ services:
         rabbitmq-plugins enable --offline rabbitmq_stream rabbitmq_stream_management &&
         rabbitmq-server
       "
-
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "-q", "ping" ]
+      interval: 10s
+      timeout: 10s
+      retries: 12
   # Gotenberg (PDF conversion API)
+
   gzac-gotenberg:
     image: gotenberg/gotenberg:8
     container_name: authzen-gzac-gotenberg-pdf
@@ -255,6 +257,7 @@ services:
       API_TIMEOUT: "240s"
 
   # ZGW
+
   gzac-openzaak:
     image: openzaak/open-zaak:1.23.0
     container_name: authzen-gzac-openzaak
@@ -280,8 +283,18 @@ services:
     ports:
       - "8001:8000"
     depends_on:
-      - gzac-openzaak-database
-      - gzac-openzaak-redis
+      gzac-openzaak-database:
+        condition: service_healthy
+      gzac-openzaak-redis:
+        condition: service_started
+    healthcheck:
+      test: [ "CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/')" ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   gzac-openzaak-database:
     image: postgis/postgis:17-3.4
@@ -297,6 +310,11 @@ services:
     volumes:
       - ./gzac-imports/open-zaak/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
       #- ./gzac-imports/open-zaak:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   gzac-openzaak-redis:
     image: redis:7.4.3
@@ -330,8 +348,10 @@ services:
       - OBJECTS_SUPERUSER_PASSWORD=admin
       - DEBUG=True
     depends_on:
-      - gzac-objecten-api-database
-      - gzac-objecten-api-redis
+      gzac-objecten-api-database:
+        condition: service_healthy
+      gzac-objecten-api-redis:
+        condition: service_started
     healthcheck:
       test: [ "CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])" ]
       interval: 30s
@@ -341,6 +361,8 @@ services:
       # retries have passed. This healthcheck in turn allows other containers
       # to wait for the database migrations.
       start_period: 30s
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   gzac-objecten-api-database:
     image: postgis/postgis:17-3.4
@@ -353,6 +375,11 @@ services:
       - POSTGRES_USER=objects
       - POSTGRES_PASSWORD=objects
       - POSTGRES_DB=objects
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   gzac-objecten-api-import:
     image: maykinmedia/objects-api:2.4.4
@@ -368,6 +395,8 @@ services:
     depends_on:
       gzac-objecten-api:
         condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   gzac-objecten-api-redis:
     image: redis:7.4.3
@@ -392,7 +421,8 @@ services:
     depends_on:
       gzac-objecten-api:
         condition: service_healthy
-
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   gzac-objecttypen-api:
     image: maykinmedia/objecttypes-api:3.0.2
@@ -419,7 +449,8 @@ services:
       - OBJECTTYPE_SUPERUSER_PASSWORD=admin
       - DEBUG=True
     depends_on:
-      - gzac-objecttypen-api-database
+      gzac-objecttypen-api-database:
+        condition: service_healthy
     healthcheck:
       test: [ "CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])" ]
       interval: 30s
@@ -429,6 +460,8 @@ services:
       # retries have passed. This healthcheck in turn allows other containers
       # to wait for the database migrations.
       start_period: 30s
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   gzac-objecttypen-api-database:
     image: postgres:17.4
@@ -441,6 +474,11 @@ services:
       - POSTGRES_USER=objecttypes
       - POSTGRES_PASSWORD=objecttypes
       - POSTGRES_DB=objecttypes
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   gzac-objecttypen-api-import:
     image: maykinmedia/objecttypes-api:3.0.2
@@ -455,6 +493,8 @@ services:
     depends_on:
       gzac-objecttypen-api:
         condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   gzac-open-notificaties-rabbitmq:
     image: rabbitmq:4.1.0-management
@@ -467,7 +507,7 @@ services:
 
   gzac-open-notificaties-celery:
     image: openzaak/open-notificaties:1.8.2
-    container_name: authzen-open-notificaties
+    container_name: authzen-open-notificaties-celery
     profiles:
       - gzac
     environment: &notificaties-env
@@ -492,22 +532,32 @@ services:
       - DISABLE_2FA=True
     command: /celery_worker.sh
     depends_on:
-      - gzac-open-notificaties-database
-      - gzac-open-notificaties-rabbitmq
-      - gzac-open-notificaties-redis
+      gzac-open-notificaties-database:
+        condition: service_healthy
+      gzac-open-notificaties-rabbitmq:
+        condition: service_started
+      gzac-open-notificaties-redis:
+        condition: service_started
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   gzac-open-notificaties:
-    image: openzaak/open-notificaties:1.8.1
-    container_name: authzen-open-notificaties-celery
+    image: openzaak/open-notificaties:1.8.2
+    container_name: authzen-open-notificaties
     profiles:
       - gzac
     ports:
       - "8002:8000"
     environment: *notificaties-env
     depends_on:
-      - gzac-open-notificaties-database
-      - gzac-open-notificaties-rabbitmq
-      - gzac-open-notificaties-redis
+      gzac-open-notificaties-database:
+        condition: service_healthy
+      gzac-open-notificaties-rabbitmq:
+        condition: service_started
+      gzac-open-notificaties-redis:
+        condition: service_started
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   gzac-open-notificaties-database:
     image: postgres:17.4
@@ -522,6 +572,11 @@ services:
       - POSTGRES_DB=notifications
     volumes:
       - ./gzac-imports/open-notificaties:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   gzac-open-notificaties-redis:
     image: redis:7.4.3
@@ -554,6 +609,11 @@ services:
       - POSTGRES_DB=iko
     volumes:
       - ./gzac-imports/iko:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   gzac-iko-redis:
     image: redis:8.4.0-alpine
@@ -576,7 +636,7 @@ services:
       - "8012:8080"
     environment:
       SPRING_CACHE_TYPE: redis
-      SPRING_DATA_REDIS_HOST: iko-redis
+      SPRING_DATA_REDIS_HOST: gzac-iko-redis
       SPRING_DATA_REDIS_PORT: 6379
       SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
       SPRING_DATASOURCE_URL: jdbc:postgresql://gzac-iko-postgres:5432/iko
@@ -595,14 +655,14 @@ services:
       gzac-keycloak:
         condition: service_healthy
       gzac-iko-postgres:
-        condition: service_started
+        condition: service_healthy
     extra_hosts:
       - "keycloak.localhost:host-gateway"
 
   gzac-backend:
     build:
-      context: ../gzac
-      dockerfile: ./Dockerfile
+      context: ..
+      dockerfile: gzac/Dockerfile
     container_name: authzen-gzac-backend
     environment:
       - VALTIMO_DOCKER_FILTER_ENABLED=true
@@ -669,11 +729,34 @@ services:
       - 8080:8080
       - 5005:5005
     entrypoint: ["java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar", "/app.war"]
+    healthcheck:
+      test: [ "CMD", "curl", "-fs", "http://localhost:8080/actuator/health/readiness" ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 180s
     depends_on:
+      gzac-database:
+        condition: service_healthy
       gzac-keycloak:
+        condition: service_healthy
+      gzac-rabbitmq:
+        condition: service_healthy
+      gzac-openzaak:
+        condition: service_healthy
+      gzac-objecten-api:
+        condition: service_healthy
+      gzac-objecttypen-api:
+        condition: service_healthy
+      gzac-objecten-api-import:
+        condition: service_completed_successfully
+      gzac-objecttypen-api-import:
+        condition: service_completed_successfully
+      openftv-pdp:
         condition: service_healthy
     extra_hosts:
       - "keycloak.localhost:host-gateway"
+      - "host.docker.internal:host-gateway"
 
   gzac-frontend:
     image: ritense/gzac-frontend:13.45.1
@@ -690,13 +773,10 @@ services:
     ports:
       - 80:8080
     depends_on:
-      - gzac-backend
+      gzac-backend:
+        condition: service_healthy
 
 networks:
+
   authzen:
     driver: bridge
-
-volumes:
-  authzen-gzac-database-data:
-  authzen-gzac-database-data-mysql:
-  authzen-gzac-opensearch-data:

@@ -1,0 +1,13 @@
+# Context is the repository root. Allowlist only what the gzac build needs.
+*
+!gzac
+!valtimo/backend
+!valtimo/settings.gradle
+!valtimo/gradle.properties
+!valtimo/gradle
+
+**/build
+**/.gradle
+**/.kotlin
+**/node_modules
+gzac/.env.properties
