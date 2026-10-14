@@ -46,7 +46,7 @@ Demo stack started in the background. Main URLs:
   OpenFTV Keycloak       http://localhost:8088
   Open Zaak              http://localhost:8001
 
-The backend needs a minute or two to start. Follow it with:
+Follow the backend logs with:
   docker compose -f docker/docker-compose.yaml --profile gzac logs -f gzac-backend
 EOF
 }
