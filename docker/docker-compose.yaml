@@ -215,8 +215,6 @@ services:
       - discovery.type=single-node
       - OPENSEARCH_INITIAL_ADMIN_PASSWORD=2cr8zkOoEXQJ3xUk!Aa1
       - OPENSEARCH_JAVA_OPTS=-Xms256m -Xmx256m
-    volumes:
-      - authzen-gzac-opensearch-data:/usr/share/opensearch/data
     healthcheck:
       test: [ "CMD-SHELL", "curl -sf -u admin:2cr8zkOoEXQJ3xUk!Aa1 https://localhost:9200/_cluster/health -k || exit 1" ]
       interval: 10s
@@ -695,8 +693,3 @@ services:
 networks:
   authzen:
     driver: bridge
-
-volumes:
-  authzen-gzac-database-data:
-  authzen-gzac-database-data-mysql:
-  authzen-gzac-opensearch-data:
