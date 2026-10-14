@@ -1,17 +1,17 @@
 # GZAC (backend)
 
-The standard **GZAC** application — the reference setup for Dutch case-based
-working (Zaakgericht Werken). This is the application published as the official
-`ritense/gzac-backend` release.
+The GZAC backend for the AuthZEN demo, including Valtimo's `authorization-authzen` module.
 
-## How to start
+Valtimo comes from the `../valtimo` submodule through a Gradle composite build (`includeBuild` in `settings.gradle`). It is not downloaded from a Maven repository. To use another checkout, pass `-PvaltimoDir=/path/to/valtimo`.
 
-From the repository root:
+## How to build
+
+You don't build this project by hand. `../run.sh` builds it inside Docker with the multi-stage `Dockerfile`. The build context is the repository root, limited by `Dockerfile.dockerignore`.
+
+To build only the image:
 
 ```bash
-./gradlew :backend:apps:gzac:bootRunWithDocker
+docker compose -f ../docker/docker-compose.yaml --profile gzac build gzac-backend
 ```
 
-This starts the supporting services in Docker and then launches the
-application. For day-to-day development with demo data, use the
-[developer console](../dev/README.md) instead.
+The case definition, BPMN, forms, plugin configurations and permissions in `src/main/resources/config/` are deployed automatically when the backend starts.
