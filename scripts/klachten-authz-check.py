@@ -22,16 +22,20 @@ Checks:
   action       open the start form of user action 'Wijzigen informatie melder' (OperatonExecution:create)
   claim        claim the open task (undone right after)
   note-create  add a note to the complaint
+  file-upload  upload a zaak document from the documents tab
+  file-modify  change the metadata (title) of a zaak document
 
 Needs: python3, docker (the demo stack running via ./run.sh). Only the standard library is used.
 """
 
 import argparse
 import base64
+import datetime
 import json
 import sys
 import time
 import urllib.parse
+import uuid
 
 from klachten_api import (
     CASE, OPEN_ZAAK, StepError, api, api_ok, open_tasks, open_zaak_get, psql, route_args, run_route, short, token,
@@ -76,8 +80,8 @@ TASK_BY_DOCUMENT = {"admin", "klachten-coordinator"}
 
 READ_CHECKS = ["list", "open", "notes", "files", "zaak"]
 TASK_CHECKS = ["task-list", "task-open", "claim"]
-WRITE_CHECKS = TASK_CHECKS + ["action", "note-create"]
-CHECKS = READ_CHECKS + ["task-list", "task-open", "action", "claim", "note-create"]
+WRITE_CHECKS = TASK_CHECKS + ["action", "note-create", "file-upload", "file-modify"]
+CHECKS = READ_CHECKS + ["task-list", "task-open", "action", "claim", "note-create", "file-upload", "file-modify"]
 
 ALLOWED, DENIED = "allowed", "denied"
 
@@ -92,6 +96,7 @@ class Seed:
         self.candidate_groups = candidate_groups
         self.notes = 0
         self.files = 0
+        self.uploads = 0
 
 
 def seed_all():
@@ -227,6 +232,14 @@ class Checker:
             self.record(user, check, seed, result)
 
     def write_checks(self, user, seed):
+        if "file-upload" in self.checks:
+            status = upload(user, seed)
+            result = outcome(status, ok=(200, 201))
+            if result[0] == ALLOWED:
+                seed.uploads += 1
+            self.record(user, "file-upload", seed, result)
+        if "file-modify" in self.checks:
+            self.record(user, "file-modify", seed, modify_file(user, seed))
         if "claim" in self.checks:
             status, _ = api("POST", f"/api/v1/task/{seed.task_id}/assign", user, {"assignee": user_id(user)})
             result = outcome(status, ok=(200, 204))
@@ -237,6 +250,55 @@ class Checker:
             status, _ = api("POST", f"/api/v1/document/{seed.document_id}/note", user,
                             {"content": f"Authz check: notitie van {user}"})
             self.record(user, "note-create", seed, outcome(status, ok=(200, 201)))
+
+
+def upload(user, seed):
+    """Uploads a small file from the documents tab: a temp resource with the complaint's documentId."""
+    if not hasattr(seed, "iot"):
+        _, types = api("GET", f"/api/v1/document/{seed.document_id}/zaaktype/documenttype", "admin")
+        seed.iot = next((t["url"] for t in types or [] if t.get("name") == "Bijlage"), None)
+    boundary = uuid.uuid4().hex
+    fields = {
+        "documentId": seed.document_id, "bestandsnaam": "authz-check.txt", "titel": f"Authz check: {user}",
+        "informatieobjecttype": seed.iot, "vertrouwelijkheidaanduiding": "zaakvertrouwelijk", "taal": "nld",
+        "status": "definitief", "auteur": "Authz check", "creatiedatum": datetime.date.today().isoformat(),
+    }
+    parts = [f'--{boundary}\r\nContent-Disposition: form-data; name="{k}"\r\n\r\n{v}\r\n'.encode()
+             for k, v in fields.items() if v]
+    parts.append(f'--{boundary}\r\nContent-Disposition: form-data; name="file"; filename="authz-check.txt"\r\n'
+                 f'Content-Type: text/plain\r\n\r\nAuthz check upload by {user}\r\n'.encode())
+    parts.append(f"--{boundary}--\r\n".encode())
+    status, _ = api("POST", "/api/v1/resource/temp", user, raw=b"".join(parts),
+                    content_type=f"multipart/form-data; boundary={boundary}")
+    return status
+
+
+def modify_file(user, seed):
+    """Changes the title of the complaint's first zaak document, as the edit dialog in the documents tab does."""
+    _, page = api("GET", f"/api/v2/zaken-api/document/{seed.document_id}/files?page=0&size=1", "admin")
+    files = page.get("content", []) if isinstance(page, dict) else []
+    if not files:
+        return None, "no file to modify"
+    f = files[0]
+    body = {"creatiedatum": f["creatiedatum"][:10], "titel": f"{f['titel'][:150]} (gewijzigd)", "auteur": f["auteur"],
+            "taal": f["taal"], "status": f.get("status"), "vertrouwelijkheidaanduiding": f.get("vertrouwelijkheidaanduiding"),
+            "informatieobjecttype": f.get("informatieobjecttype")}
+    status, _ = api("PUT", f"/api/v1/zaken-api/{f['pluginConfigurationId']}/case-document/{seed.document_id}"
+                           f"/files/{f['fileId']}", user, body)
+    return outcome(status, ok=(200, 204))
+
+
+def check_uploads_stored(seeds):
+    """Every allowed upload must end up as a zaak document (the upload process stores and links it)."""
+    problems = []
+    time.sleep(5)  # the last upload processes may still be running
+    for seed in seeds.values():
+        if seed.uploads:
+            stored = file_count(seed.document_id)
+            if stored != seed.files + seed.uploads:
+                problems.append(f"{seed.scope}: {seed.uploads} upload(s) allowed, but zaak documents went from "
+                                f"{seed.files} to {stored}")
+    return problems
 
 
 # ---- report -------------------------------------------------------------------------------------
@@ -293,8 +355,11 @@ def main():
         print(f"\n❌ {short(str(e), 600)}")
         sys.exit(2)
     differences = report(checker, args.verbose)
+    problems = check_uploads_stored(seeds) if "file-upload" in checks else []
+    for problem in problems:
+        print(f"  ❌ upload not stored: {problem}")
     print(f"\n  done in {time.time() - started:.0f}s")
-    sys.exit(1 if differences else 0)
+    sys.exit(1 if differences or problems else 0)
 
 
 if __name__ == "__main__":

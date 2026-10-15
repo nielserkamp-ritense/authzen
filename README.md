@@ -143,7 +143,7 @@ It lists every submitted form field that isn't in the document definition (with 
 `scripts/klachten-authz-check.py` checks, for every demo user, what they can see and do on the klachten, against the expected role × dienst matrix in the script (`EXPECTED`). Everything goes through the GZAC API, so every answer comes from the OpenFTV policies.
 
 ```bash
-scripts/klachten-authz-check.py                                   # all users, all checks (about 3 minutes)
+scripts/klachten-authz-check.py                                   # all users, all checks (about 5 minutes)
 scripts/klachten-authz-check.py --user klachten-behandelaar-szw --check open --check task-list
 ```
 
@@ -152,9 +152,10 @@ Every run seeds 14 fresh complaints: one unassigned, one for OCW before the verk
 - `notes`, `files`, `zaak`: notes, zaak documents and the zaak;
 - `task-list`, `task-open`, `claim`: the open task (a claim is undone right away);
 - `action`: the start form of a user action;
-- `note-create`: adding a note.
+- `note-create`: adding a note;
+- `file-upload`, `file-modify`: uploading a zaak document from the documents tab, and changing a document's title.
 
-It prints a grid per user and every difference with the expected result, and exits with 1 when there is any. The seeds and their notes stay in the database.
+It prints a grid per user and every difference with the expected result. It also checks that every allowed upload was stored on the zaak. It exits with 1 when anything is wrong. The seeds, their notes and the uploaded files stay in the database.
 
 ## Known limitations
 
@@ -169,6 +170,8 @@ It prints a grid per user and every difference with the expected result, and exi
 - **The dienst email isn't updated after "dienst aanpassen"** in the eerste beoordeling. Only the stubbed notifications use it.
 - **Log noise.** After every subprocess, Valtimo's SSE `TaskUpdateListener` logs `ERROR … Process instance not found`. An open GZAC browser tab also causes `AsyncRequestNotUsableException … disconnected client` errors. Both are harmless, and the walkthrough reports them as known noise.
 - **The GZAC database dump contains 2 old klachten cases** from 2026-09-23. They have dummy choice values and open Operaton incidents, and they show up in the case list.
+- **Temporary uploads are not scoped by complaint.** Every role except KCC may upload a temporary file (`ResourcePermission`), because a form upload happens before the file is linked to a complaint. Storing it as a zaak document is checked against the complaint (`ZgwDocument:create`).
+- **Coordinators' notes and zaak documents cover eerstelijns klachten only.** Their rules for tweedelijns klachten and interventieverzoeken are kept, but those processes are not deployed.
 - `scripts/permissions-to-rego.py` was a one-time aid to convert Valtimo permission files into the initial Rego policies. The Rego files in git are the source of truth.
 
 ## Troubleshooting
