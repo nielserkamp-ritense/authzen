@@ -59,8 +59,8 @@ All demo users log in to GZAC at http://localhost. The password is the same as t
 
 | Username | Role | Scope |
 |---|---|---|
-| `klachten-kcc` | `ROLE_KLACHTEN_KCC` | Medewerker KCC: registers complaints |
-| `klachten-ibpost` | `ROLE_KLACHTEN_IB_POST` | Medewerker IB/Post: assigns complaints to an afdeling |
+| `klachten-kcc` | `ROLE_KLACHTEN_KCC` | Medewerker KCC: views complaints (read-only) |
+| `klachten-ibpost` | `ROLE_KLACHTEN_IB_POST` | Medewerker IB/Post: registers complaints and assigns them to a dienst |
 | `klachten-behandelaar-bsd` | `ROLE_KLACHTEN_KLACHTBEHANDELAAR_BSD_BESTUURSDIENST` | Klachtenbehandelaar BSD-Bestuursdienst |
 | `klachten-behandelaar-dbv` | `ROLE_KLACHTEN_KLACHTBEHANDELAAR_DBV` | Klachtenbehandelaar DBV |
 | `klachten-behandelaar-dpz` | `ROLE_KLACHTEN_KLACHTBEHANDELAAR_DPZ` | Klachtenbehandelaar DPZ |
