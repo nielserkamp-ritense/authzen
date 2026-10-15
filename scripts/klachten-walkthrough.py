@@ -4,7 +4,7 @@ Walks the Den Haag eerstelijns-klachten process end to end through the GZAC REST
 the same way the frontend does, as the demo user that owns each task.
 
 Usage:
-  scripts/klachten-walkthrough.py --route informeel-coordinator [--dienst SZW] [--terugkoppeling off]
+  scripts/klachten-walkthrough.py --route informeel-coordinator [--dienst SZW] [--terugkoppeling off] [--post]
   scripts/klachten-walkthrough.py --route all
 
 Routes:
@@ -245,6 +245,14 @@ def zaak_state(document_id):
     return {"url": rows[0][0], "identificatie": zaak.get("identificatie"), "status": status, "resultaat": resultaat}
 
 
+def zaak_document_types(zaak_url):
+    """Informatieobjecttype omschrijving of every document linked to the zaak."""
+    query = urllib.parse.urlencode({"zaak": zaak_url.replace("host.docker.internal", "localhost")})
+    links = open_zaak_get(f"{OPEN_ZAAK}/zaken/api/v1/zaakinformatieobjecten?{query}")
+    return [open_zaak_get(open_zaak_get(link["informatieobject"])["informatieobjecttype"])["omschrijving"]
+            for link in links]
+
+
 # ---- form helpers -------------------------------------------------------------------------------
 
 def now(days=0):
@@ -306,6 +314,7 @@ class Context:
         self.route = args.route
         self.dienst = args.dienst
         self.terugkoppeling = args.terugkoppeling == "on"
+        self.post = args.post
         self.document_id = None
         self.choice_cache = {}
         self.coordinator = {"GGD": "klachten-coordinator-ggd", "VTH": "klachten-coordinator-vth"}.get(
@@ -391,7 +400,7 @@ def data_start(ctx):
         "melder.soortMelder": "INWONER",
         "melder.personalia.voornaam": "Jan",
         "melder.personalia.achternaam": "Jansen",
-        "melder.contactgegevens.communicatieViaPost": False,
+        "melder.contactgegevens.communicatieViaPost": ctx.post,
         "melder.contactgegevens.email": "jan.jansen@example.com",
         "melder.contactgegevens.telefoonnummer": "0612345678",
         "melder.adres.straat": "Spuistraat", "melder.adres.huisnummer": 70,
@@ -657,7 +666,7 @@ def run_route(args):
     ctx = Context(args, report)
     since = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     label = f"{ctx.route} · dienst {ctx.dienst}" + (f" ({args.autorisatiegroep})" if ctx.autorisatiegroep else "") \
-        + f" · terugkoppeling {args.terugkoppeling}" \
+        + f" · terugkoppeling {args.terugkoppeling}" + (" · via post" if ctx.post else "") \
         + (f" · {ctx.zaakbehandelaar}" if ctx.route == "informeel-coordinator" else "")
     print(f"\n=== {label}")
 
@@ -727,6 +736,9 @@ def check_end_state(ctx, report, since):
         ("zaak resultaat set", bool(zaak) and bool(zaak["resultaat"]), zaak and zaak["resultaat"]),
         ("no incidents", not incidents(ctx.document_id), len(incidents(ctx.document_id))),
     ]
+    if ctx.terugkoppeling:
+        types = zaak_document_types(zaak["url"]) if zaak else []
+        checks.append(("terugkoppeling document 'Bericht' linked to zaak", "Bericht" in types, types))
     errors = []
     for error in backend_errors(since):
         noise = next((why for key, why in KNOWN_BACKEND_NOISE.items() if key in error), None)
@@ -749,6 +761,7 @@ def main():
     parser.add_argument("--zaakbehandelaar", choices=["MIJZELF", "ANDERE_KLACHTENCOORDINATOR"],
                         default="ANDERE_KLACHTENCOORDINATOR", help="for the informeel-coordinator route")
     parser.add_argument("--terugkoppeling", choices=["on", "off"], default="off")
+    parser.add_argument("--post", action="store_true", help="melder wants communication via post")
     parser.add_argument("--verbose", action="store_true")
     args = parser.parse_args()
 

@@ -68,7 +68,7 @@
     </bpmn:exclusiveGateway>
             
     
-    <bpmn:serviceTask camunda:asyncAfter="true" camunda:expression="${true}" completionQuantity="1" id="GenereerDocumentBeoordelenNieuweKlachtTask" implementation="##WebService" isForCompensation="false" name="Genereer document: Beoordelen nieuwe klacht" startQuantity="1">
+    <bpmn:serviceTask camunda:asyncAfter="true" camunda:expression="${execution.setVariable('resultingTempDocumentId', resourceStorageDelegate.storeContent('&lt;html&gt;&lt;body&gt;&lt;h1&gt;Terugkoppeling klacht&lt;/h1&gt;&lt;p&gt;Dit is een dummy brief voor de demo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;'))}" completionQuantity="1" id="GenereerDocumentBeoordelenNieuweKlachtTask" implementation="##WebService" isForCompensation="false" name="Genereer document: Beoordelen nieuwe klacht" startQuantity="1">
                   
       
       <bpmn:extensionElements/>
@@ -83,7 +83,7 @@
     </bpmn:serviceTask>
             
     
-    <bpmn:serviceTask camunda:asyncAfter="true" camunda:expression="${true}" completionQuantity="1" id="GenereerDocumentVerkennenKlachtTask" implementation="##WebService" isForCompensation="false" name="Genereer document: Verkennen klacht" startQuantity="1">
+    <bpmn:serviceTask camunda:asyncAfter="true" camunda:expression="${execution.setVariable('resultingTempDocumentId', resourceStorageDelegate.storeContent('&lt;html&gt;&lt;body&gt;&lt;h1&gt;Terugkoppeling klacht&lt;/h1&gt;&lt;p&gt;Dit is een dummy brief voor de demo.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;'))}" completionQuantity="1" id="GenereerDocumentVerkennenKlachtTask" implementation="##WebService" isForCompensation="false" name="Genereer document: Verkennen klacht" startQuantity="1">
                   
       
       <bpmn:incoming>VerkennenKlachtSequenceFlow</bpmn:incoming>

@@ -1,7 +1,7 @@
 [
   {
     "key" : "informatieobjecttype",
-    "defaultValue" : "https://openzaak-zgw.test.denhaag.nl/catalogi/api/v1/informatieobjecttypen/a0d1b4d7-e74c-4118-9ed0-13f7ed8fb5fe",
+    "defaultValue" : "http://host.docker.internal:8001/catalogi/api/v1/informatieobjecttypen/a0d1b4d7-e74c-4118-9ed0-13f7ed8fb5fe",
     "visible" : true,
     "readonly" : false
   },

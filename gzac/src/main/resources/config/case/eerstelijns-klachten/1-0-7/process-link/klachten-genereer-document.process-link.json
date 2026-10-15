@@ -5,11 +5,11 @@
     "pluginConfigurationId" : "5474fe57-532a-4050-8d89-32e62ca3e895",
     "pluginActionDefinitionKey" : "store-temp-document",
     "actionProperties" : {
-      "title" : "Klachten documenten",
-      "description" : "Klachten documenten",
+      "title" : "Terugkoppeling aan melder",
+      "description" : "Terugkoppeling aan melder",
       "localDocumentLocation" : "resultingTempDocumentId",
       "storedDocumentUrl" : "gegenereerdeDocumentUrl",
-      "informatieobjecttype" : "https://openzaak-zgw.test.denhaag.nl/catalogi/api/v1/informatieobjecttypen/a0d1b4d7-e74c-4118-9ed0-13f7ed8fb5fe",
+      "informatieobjecttype" : "http://host.docker.internal:8001/catalogi/api/v1/informatieobjecttypen/c82da597-d675-49d2-8b13-32c215e997fd",
       "confidentialityLevel" : "zaakvertrouwelijk",
       "taal" : "nld",
       "status" : "definitief"
