@@ -339,6 +339,7 @@ class Context:
         self.oordeel = args.oordeel
         self.oordeel_overnemen = args.oordeel_overnemen
         self.commissie_started = False
+        self.commissie_stoppen = args.commissie_stoppen
 
     # Choice fields (dataSrc url, no valueProperty) store the whole choice-field value object.
     def choice(self, key, preferred=None, required=False):
@@ -404,14 +405,21 @@ def onderzoek(ctx, prefix):
         f"{prefix}.oordeel": ctx.choice("OORDEEL", ctx.oordeel, required=True),
         f"{prefix}.gemotiveerdOordeel.omschrijving": "De gemeente heeft de afspraak niet nagekomen. Excuses aangeboden.",
     }
-    if ctx.oordeel in ("GEGROND", "DEELS_GEGROND"):
-        for i, name in enumerate(PRINCIPES):
-            suffix = "" if i == 0 else str(i + 1)
-            principe = ctx.choice("DIENSTVERLENINGSPRINCIPES", name, required=True)
-            data[f"{prefix}.dienstverleningsprincipe{suffix}"] = principe
-            data[f"{prefix}.geschondenDienstverleningsprincipes{suffix}"] = [ctx.choice(principe["name"], required=True)]
-        data[f"{prefix}.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen"] = "JA"
-        data[f"{prefix}.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen2"] = "JA"
+    return {**data, **principes(ctx, prefix)}
+
+
+def principes(ctx, prefix, key="dienstverleningsprincipe"):
+    """For a (deels) gegrond oordeel: 3 principes, each with the first geschonden vereiste of its cascaded list."""
+    if ctx.oordeel not in ("GEGROND", "DEELS_GEGROND"):
+        return {}
+    data = {}
+    for i, name in enumerate(PRINCIPES):
+        suffix = "" if i == 0 else str(i + 1)
+        principe = ctx.choice("DIENSTVERLENINGSPRINCIPES", name, required=True)
+        data[f"{prefix}.{key}{suffix}"] = principe
+        data[f"{prefix}.geschondenDienstverleningsprincipes{suffix}"] = [ctx.choice(principe["name"], required=True)]
+    data[f"{prefix}.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen"] = "JA"
+    data[f"{prefix}.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen2"] = "JA"
     return data
 
 
@@ -605,8 +613,10 @@ def data_commissie_resultaat(ctx, task):
         f"{p}.resultaat.datumOntvangst": now(),
         f"{p}.resultaat.toelichting": "Advies van de klachtencommissie ontvangen.",
         f"{p}.resultaat.versturenEindbriefNaarMelder": True,
-        f"{p}.beoordeling.oordeel": ctx.choice("OORDEEL", "ONGEGROND", required=True),
-        f"{p}.beoordeling.gemotiveerdOordeel.omschrijving": "De commissie acht de klacht ongegrond.",
+        f"{p}.beoordeling.oordeel": ctx.choice("OORDEEL", ctx.oordeel, required=True),
+        f"{p}.beoordeling.gemotiveerdOordeel.omschrijving": "Advies van de commissie overgenomen.",
+        # The commissie fields use a capital D, as in the schema.
+        **principes(ctx, f"{p}.beoordeling", "Dienstverleningsprincipe"),
         "behandelingDoorKlachtencommissie.afwijkendOordeel": False,
         "behandelingDoorKlachtencommissie.aardigheidje.isVerstuurd": "NEE",
         "pv.zaakresultaat": "Afgehandeld",
@@ -733,6 +743,24 @@ def run_route(args):
                 break
             ctx.commissie_started = True
             wait_for_change(ctx, {t[0] for t in tasks})
+            zaak = zaak_state(ctx.document_id)
+            (report.ok if zaak and zaak["status"] == "Overgedragen naar klachtencommissie" else report.fail)(
+                f"zaak status after start: {zaak and zaak['status']}")
+            continue
+        if ctx.commissie_stoppen and any(t[2] == "VastleggenResultaatKlachtencommissieTask" for t in tasks):
+            try:
+                submit_start_form(ctx.coordinator, "klachten-terug-naar-hoofd-proces", nest({
+                    "behandelingDoorKlachtencommissie.redenTeruggaanNaarHoofdproces": "Melder trekt het verzoek in."
+                }), ctx.document_id)
+                report.ok(f"started user action 'Terug naar hoofdproces' as {ctx.coordinator}")
+            except StepError as e:
+                report.fail(f"stop klachtencommissie: {e}")
+                break
+            ctx.commissie_stoppen = False
+            wait_for_change(ctx, {t[0] for t in tasks})
+            zaak = zaak_state(ctx.document_id)
+            (report.ok if zaak and zaak["status"] == "In behandeling" else report.fail)(
+                f"zaak status after stop: {zaak and zaak['status']}")
             continue
         if not tasks:
             if running_processes(ctx.document_id):
@@ -804,6 +832,8 @@ def main():
                         default="ONGEGROND", help="oordeel in the informeel/formeel onderzoek; (deels) gegrond fills 3 principes")
     parser.add_argument("--oordeel-overnemen", action="store_true",
                         help="melder disagrees and the informal oordeel is taken over, so formeel skips hoor en wederhoor")
+    parser.add_argument("--commissie-stoppen", action="store_true",
+                        help="commissie: stop it via 'Terug naar hoofdproces'; informeel restarts and closes the case")
     parser.add_argument("--terugkoppeling-afkeuren", action="store_true",
                         help="informeel-behandelaar: the coordinator rejects the terugkoppeling once")
     parser.add_argument("--verbose", action="store_true")

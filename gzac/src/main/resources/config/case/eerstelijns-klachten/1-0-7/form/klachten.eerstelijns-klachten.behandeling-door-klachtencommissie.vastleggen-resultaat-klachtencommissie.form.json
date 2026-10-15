@@ -166,7 +166,7 @@
           }
         },
         {
-          "key" : "beoordeling.dienstverleningsprincipe",
+          "key" : "beoordeling.Dienstverleningsprincipe",
           "data" : {
             "url" : "../api/v1/choice-fields/name/DIENSTVERLENINGSPRINCIPES",
             "method" : "GET",
@@ -200,7 +200,7 @@
         {
           "key" : "beoordeling.geschondenDienstverleningsprincipes",
           "data" : {
-            "url" : "../api/v1/choice-fields/name/{{ data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.dienstverleningsprincipe?.name }}",
+            "url" : "../api/v1/choice-fields/name/{{ data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.Dienstverleningsprincipe?.name }}",
             "method" : "GET",
             "headers" : [
               {
@@ -224,7 +224,7 @@
           "validate" : {
             "required" : true
           },
-          "refreshOn" : "behandelingDoorKlachtencommissie.klachtencommissie.beoordeling.dienstverleningsprincipe",
+          "refreshOn" : "behandelingDoorKlachtencommissie.klachtencommissie.beoordeling.Dienstverleningsprincipe",
           "tableView" : true,
           "selectValues" : "choiceFieldValues",
           "valueProperty" : "",
@@ -265,7 +265,7 @@
           }
         },
         {
-          "key" : "beoordeling.dienstverleningsprincipe2",
+          "key" : "beoordeling.Dienstverleningsprincipe2",
           "data" : {
             "url" : "../api/v1/choice-fields/name/DIENSTVERLENINGSPRINCIPES",
             "method" : "GET",
@@ -302,7 +302,7 @@
         {
           "key" : "beoordeling.geschondenDienstverleningsprincipes2",
           "data" : {
-            "url" : "../api/v1/choice-fields/name/{{ data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.dienstverleningsprincipe2?.name }}",
+            "url" : "../api/v1/choice-fields/name/{{ data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.Dienstverleningsprincipe2?.name }}",
             "method" : "GET",
             "headers" : [
               {
@@ -323,7 +323,7 @@
           "lazyLoad" : false,
           "multiple" : true,
           "template" : "<span>{{ item.value }}</span>",
-          "refreshOn" : "behandelingDoorKlachtencommissie.klachtencommissie.beoordeling.dienstverleningsprincipe2",
+          "refreshOn" : "behandelingDoorKlachtencommissie.klachtencommissie.beoordeling.Dienstverleningsprincipe2",
           "tableView" : true,
           "conditional" : {
             "eq" : "JA",
@@ -375,7 +375,7 @@
           }
         },
         {
-          "key" : "beoordeling.dienstverleningsprincipe3",
+          "key" : "beoordeling.Dienstverleningsprincipe3",
           "data" : {
             "url" : "../api/v1/choice-fields/name/DIENSTVERLENINGSPRINCIPES",
             "method" : "GET",
@@ -413,7 +413,7 @@
         {
           "key" : "beoordeling.geschondenDienstverleningsprincipes3",
           "data" : {
-            "url" : "../api/v1/choice-fields/name/{{ data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.dienstverleningsprincipe3?.name }}",
+            "url" : "../api/v1/choice-fields/name/{{ data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.Dienstverleningsprincipe3?.name }}",
             "method" : "GET",
             "headers" : [
               {
@@ -434,7 +434,7 @@
           "lazyLoad" : false,
           "multiple" : true,
           "template" : "<span>{{ item.value }}</span>",
-          "refreshOn" : "behandelingDoorKlachtencommissie.klachtencommissie.beoordeling.dienstverleningsprincipe3",
+          "refreshOn" : "behandelingDoorKlachtencommissie.klachtencommissie.beoordeling.Dienstverleningsprincipe3",
           "tableView" : true,
           "conditional" : {
             "eq" : "JA",
@@ -577,7 +577,7 @@
           }
         },
         {
-          "key" : "Dienstverleningsprincipes",
+          "key" : "beoordeling.Dienstverleningsprincipe",
           "data" : {
             "url" : "../api/v1/choice-fields/name/DIENSTVERLENINGSPRINCIPES",
             "method" : "GET",
@@ -605,11 +605,11 @@
           },
           "disableLimit" : false,
           "selectValues" : "choiceFieldValues",
-          "customConditional" : "show = (data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.oordeel?.name === 'GEGROND' || data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.oordeel?.name === 'DEELS_GEGROND')",
+          "customConditional" : "show = (data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling?.oordeel?.name === 'GEGROND' || data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling?.oordeel?.name === 'DEELS_GEGROND')",
           "noRefreshOnScroll" : false
         },
         {
-          "key" : "beoordeling.dienstverleningsprincipe",
+          "key" : "beoordeling.kernprincipe",
           "data" : {
             "url" : "../api/v1/choice-fields/name/BEHOORLIJKHEIDSNORMEN",
             "method" : "GET",
@@ -637,7 +637,7 @@
           "tableView" : true,
           "selectValues" : "choiceFieldValues",
           "valueProperty" : "",
-          "customConditional" : "show = (data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.oordeel?.name === 'GEGROND' || data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.oordeel?.name === 'DEELS_GEGROND')",
+          "customConditional" : "show = (data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling?.oordeel?.name === 'GEGROND' || data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling?.oordeel?.name === 'DEELS_GEGROND')",
           "attributes" : {
             "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-beoordeling.dienstverleningsprincipe"
           }
@@ -645,7 +645,7 @@
         {
           "key" : "beoordeling.geschondenBehoorlijkheidsnormen",
           "data" : {
-            "url" : "../api/v1/choice-fields/name/{{ data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.dienstverleningsprincipe?.name }}",
+            "url" : "../api/v1/choice-fields/name/{{ data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling?.kernprincipe?.name }}",
             "method" : "GET",
             "headers" : [
               {
@@ -669,12 +669,12 @@
           "validate" : {
             "required" : true
           },
-          "refreshOn" : "behandelingDoorKlachtencommissie.klachtencommissie.beoordeling.dienstverleningsprincipe",
+          "refreshOn" : "behandelingDoorKlachtencommissie.klachtenCoordinator.beoordeling.kernprincipe",
           "tableView" : true,
           "selectValues" : "choiceFieldValues",
           "valueProperty" : "",
           "clearOnRefresh" : true,
-          "customConditional" : "show = (data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.oordeel?.name === 'GEGROND' || data.behandelingDoorKlachtencommissie?.klachtencommissie?.beoordeling?.oordeel?.name === 'DEELS_GEGROND')",
+          "customConditional" : "show = (data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling?.oordeel?.name === 'GEGROND' || data.behandelingDoorKlachtencommissie?.klachtenCoordinator?.beoordeling?.oordeel?.name === 'DEELS_GEGROND')",
           "attributes" : {
             "data-testid" : "klachten.eerstelijns-klachten.behandeling-door-klachtencommissie.vastleggen-resultaat-klachtencommissie-beoordeling.geschondenBehoorlijkheidsnormen"
           }
