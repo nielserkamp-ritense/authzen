@@ -59,8 +59,8 @@ All demo users log in to GZAC at http://localhost. The password is the same as t
 
 | Username | Role | Scope |
 |---|---|---|
-| `klachten-kcc` | `ROLE_KLACHTEN_KCC` | Medewerker KCC: registers complaints |
-| `klachten-ibpost` | `ROLE_KLACHTEN_IB_POST` | Medewerker IB/Post: assigns complaints to an afdeling |
+| `klachten-kcc` | `ROLE_KLACHTEN_KCC` | Medewerker KCC: views complaints (read-only) |
+| `klachten-ibpost` | `ROLE_KLACHTEN_IB_POST` | Medewerker IB/Post: registers complaints and assigns them to a dienst |
 | `klachten-behandelaar-bsd` | `ROLE_KLACHTEN_KLACHTBEHANDELAAR_BSD_BESTUURSDIENST` | Klachtenbehandelaar BSD-Bestuursdienst |
 | `klachten-behandelaar-dbv` | `ROLE_KLACHTEN_KLACHTBEHANDELAAR_DBV` | Klachtenbehandelaar DBV |
 | `klachten-behandelaar-dpz` | `ROLE_KLACHTEN_KLACHTBEHANDELAAR_DPZ` | Klachtenbehandelaar DPZ |
@@ -93,8 +93,49 @@ Where the seed data lives:
 |---|---|
 | `gzac/src/main/resources/config/` | Case definition, BPMN, forms, plugin configurations and permissions. GZAC deploys them on startup. |
 | `docker/gzac-imports/` | Keycloak realm with users, and the Open Zaak, Objecten, Objecttypen and Open Notificaties database seeds |
+| `docker/gzac-imports/gzac/choice-fields.sql` | GZAC choice fields (diensten, autorisatiegroepen, sectoren/afdelingen, producten, thema's, oordeel, behoorlijkheidsnormen) |
 | `docker/openftv-imports/manager/policies/` | Rego policies, one per role (`klachten.*.rego`), plus `valtimo.rego` |
 | `docker/openftv-imports/keycloak/` | OpenFTV Keycloak realm |
+
+## Klachten walkthrough
+
+`scripts/klachten-walkthrough.py` walks the klachten process end to end through the GZAC API, as the demo user that owns each task. Use it to check that the process still works after a change. It needs only `python3` and the running stack.
+
+```bash
+scripts/klachten-walkthrough.py                                   # all routes, dienst SZW
+scripts/klachten-walkthrough.py --route informeel-behandelaar --dienst OCW --autorisatiegroep JGZ
+scripts/klachten-walkthrough.py --route informeel-coordinator --zaakbehandelaar MIJZELF --terugkoppeling on
+```
+
+| Route | Flow |
+|---|---|
+| `informeel-coordinator` | The coordinator handles the complaint informally |
+| `informeel-behandelaar` | The behandelaar of the dienst handles it, the coordinator checks it |
+| `formeel` | The melder disagrees with the informal solution, so it is handled formally |
+| `commissie` | The coordinator hands the complaint over to the klachtencommissie |
+
+| Option | Effect |
+|---|---|
+| `--dienst SZW\|OCW\|DPZ\|DSB\|DSO\|DBV\|BSD\|GGD\|VTH` | Dienst the complaint is assigned to (default SZW) |
+| `--autorisatiegroep JGZ\|JH` | For OCW: assign to OCW-JGZ or OCW-Jeugdhulp instead of OCW algemeen |
+| `--zaakbehandelaar MIJZELF\|ANDERE_KLACHTENCOORDINATOR` | informeel-coordinator: who handles the complaint |
+| `--terugkoppeling on` | Send a terugkoppeling to the melder, which stores a dummy letter on the zaak |
+| `--post` | The melder wants communication by post (adds the "afdrukken brief" task) |
+| `--melder-akkoord JA\|NEE\|ONBEKEND` | Whether the melder agrees with the informal solution. NEE continues formally |
+| `--oordeel GEGROND\|DEELS_GEGROND\|ONGEGROND\|GEEN_OORDEEL` | Oordeel in the onderzoek. (Deels) gegrond also fills 3 dienstverleningsprincipes |
+| `--oordeel-overnemen` | formeel: take the informal oordeel over, which skips hoor en wederhoor |
+| `--terugkoppeling-afkeuren` | informeel-behandelaar: the coordinator rejects the behandelaar's terugkoppeling once |
+| `--commissie-stoppen` | commissie: stop it with "Terug naar hoofdproces". Informeel restarts and closes the case |
+
+For each step the script prints ✅ or ❌. At the end it checks the zaak status and resultaat in Open Zaak, the internal case status, Operaton incidents, and ERROR lines in the backend log. It exits with 1 on any failure. Add `--verbose` to see the submitted form data.
+
+The walkthrough submits the document paths the schema expects, so it can't catch a form field whose key doesn't match the schema. `scripts/check-forms-schema.py` checks that statically, without the stack:
+
+```bash
+scripts/check-forms-schema.py
+```
+
+It lists every submitted form field that isn't in the document definition (with `additionalProperties: false`, such a field makes the form submission fail), and every conditional that points at a missing field. It exits with 1 when it finds anything. Run it after changing a form or the document definition.
 
 ## Known limitations
 
@@ -102,6 +143,13 @@ Where the seed data lives:
 - **Policy changes made in the OpenFTV UI are lost** on `--down` or `--reset`. Nothing persists between resets.
 - **Fixed ports.** The stack publishes many host ports: 80, 3000, 5005, 5010, 5400, 5433, 5672–5673, 6379, 8001–8002, 8010–8012, 8080–8081, 8088, 8100, 8180, 8443, 8480, 9000, 9100, 9104, 9200, 15672–15673, 54319–54329. Stop anything else that uses them first.
 - **The first build is slow** (about 8 minutes), because it compiles Valtimo.
+- **Klachten process stubs.** Email, notifications, the ontvangstbevestiging and the KTO data delivery are `${true}` stubs. Nothing is sent.
+- **The terugkoppeling letter is a fixed dummy HTML document.** It is stored in the Documenten API as "Bericht", without a file name or format.
+- **"Mijzelf" assigns a fixed user.** When a coordinator assigns the complaint to "Mijzelf", the case always goes to `klachten-coordinator`, also for GGD and VTH.
+- **Herbeoordelen keeps the earlier answers.** "Terugzetten naar eerste beoordeling" restarts the beoordeling, but doesn't clear the verkenning, informal or formal answers.
+- **The dienst email isn't updated after "dienst aanpassen"** in the eerste beoordeling. Only the stubbed notifications use it.
+- **Log noise.** After every subprocess, Valtimo's SSE `TaskUpdateListener` logs `ERROR … Process instance not found`. An open GZAC browser tab also causes `AsyncRequestNotUsableException … disconnected client` errors. Both are harmless, and the walkthrough reports them as known noise.
+- **The GZAC database dump contains 2 old klachten cases** from 2026-09-23. They have dummy choice values and open Operaton incidents, and they show up in the case list.
 - `scripts/permissions-to-rego.py` was a one-time aid to convert Valtimo permission files into the initial Rego policies. The Rego files in git are the source of truth.
 
 ## Troubleshooting

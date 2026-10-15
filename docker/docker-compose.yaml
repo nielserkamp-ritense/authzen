@@ -55,7 +55,7 @@ services:
     volumes:
       - ./openftv-imports/database/scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}" ]
+      test: [ "CMD-SHELL", "pg_isready -h 127.0.0.1 -U $${POSTGRES_USER} -d $${POSTGRES_DB}" ]
       interval: 4s
       timeout: 10s
       retries: 5
@@ -179,7 +179,7 @@ services:
       POSTGRES_USER: keycloak
       POSTGRES_PASSWORD: keycloak
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
+      test: [ "CMD-SHELL", "pg_isready -h 127.0.0.1 -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -197,8 +197,9 @@ services:
       POSTGRES_DB: gzac
     volumes:
       - ./gzac-imports/gzac/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      - ./gzac-imports/gzac/choice-fields.sql:/docker-entrypoint-initdb.d/zz-choice-fields.sql
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
+      test: [ "CMD-SHELL", "pg_isready -h 127.0.0.1 -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -311,7 +312,7 @@ services:
       - ./gzac-imports/open-zaak/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
       #- ./gzac-imports/open-zaak:/docker-entrypoint-initdb.d
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
+      test: [ "CMD-SHELL", "pg_isready -h 127.0.0.1 -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -376,7 +377,7 @@ services:
       - POSTGRES_PASSWORD=objects
       - POSTGRES_DB=objects
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
+      test: [ "CMD-SHELL", "pg_isready -h 127.0.0.1 -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -475,7 +476,7 @@ services:
       - POSTGRES_PASSWORD=objecttypes
       - POSTGRES_DB=objecttypes
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
+      test: [ "CMD-SHELL", "pg_isready -h 127.0.0.1 -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -573,7 +574,7 @@ services:
     volumes:
       - ./gzac-imports/open-notificaties:/docker-entrypoint-initdb.d
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
+      test: [ "CMD-SHELL", "pg_isready -h 127.0.0.1 -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
       interval: 5s
       timeout: 5s
       retries: 20
@@ -610,7 +611,7 @@ services:
     volumes:
       - ./gzac-imports/iko:/docker-entrypoint-initdb.d
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
+      test: [ "CMD-SHELL", "pg_isready -h 127.0.0.1 -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
       interval: 5s
       timeout: 5s
       retries: 20

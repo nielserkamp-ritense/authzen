@@ -521,7 +521,7 @@
       }
     },
     {
-      "key" : "formeleAfhandeling.onderzoek.dienstverleningsprincipes3",
+      "key" : "formeleAfhandeling.onderzoek.dienstverleningsprincipe3",
       "data" : {
         "url" : "../api/v1/choice-fields/name/DIENSTVERLENINGSPRINCIPES",
         "method" : "GET",
@@ -580,7 +580,7 @@
       "lazyLoad" : false,
       "multiple" : true,
       "template" : "<span>{{ item.value }}</span>",
-      "refreshOn" : "formeleAfhandeling.onderzoek.dienstverleningsprincipes3",
+      "refreshOn" : "formeleAfhandeling.onderzoek.dienstverleningsprincipe3",
       "tableView" : true,
       "conditional" : {
         "eq" : "JA",

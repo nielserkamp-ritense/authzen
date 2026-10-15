@@ -4758,41 +4758,6 @@ COPY public.case_zaken_api_sync (case_definition_key, case_definition_version_ta
 --
 
 COPY public.choice_field_values (id, name, deprecated, sort_order, created_by, created_date, last_modified_by, last_modified_date, value, choice_field_name) FROM stdin;
-2	DIENSTVERLENINGSPRINCIPES	f	1	admin@example.com	2026-09-23 12:53:04.27212	admin@example.com	2026-09-23 12:53:04.27212	DIENSTVERLENINGSPRINCIPES	DIENSTVERLENINGSPRINCIPES
-3	OORDEEL	f	1	admin@example.com	2026-09-23 12:53:20.745454	admin@example.com	2026-09-23 12:53:20.745454	OORDEEL	OORDEEL
-4	BEHOORLIJKHEIDSNORMEN	f	1	admin@example.com	2026-09-23 12:53:40.121094	admin@example.com	2026-09-23 12:53:40.121094	BEHOORLIJKHEIDSNORMEN	BEHOORLIJKHEIDSNORMEN
-5	PRODUCTEN	f	1	admin@example.com	2026-09-23 12:54:05.606909	admin@example.com	2026-09-23 12:54:05.606909	PRODUCTEN	PRODUCTEN
-6	THEMAS	f	1	admin@example.com	2026-09-23 12:54:21.183029	admin@example.com	2026-09-23 12:54:21.183029	THEMAS	THEMAS
-7	A	f	1	admin@example.com	2026-09-23 13:00:25.483589	admin@example.com	2026-09-23 13:00:25.483589	A	DIENST_A_SECTOR
-8	A	f	1	admin@example.com	2026-09-23 13:00:39.175141	admin@example.com	2026-09-23 13:00:39.175141	A	AUTORISATIEGROEPEN_DIENST_A
-9	A	f	1	admin@example.com	2026-09-23 13:01:10.006882	admin@example.com	2026-09-23 13:01:10.006882	A	A
-1	OCW	f	1	admin@example.com	2026-09-23 12:50:37.540424	admin@example.com	2026-09-23 13:16:20.897996	Ocw	DIENSTEN
-10	SZW	f	2	admin@example.com	2026-09-23 13:16:32.011041	admin@example.com	2026-09-23 13:16:32.011041	Szw	DIENSTEN
-11	DPZ	f	3	admin@example.com	2026-09-23 13:16:41.866788	admin@example.com	2026-09-23 13:16:41.866788	Dpz	DIENSTEN
-12	DSB	f	4	admin@example.com	2026-09-23 13:16:54.928976	admin@example.com	2026-09-23 13:16:54.928976	Dsb	DIENSTEN
-13	DSO	f	5	admin@example.com	2026-09-23 13:17:04.671928	admin@example.com	2026-09-23 13:17:04.671928	Dso	DIENSTEN
-14	DBV	f	6	admin@example.com	2026-09-23 13:17:13.416863	admin@example.com	2026-09-23 13:17:13.416863	Dbv	DIENSTEN
-15	BSD	f	7	admin@example.com	2026-09-23 13:17:23.122604	admin@example.com	2026-09-23 13:17:23.122604	Bsd	DIENSTEN
-16	GGD	f	8	admin@example.com	2026-09-23 13:17:42.716354	admin@example.com	2026-09-23 13:17:42.716354	Ggd	DIENSTEN
-17	VTH	f	9	admin@example.com	2026-09-23 13:17:49.87055	admin@example.com	2026-09-23 13:17:49.87055	Vth	DIENSTEN
-18	A	f	1	admin@example.com	2026-09-23 13:21:22.444301	admin@example.com	2026-09-23 13:21:22.444301	A	AUTORISATIEGROEPEN_OCW
-19	A	f	1	admin@example.com	2026-09-23 13:23:08.738887	admin@example.com	2026-09-23 13:23:08.738887	A	AUTORISATIEGROEPEN_SZW
-20	A	f	1	admin@example.com	2026-09-23 13:23:21.887068	admin@example.com	2026-09-23 13:23:21.887068	A	AUTORISATIEGROEPEN_DPZ
-21	A	f	1	admin@example.com	2026-09-23 13:23:37.532194	admin@example.com	2026-09-23 13:23:37.532194	A	AUTORISATIEGROEPEN_DSB
-22	A	f	1	admin@example.com	2026-09-23 13:23:51.370741	admin@example.com	2026-09-23 13:23:51.370741	A	AUTORISATIEGROEPEN_DSO
-23	A	f	1	admin@example.com	2026-09-23 13:24:05.086856	admin@example.com	2026-09-23 13:24:05.086856	A	AUTORISATIEGROEPEN_DBV
-24	A	f	1	admin@example.com	2026-09-23 13:24:18.909537	admin@example.com	2026-09-23 13:24:18.909537	A	AUTORISATIEGROEPEN_BSD
-25	A	f	1	admin@example.com	2026-09-23 13:24:32.164248	admin@example.com	2026-09-23 13:24:32.164248	A	AUTORISATIEGROEPEN_GGD
-26	A	f	1	admin@example.com	2026-09-23 13:24:49.886997	admin@example.com	2026-09-23 13:24:49.886997	A	AUTORISATIEGROEPEN_VTH
-27	A	f	1	admin@example.com	2026-09-23 13:25:17.646308	admin@example.com	2026-09-23 13:25:17.646308	A	OCW_SECTOR
-28	A	f	1	admin@example.com	2026-09-23 13:25:30.627325	admin@example.com	2026-09-23 13:25:30.627325	A	SZW_SECTOR
-29	A	f	1	admin@example.com	2026-09-23 13:25:52.597162	admin@example.com	2026-09-23 13:25:52.597162	A	DPZ_SECTOR
-30	A	f	1	admin@example.com	2026-09-23 13:26:08.951429	admin@example.com	2026-09-23 13:26:08.951429	A	DSB_SECTOR
-31	A	f	1	admin@example.com	2026-09-23 13:26:22.095204	admin@example.com	2026-09-23 13:26:22.095204	A	DSO_SECTOR
-32	A	f	1	admin@example.com	2026-09-23 13:26:35.861176	admin@example.com	2026-09-23 13:26:35.861176	A	DBV_SECTOR
-33	A	f	1	admin@example.com	2026-09-23 13:26:52.647242	admin@example.com	2026-09-23 13:26:52.647242	A	BSD_SECTOR
-34	A	f	1	admin@example.com	2026-09-23 13:27:05.066742	admin@example.com	2026-09-23 13:27:05.066742	A	GGD_SECTOR
-35	A	f	1	admin@example.com	2026-09-23 13:27:17.431424	admin@example.com	2026-09-23 13:27:17.431424	A	VTH_SECTOR
 \.
 
 
@@ -4801,31 +4766,6 @@ COPY public.choice_field_values (id, name, deprecated, sort_order, created_by, c
 --
 
 COPY public.choice_fields (id, key_name, created_by, created_date, last_modified_by, last_modified_date, title) FROM stdin;
-1	DIENSTEN	admin@example.com	2026-09-23 12:50:21.25429	admin@example.com	2026-09-23 12:50:21.25429	Diensten
-2	DIENSTVERLENINGSPRINCIPES	admin@example.com	2026-09-23 12:52:59.239415	admin@example.com	2026-09-23 12:52:59.239415	DIENSTVERLENINGSPRINCIPES
-3	OORDEEL	admin@example.com	2026-09-23 12:53:15.283218	admin@example.com	2026-09-23 12:53:15.283218	OORDEEL
-4	BEHOORLIJKHEIDSNORMEN	admin@example.com	2026-09-23 12:53:35.574096	admin@example.com	2026-09-23 12:53:35.574096	BEHOORLIJKHEIDSNORMEN
-5	PRODUCTEN	admin@example.com	2026-09-23 12:54:00.761422	admin@example.com	2026-09-23 12:54:00.761422	PRODUCTEN
-6	THEMAS	admin@example.com	2026-09-23 12:54:16.338108	admin@example.com	2026-09-23 12:54:16.338108	THEMAS
-9	A	admin@example.com	2026-09-23 13:01:04.489988	admin@example.com	2026-09-23 13:01:04.489988	A
-10	AUTORISATIEGROEPEN_OCW	admin@example.com	2026-09-23 13:21:16.73095	admin@example.com	2026-09-23 13:21:16.73095	AUTORISATIEGROEPEN_OCW
-11	AUTORISATIEGROEPEN_SZW	admin@example.com	2026-09-23 13:23:03.206827	admin@example.com	2026-09-23 13:23:03.206827	AUTORISATIEGROEPEN_SZW
-12	AUTORISATIEGROEPEN_DPZ	admin@example.com	2026-09-23 13:23:17.523499	admin@example.com	2026-09-23 13:23:17.523499	AUTORISATIEGROEPEN_DPZ
-13	AUTORISATIEGROEPEN_DSB	admin@example.com	2026-09-23 13:23:32.361988	admin@example.com	2026-09-23 13:23:32.361988	AUTORISATIEGROEPEN_DSB
-14	AUTORISATIEGROEPEN_DSO	admin@example.com	2026-09-23 13:23:46.916588	admin@example.com	2026-09-23 13:23:46.916588	AUTORISATIEGROEPEN_DSO
-15	AUTORISATIEGROEPEN_DBV	admin@example.com	2026-09-23 13:24:00.776578	admin@example.com	2026-09-23 13:24:00.776578	AUTORISATIEGROEPEN_DBV
-16	AUTORISATIEGROEPEN_BSD	admin@example.com	2026-09-23 13:24:14.085915	admin@example.com	2026-09-23 13:24:14.085915	AUTORISATIEGROEPEN_BSD
-17	AUTORISATIEGROEPEN_GGD	admin@example.com	2026-09-23 13:24:27.858403	admin@example.com	2026-09-23 13:24:27.858403	AUTORISATIEGROEPEN_GGD
-18	AUTORISATIEGROEPEN_VTH	admin@example.com	2026-09-23 13:24:45.742582	admin@example.com	2026-09-23 13:24:45.742582	AUTORISATIEGROEPEN_VTH
-19	OCW_SECTOR	admin@example.com	2026-09-23 13:25:13.547667	admin@example.com	2026-09-23 13:25:13.547667	OCW_SECTOR
-20	SZW_SECTOR	admin@example.com	2026-09-23 13:25:26.742143	admin@example.com	2026-09-23 13:25:26.742143	SZW_SECTOR
-21	DPZ_SECTOR	admin@example.com	2026-09-23 13:25:47.760203	admin@example.com	2026-09-23 13:25:47.760203	DPZ_SECTOR
-22	DSB_SECTOR	admin@example.com	2026-09-23 13:26:03.839091	admin@example.com	2026-09-23 13:26:03.839091	DSB_SECTOR
-23	DSO_SECTOR	admin@example.com	2026-09-23 13:26:17.433946	admin@example.com	2026-09-23 13:26:17.433946	DSO
-24	DBV_SECTOR	admin@example.com	2026-09-23 13:26:31.418838	admin@example.com	2026-09-23 13:26:31.418838	DBV_SECTOR
-25	BSD_SECTOR	admin@example.com	2026-09-23 13:26:48.56191	admin@example.com	2026-09-23 13:26:48.56191	BSD_SECTOR
-26	GGD_SECTOR	admin@example.com	2026-09-23 13:27:01.08206	admin@example.com	2026-09-23 13:27:01.08206	GGD_SECTOR
-27	VTH_SECTOR	admin@example.com	2026-09-23 13:27:13.186808	admin@example.com	2026-09-23 13:27:13.186808	VTH_SECTOR
 \.
 
 
@@ -10826,14 +10766,14 @@ eerstelijns-klachten	VERTROUWELIJKHEIDAANDUIDING	zaakvertrouwelijk	t	f
 -- Name: choice_field_values_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gzac
 --
 
-SELECT pg_catalog.setval('public.choice_field_values_id_seq', 35, true);
+SELECT pg_catalog.setval('public.choice_field_values_id_seq', 1, false);
 
 
 --
 -- Name: choice_fields_id_seq; Type: SEQUENCE SET; Schema: public; Owner: gzac
 --
 
-SELECT pg_catalog.setval('public.choice_fields_id_seq', 27, true);
+SELECT pg_catalog.setval('public.choice_fields_id_seq', 1, false);
 
 
 --

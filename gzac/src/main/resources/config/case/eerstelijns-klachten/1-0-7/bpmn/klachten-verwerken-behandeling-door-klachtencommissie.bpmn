@@ -288,7 +288,7 @@ Nieuwe zaakstatus: Afgehandeld</bpmn:text>
     <bpmn:sequenceFlow id="Flow_188ip68" sourceRef="ControleFormulierAfsluitenZaak" targetRef="AanleverenDataTbvKTOTask"/>
             
     
-    <bpmn:userTask completionQuantity="1" id="ControleFormulierAfsluitenZaak" implementation="##unspecified" isForCompensation="false" name="Controle formulier gegevens afsluiten zaak" startQuantity="1">
+    <bpmn:userTask camunda:candidateGroups="ROLE_ADMIN,ROLE_KLACHTEN_KLACHTENCOORDINATOR,ROLE_KLACHTEN_KLACHTENCOORDINATOR_GGD,ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH" completionQuantity="1" id="ControleFormulierAfsluitenZaak" implementation="##unspecified" isForCompensation="false" name="Controle formulier gegevens afsluiten zaak" startQuantity="1">
                   
       
       <bpmn:incoming>Flow_0beyy3s</bpmn:incoming>

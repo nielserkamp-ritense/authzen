@@ -173,7 +173,7 @@
         <camunda:properties>
                               
           
-          <camunda:property name="mailSendTaskFrom" value="noreply@valtomi.nl"/>
+          <camunda:property name="mailSendTaskFrom" value="noreply@valtimo.nl"/>
                               
           
           <camunda:property name="mailSendTaskTemplate" value="klachtenproces-notificatie-nieuw-klachtenteam-toegewezen"/>

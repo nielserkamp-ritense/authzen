@@ -228,7 +228,7 @@
           }
         },
         {
-          "key" : "geschondenDienstverleningsprincipes3",
+          "key" : "geschondenDienstverleningsprincipes2",
           "data" : {
             "url" : "../api/v1/choice-fields/name/{{ data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.dienstverleningsprincipe2?.name }}",
             "method" : "GET",
@@ -265,7 +265,7 @@
           "valueProperty" : "",
           "clearOnRefresh" : true,
           "attributes" : {
-            "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-geschondenDienstverleningsprincipes3"
+            "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-geschondenDienstverleningsprincipes2"
           }
         },
         {
@@ -338,7 +338,7 @@
           }
         },
         {
-          "key" : "geschondenDienstverleningsprincipes2",
+          "key" : "geschondenDienstverleningsprincipes3",
           "data" : {
             "url" : "../api/v1/choice-fields/name/{{ data.informeleAfhandeling?.afhandelingDoorKlachtcoordinator?.onderzoek?.dienstverleningsprincipe3?.name }}",
             "method" : "GET",
@@ -375,7 +375,7 @@
           "valueProperty" : "",
           "clearOnRefresh" : true,
           "attributes" : {
-            "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-geschondenDienstverleningsprincipes2"
+            "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.controleren-terugkoppeling-geschondenDienstverleningsprincipes3"
           }
         }
       ],
@@ -482,7 +482,6 @@
       "type" : "select",
       "input" : true,
       "label" : "Selecteer hieronder welke variant van het zaakresultaat 'Afgehandeld' van toepassing is op deze klacht",
-      "hidden" : true,
       "widget" : "choicesjs",
       "validate" : {
         "required" : true

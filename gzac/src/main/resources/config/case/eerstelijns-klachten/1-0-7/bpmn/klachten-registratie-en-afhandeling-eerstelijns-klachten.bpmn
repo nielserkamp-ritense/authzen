@@ -190,6 +190,8 @@ Nieuwe zaakstatus: Afgehandeld</bpmn:text>
                         
         
         <bpmn:flowNodeRef>KlachtenComissieCallActivity</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>KlachtenComissieHerbeoordelingBoundaryEvent</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>StartenHerbeoordelingEndEvent3</bpmn:flowNodeRef>
                         
         
         <bpmn:flowNodeRef>UpdateZaakstatusCallActivity1</bpmn:flowNodeRef>
@@ -1282,6 +1284,18 @@ Nieuwe zaakstatus: Afgehandeld</bpmn:text>
                 
     
     </bpmn:boundaryEvent>
+    <bpmn:boundaryEvent attachedToRef="KlachtenComissieCallActivity" cancelActivity="true" id="KlachtenComissieHerbeoordelingBoundaryEvent" parallelMultiple="false">
+      <bpmn:outgoing>KlachtenComissieHerbeoordelingSequenceFlow</bpmn:outgoing>
+      <bpmn:signalEventDefinition id="SignalEventDefinition_KlachtenComissieStop" signalRef="Signal_1pjihne"/>
+    </bpmn:boundaryEvent>
+    <bpmn:endEvent id="StartenHerbeoordelingEndEvent3" name="Starten herbeoordeling">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="start" expression="${execution.setVariable(&quot;herbeoordelenKlachtMogelijk&quot;, false)}"/>
+      </bpmn:extensionElements>
+      <bpmn:incoming>KlachtenComissieHerbeoordelingSequenceFlow</bpmn:incoming>
+      <bpmn:signalEventDefinition id="SignalEventDefinition_KlachtenComissieHerbeoordeling" signalRef="Signal_1c3ci3o"/>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="KlachtenComissieHerbeoordelingSequenceFlow" sourceRef="KlachtenComissieHerbeoordelingBoundaryEvent" targetRef="StartenHerbeoordelingEndEvent3"/>
             
     
     <bpmn:sequenceFlow id="Flow_1m9shdx" sourceRef="ZetEscalatieVlagTask" targetRef="DienstVastgesteldGateway"/>
@@ -1413,7 +1427,7 @@ Nieuwe zaakstatus: Afgehandeld</bpmn:text>
           <camunda:inputParameter name="datumAangemaakt">${documentDelegateService.findValueByJsonPointerOrDefault("/klacht/datumOntvangst",execution,"")}</camunda:inputParameter>
                               
           
-          <camunda:inputParameter name="emailToAlgemeen">jacob.klaren@ritense.com</camunda:inputParameter>
+          <camunda:inputParameter name="emailToAlgemeen">klachten@example.com</camunda:inputParameter>
                             
         
         </camunda:inputOutput>
@@ -1581,7 +1595,7 @@ Nieuwe zaakstatus: Afgehandeld</bpmn:text>
     </bpmn:exclusiveGateway>
             
     
-    <bpmn:userTask completionQuantity="1" id="ControleFormulierAfsluitenZaak" implementation="##unspecified" isForCompensation="false" name="Controle formulier gegevens afsluiten zaak" startQuantity="1">
+    <bpmn:userTask camunda:candidateGroups="ROLE_ADMIN,ROLE_KLACHTEN_KLACHTENCOORDINATOR,ROLE_KLACHTEN_KLACHTENCOORDINATOR_GGD,ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH" completionQuantity="1" id="ControleFormulierAfsluitenZaak" implementation="##unspecified" isForCompensation="false" name="Controle formulier gegevens afsluiten zaak" startQuantity="1">
                   
       
       <bpmn:incoming>Flow_09qpc1o</bpmn:incoming>
@@ -3294,6 +3308,19 @@ Nieuwe zaakstatus: Afgehandeld</bpmn:text>
       </bpmndi:BPMNShape>
                 
     
+      <bpmndi:BPMNShape bpmnElement="KlachtenComissieHerbeoordelingBoundaryEvent" id="KlachtenComissieHerbeoordelingBoundaryEvent_di">
+        <dc:Bounds height="36" width="36" x="2042" y="1489"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="StartenHerbeoordelingEndEvent3" id="StartenHerbeoordelingEndEvent3_di">
+        <dc:Bounds height="36" width="36" x="2042" y="1570"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="27" width="76" x="2022" y="1613"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="KlachtenComissieHerbeoordelingSequenceFlow" id="KlachtenComissieHerbeoordelingSequenceFlow_di">
+        <di:waypoint x="2060" y="1525"/>
+        <di:waypoint x="2060" y="1570"/>
+      </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
           
   
