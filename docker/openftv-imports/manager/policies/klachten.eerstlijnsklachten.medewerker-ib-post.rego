@@ -725,6 +725,26 @@ filter contains {
 					"value": "ROLE_KLACHTEN_IB_POST"
 				}
 			]
+		},
+		{
+			"type": "container",
+			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+			"conditions": [
+				{
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
+				}
+			]
 		}
 	]},
 	"role": "ROLE_KLACHTEN_IB_POST",
@@ -757,6 +777,26 @@ filter contains {
 					"field": "groupId",
 					"operator": "==",
 					"value": "ROLE_KLACHTEN_IB_POST"
+				}
+			]
+		},
+		{
+			"type": "container",
+			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+			"conditions": [
+				{
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
 				}
 			]
 		}
@@ -793,6 +833,26 @@ filter contains {
 					"value": "ROLE_KLACHTEN_IB_POST"
 				}
 			]
+		},
+		{
+			"type": "container",
+			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+			"conditions": [
+				{
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
+				}
+			]
 		}
 	]},
 	"role": "ROLE_KLACHTEN_IB_POST",
@@ -825,6 +885,26 @@ filter contains {
 					"field": "groupId",
 					"operator": "==",
 					"value": "ROLE_KLACHTEN_IB_POST"
+				}
+			]
+		},
+		{
+			"type": "container",
+			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+			"conditions": [
+				{
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
 				}
 			]
 		}
@@ -861,6 +941,26 @@ filter contains {
 					"value": "ROLE_KLACHTEN_IB_POST"
 				}
 			]
+		},
+		{
+			"type": "container",
+			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+			"conditions": [
+				{
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
+				}
+			]
 		}
 	]},
 	"role": "ROLE_KLACHTEN_IB_POST",
@@ -893,6 +993,26 @@ filter contains {
 					"field": "groupId",
 					"operator": "==",
 					"value": "ROLE_KLACHTEN_IB_POST"
+				}
+			]
+		},
+		{
+			"type": "container",
+			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+			"conditions": [
+				{
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
 				}
 			]
 		}

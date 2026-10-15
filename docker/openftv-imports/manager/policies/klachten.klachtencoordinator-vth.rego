@@ -2079,6 +2079,90 @@ filter contains {
 					"value": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH"
 				}
 			]
+		},
+		{
+			"type": "container",
+			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+			"conditions": [
+				{
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "OCW",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "SZW",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DPZ",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DSB",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DSO",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DBV",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "BSD",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "GGD",
+					"clazz": "java.lang.String"
+				}
+			]
 		}
 	]},
 	"role": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
@@ -2111,6 +2195,90 @@ filter contains {
 					"field": "groupId",
 					"operator": "==",
 					"value": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH"
+				}
+			]
+		},
+		{
+			"type": "container",
+			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+			"conditions": [
+				{
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "OCW",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "SZW",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DPZ",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DSB",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DSO",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DBV",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "BSD",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "GGD",
+					"clazz": "java.lang.String"
 				}
 			]
 		}
@@ -2147,6 +2315,90 @@ filter contains {
 					"value": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH"
 				}
 			]
+		},
+		{
+			"type": "container",
+			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+			"conditions": [
+				{
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "OCW",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "SZW",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DPZ",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DSB",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DSO",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DBV",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "BSD",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "GGD",
+					"clazz": "java.lang.String"
+				}
+			]
 		}
 	]},
 	"role": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
@@ -2179,6 +2431,90 @@ filter contains {
 					"field": "groupId",
 					"operator": "==",
 					"value": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH"
+				}
+			]
+		},
+		{
+			"type": "container",
+			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+			"conditions": [
+				{
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "OCW",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "SZW",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DPZ",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DSB",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DSO",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DBV",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "BSD",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "GGD",
+					"clazz": "java.lang.String"
 				}
 			]
 		}
@@ -2215,6 +2551,90 @@ filter contains {
 					"value": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH"
 				}
 			]
+		},
+		{
+			"type": "container",
+			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+			"conditions": [
+				{
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "OCW",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "SZW",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DPZ",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DSB",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DSO",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DBV",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "BSD",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "GGD",
+					"clazz": "java.lang.String"
+				}
+			]
 		}
 	]},
 	"role": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH",
@@ -2247,6 +2667,90 @@ filter contains {
 					"field": "groupId",
 					"operator": "==",
 					"value": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH"
+				}
+			]
+		},
+		{
+			"type": "container",
+			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+			"conditions": [
+				{
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "OCW",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "SZW",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DPZ",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DSB",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DSO",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "DBV",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "BSD",
+					"clazz": "java.lang.String"
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "!=",
+					"value": "GGD",
+					"clazz": "java.lang.String"
 				}
 			]
 		}
