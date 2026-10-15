@@ -117,7 +117,7 @@ scripts/klachten-walkthrough.py --route informeel-coordinator --zaakbehandelaar 
 | Option | Effect |
 |---|---|
 | `--dienst SZW\|OCW\|DPZ\|DSB\|DSO\|DBV\|BSD\|GGD\|VTH` | Dienst the complaint is assigned to (default SZW) |
-| `--autorisatiegroep JGZ\|JH` | For OCW: assign to OCW-JGZ or OCW-Jeugdhulp instead of OCW algemeen |
+| `--autorisatiegroep ALG\|JGZ\|JH` | For OCW: the autorisatiegroep chosen at verkenning (default: the first one, OCW algemeen) |
 | `--zaakbehandelaar MIJZELF\|ANDERE_KLACHTENCOORDINATOR` | informeel-coordinator: who handles the complaint |
 | `--terugkoppeling on` | Send a terugkoppeling to the melder, which stores a dummy letter on the zaak |
 | `--post` | The melder wants communication by post (adds the "afdrukken brief" task) |
@@ -136,6 +136,24 @@ scripts/check-forms-schema.py
 ```
 
 It lists every submitted form field that isn't in the document definition (with `additionalProperties: false`, such a field makes the form submission fail), and every conditional that points at a missing field. It exits with 1 when it finds anything. Run it after changing a form or the document definition.
+
+## Authorization check
+
+`scripts/klachten-authz-check.py` checks, for every demo user, what they can see and do on the klachten, against the expected role × dienst matrix in the script (`EXPECTED`). Everything goes through the GZAC API, so every answer comes from the OpenFTV policies.
+
+```bash
+scripts/klachten-authz-check.py                                   # all users, all checks (about 3 minutes)
+scripts/klachten-authz-check.py --user klachten-behandelaar-szw --check open --check task-list
+```
+
+Every run seeds 13 fresh complaints: one unassigned, one for OCW before the verkenning, and one per dienst and OCW group. Each stops at an open task and has a note. Only these seeds are judged. For each user × seed it checks:
+- `list`, `open`: the case list and the complaint by id (direct URL);
+- `notes`, `files`, `zaak`: notes, zaak documents and the zaak;
+- `task-list`, `task-open`, `claim`: the open task (a claim is undone right away);
+- `action`: the start form of a user action;
+- `note-create`: adding a note.
+
+It prints a grid per user and every difference with the expected result, and exits with 1 when there is any. The seeds and their notes stay in the database.
 
 ## Known limitations
 
