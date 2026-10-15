@@ -336,6 +336,8 @@ class Context:
             else args.zaakbehandelaar
         self.melder_akkoord = "NEE" if self.route == "formeel" else (args.melder_akkoord or "JA")
         self.afkeuren = args.terugkoppeling_afkeuren  # reject the behandelaar's terugkoppeling once
+        self.oordeel = args.oordeel
+        self.oordeel_overnemen = args.oordeel_overnemen
         self.commissie_started = False
 
     # Choice fields (dataSrc url, no valueProperty) store the whole choice-field value object.
@@ -393,11 +395,24 @@ class Context:
 # Each builder returns the data the user would enter. Values the browser calculates (calculateValue)
 # are set here as well, because the API does not run the form logic.
 
-def onderzoek(ctx, prefix, oordeel="ONGEGROND"):
-    return {
-        f"{prefix}.oordeel": ctx.choice("OORDEEL", oordeel, required=True),
+# Principes picked for a (deels) gegrond oordeel; each cascades into its own list of geschonden vereisten.
+PRINCIPES = ["KERNWAARDE_GOED_CONTACT", "KERNWAARDE_VOOR_ALLE_BURGERS", "KERNWAARDE_EERLIJK"]
+
+
+def onderzoek(ctx, prefix):
+    data = {
+        f"{prefix}.oordeel": ctx.choice("OORDEEL", ctx.oordeel, required=True),
         f"{prefix}.gemotiveerdOordeel.omschrijving": "De gemeente heeft de afspraak niet nagekomen. Excuses aangeboden.",
     }
+    if ctx.oordeel in ("GEGROND", "DEELS_GEGROND"):
+        for i, name in enumerate(PRINCIPES):
+            suffix = "" if i == 0 else str(i + 1)
+            principe = ctx.choice("DIENSTVERLENINGSPRINCIPES", name, required=True)
+            data[f"{prefix}.dienstverleningsprincipe{suffix}"] = principe
+            data[f"{prefix}.geschondenDienstverleningsprincipes{suffix}"] = [ctx.choice(principe["name"], required=True)]
+        data[f"{prefix}.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen"] = "JA"
+        data[f"{prefix}.nogEenDienstverleningsprincipeBehoorlijkheidsnormToevoegen2"] = "JA"
+    return data
 
 
 def data_start(ctx):
@@ -486,17 +501,18 @@ def data_coordinator_onderzoek(ctx, task):
     akkoord = ctx.melder_akkoord
     # ONBEKEND counts as akkoord, like the form's calculated pv.melderAkkoordMetOplossing.
     afgehandeld = akkoord in ("JA", "ONBEKEND")
+    overnemen = "JA" if ctx.oordeel_overnemen else "NEE"
     return nest({
         **onderzoek(ctx, p),
         f"{p}.oplossing.voorstel": "Container wordt deze week geleegd en het ophaalschema is aangepast.",
         f"{p}.oplossing.datumBesprokenMetMelder": now(),
         f"{p}.oplossing.melderAkkoordMetVoorstel": akkoord,
         f"{p}.oplossing.melderAkkoordMetVoorstelToelichting": "Telefonisch besproken met de melder.",
-        f"{p}.gemotiveerdOordeel.overnemenNaarFormeleAfhandeling": "NEE" if akkoord == "NEE" else None,
+        f"{p}.gemotiveerdOordeel.overnemenNaarFormeleAfhandeling": overnemen if akkoord == "NEE" else None,
         "pv.zaakresultaat": "Afgehandeld" if afgehandeld else None,
         "afhandeldatumIntern": now() if afgehandeld else None,
         "pv.melderAkkoordMetOplossing": afgehandeld,
-        "pv.oordeelOvernemen": False,
+        "pv.oordeelOvernemen": akkoord == "NEE" and ctx.oordeel_overnemen,
     })
 
 
@@ -527,11 +543,11 @@ def data_controleren(ctx, task):
         **onderzoek(ctx, p),
         f"{p}.oplossing.melderAkkoordMetVoorstel": akkoord,
         f"{p}.oplossing.melderAkkoordMetVoorstelToelichting": "Behandelaar heeft dit met de melder besproken.",
-        f"{p}.gemotiveerdOordeel.overnemenNaarFormeleAfhandeling": "NEE",
+        f"{p}.gemotiveerdOordeel.overnemenNaarFormeleAfhandeling": "JA" if ctx.oordeel_overnemen else "NEE",
         "afhandeldatumIntern": now(),
         "pv.zaakresultaat": "Afgehandeld" if afgehandeld else None,
         "pv.melderAkkoordMetOplossing": afgehandeld,
-        "pv.oordeelOvernemen": False,
+        "pv.oordeelOvernemen": ctx.oordeel_overnemen,
     })
 
 
@@ -784,6 +800,10 @@ def main():
     parser.add_argument("--post", action="store_true", help="melder wants communication via post")
     parser.add_argument("--melder-akkoord", choices=["JA", "NEE", "ONBEKEND"],
                         help="melder agrees with the informal solution (default JA; NEE continues formally)")
+    parser.add_argument("--oordeel", choices=["GEGROND", "DEELS_GEGROND", "ONGEGROND", "GEEN_OORDEEL"],
+                        default="ONGEGROND", help="oordeel in the informeel/formeel onderzoek; (deels) gegrond fills 3 principes")
+    parser.add_argument("--oordeel-overnemen", action="store_true",
+                        help="melder disagrees and the informal oordeel is taken over, so formeel skips hoor en wederhoor")
     parser.add_argument("--terugkoppeling-afkeuren", action="store_true",
                         help="informeel-behandelaar: the coordinator rejects the terugkoppeling once")
     parser.add_argument("--verbose", action="store_true")
