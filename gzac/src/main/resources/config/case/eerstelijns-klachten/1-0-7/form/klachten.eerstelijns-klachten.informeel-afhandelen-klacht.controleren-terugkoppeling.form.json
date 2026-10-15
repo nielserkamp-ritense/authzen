@@ -482,7 +482,6 @@
       "type" : "select",
       "input" : true,
       "label" : "Selecteer hieronder welke variant van het zaakresultaat 'Afgehandeld' van toepassing is op deze klacht",
-      "hidden" : true,
       "widget" : "choicesjs",
       "validate" : {
         "required" : true
