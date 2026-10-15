@@ -1581,7 +1581,7 @@ Nieuwe zaakstatus: Afgehandeld</bpmn:text>
     </bpmn:exclusiveGateway>
             
     
-    <bpmn:userTask completionQuantity="1" id="ControleFormulierAfsluitenZaak" implementation="##unspecified" isForCompensation="false" name="Controle formulier gegevens afsluiten zaak" startQuantity="1">
+    <bpmn:userTask camunda:candidateGroups="ROLE_ADMIN,ROLE_KLACHTEN_KLACHTENCOORDINATOR,ROLE_KLACHTEN_KLACHTENCOORDINATOR_GGD,ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH" completionQuantity="1" id="ControleFormulierAfsluitenZaak" implementation="##unspecified" isForCompensation="false" name="Controle formulier gegevens afsluiten zaak" startQuantity="1">
                   
       
       <bpmn:incoming>Flow_09qpc1o</bpmn:incoming>

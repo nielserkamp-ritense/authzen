@@ -47,13 +47,19 @@ AUTORISATIEGROEPEN_OCW = {
     "JH": "AUTORISATIEGROEPEN_OCW_JEUGDHULP",
 }
 # Same mapping as the calculated field pv.klachtteam in the toewijzen-zaak-aan-zaakbehandelaar form.
-KLACHTTEAM = {"BSD": "BSD_BESTUURSDIENST", "DBV": "DBV", "DPZ": "DPZ", "DSB": "DSB_DIENST_STADSBEHEER", "DSO": "DSO", "SZW": "SZW"}
+# GGD/VTH have no behandelaar role: their coordinator handles the complaint.
+KLACHTTEAM = {
+    "BSD": "KLACHTBEHANDELAAR_BSD_BESTUURSDIENST", "DBV": "KLACHTBEHANDELAAR_DBV", "DPZ": "KLACHTBEHANDELAAR_DPZ",
+    "DSB": "KLACHTBEHANDELAAR_DSB_DIENST_STADSBEHEER", "DSO": "KLACHTBEHANDELAAR_DSO", "SZW": "KLACHTBEHANDELAAR_SZW",
+    "GGD": "KLACHTENCOORDINATOR_GGD", "VTH": "KLACHTENCOORDINATOR_VTH",
+}
 BEHANDELAAR_USER = {
-    "BSD_BESTUURSDIENST": "klachten-behandelaar-bsd", "DBV": "klachten-behandelaar-dbv",
-    "DPZ": "klachten-behandelaar-dpz", "DSB_DIENST_STADSBEHEER": "klachten-behandelaar-dsb",
-    "DSO": "klachten-behandelaar-dso", "SZW": "klachten-behandelaar-szw",
-    "OCW_ALGEMEEN": "klachten-behandelaar-ocw", "OCW_JGZ": "klachten-behandelaar-ocw-jgz",
-    "OCW_JH": "klachten-behandelaar-ocw-jh",
+    "KLACHTBEHANDELAAR_BSD_BESTUURSDIENST": "klachten-behandelaar-bsd", "KLACHTBEHANDELAAR_DBV": "klachten-behandelaar-dbv",
+    "KLACHTBEHANDELAAR_DPZ": "klachten-behandelaar-dpz", "KLACHTBEHANDELAAR_DSB_DIENST_STADSBEHEER": "klachten-behandelaar-dsb",
+    "KLACHTBEHANDELAAR_DSO": "klachten-behandelaar-dso", "KLACHTBEHANDELAAR_SZW": "klachten-behandelaar-szw",
+    "KLACHTBEHANDELAAR_OCW_ALGEMEEN": "klachten-behandelaar-ocw", "KLACHTBEHANDELAAR_OCW_JGZ": "klachten-behandelaar-ocw-jgz",
+    "KLACHTBEHANDELAAR_OCW_JH": "klachten-behandelaar-ocw-jh",
+    "KLACHTENCOORDINATOR_GGD": "klachten-coordinator-ggd", "KLACHTENCOORDINATOR_VTH": "klachten-coordinator-vth",
 }
 STEP_TIMEOUT = 45
 # Backend ERROR lines that come from Valtimo itself, not from the klachten configuration.
@@ -321,7 +327,8 @@ class Context:
             self.dienst, "klachten-coordinator")
         self.autorisatiegroep = AUTORISATIEGROEPEN_OCW.get(args.autorisatiegroep) if self.dienst == "OCW" else None
         if self.dienst == "OCW":
-            self.klachtteam = {"JGZ": "OCW_JGZ", "JH": "OCW_JH"}.get(args.autorisatiegroep, "OCW_ALGEMEEN")
+            self.klachtteam = {"JGZ": "KLACHTBEHANDELAAR_OCW_JGZ", "JH": "KLACHTBEHANDELAAR_OCW_JH"}.get(
+                args.autorisatiegroep, "KLACHTBEHANDELAAR_OCW_ALGEMEEN")
         else:
             self.klachtteam = KLACHTTEAM.get(self.dienst)
         self.behandelaar = BEHANDELAAR_USER.get(self.klachtteam)
@@ -455,20 +462,22 @@ def data_verkenning(ctx, task):
 
 def data_toewijzen_zaakbehandelaar(ctx, task):
     if ctx.zaakbehandelaar == "EEN_KLACHTENBEHANDELAAR_VAN_DE_DIENST":
-        email = ctx.user_by_role(f"ROLE_KLACHTEN_KLACHTBEHANDELAAR_{ctx.klachtteam}", "email")
+        email = ctx.user_by_role(f"ROLE_KLACHTEN_{ctx.klachtteam}", "email")
     elif ctx.zaakbehandelaar == "ANDERE_KLACHTENCOORDINATOR":
         role = {"GGD": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_GGD", "VTH": "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH"}.get(
             ctx.dienst, "ROLE_KLACHTEN_KLACHTENCOORDINATOR")
         email = ctx.user_by_role(role, "email")
     else:
-        email = None  # MIJZELF: the form reads it from localStorage 'userIdentity', which the frontend never sets
-    return nest({
+        email = None  # MIJZELF: the form's defaultValue (prefilled) is used
+    data = {
         "pv.zaakbehandelaarKlacht": ctx.zaakbehandelaar,
-        "pv.zaakbehandelaarEmail": email,
         "pv.klachtteam": ctx.klachtteam,
         "informeleAfhandeling.overdrachtPlaatsgevondenOp":
             now() if ctx.zaakbehandelaar == "EEN_KLACHTENBEHANDELAAR_VAN_DE_DIENST" else None,
-    })
+    }
+    if email:
+        data["pv.zaakbehandelaarEmail"] = email
+    return nest(data)
 
 
 def data_coordinator_onderzoek(ctx, task):

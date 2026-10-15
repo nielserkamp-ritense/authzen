@@ -27,7 +27,7 @@
       "input" : true,
       "label" : "klachtteam mapping to retrieve the correct role",
       "tableView" : true,
-      "calculateValue" : "const dienstMap = {BSD: 'BSD_BESTUURSDIENST', DBV: 'DBV', DPZ: 'DPZ', DSB: 'DSB_DIENST_STADSBEHEER', DSO: 'DSO',  SZW: 'SZW'}; const dienstName = data.rapportageCategorieen?.toegewezenDienst?.dienst?.name; if (dienstName === 'OCW') {  const autorisatieGroep = data.verkenning?.autorisatieGroep?.name;  value = autorisatieGroep === 'AUTORISATIEGROEPEN_OCW_JGZ_JEUGDGEZONDHEIDSZORG' ? 'OCW_JGZ' : autorisatieGroep === 'AUTORISATIEGROEPEN_OCW_JEUGDHULP' ? 'OCW_JH' : 'OCW_ALGEMEEN';} else {  value = dienstMap[dienstName];}",
+      "calculateValue" : "const dienstMap = {BSD: 'KLACHTBEHANDELAAR_BSD_BESTUURSDIENST', DBV: 'KLACHTBEHANDELAAR_DBV', DPZ: 'KLACHTBEHANDELAAR_DPZ', DSB: 'KLACHTBEHANDELAAR_DSB_DIENST_STADSBEHEER', DSO: 'KLACHTBEHANDELAAR_DSO', SZW: 'KLACHTBEHANDELAAR_SZW', GGD: 'KLACHTENCOORDINATOR_GGD', VTH: 'KLACHTENCOORDINATOR_VTH'}; const dienstName = data.rapportageCategorieen?.toegewezenDienst?.dienst?.name; if (dienstName === 'OCW') {  const autorisatieGroep = data.verkenning?.autorisatieGroep?.name;  value = autorisatieGroep === 'AUTORISATIEGROEPEN_OCW_JGZ_JEUGDGEZONDHEIDSZORG' ? 'KLACHTBEHANDELAAR_OCW_JGZ' : autorisatieGroep === 'AUTORISATIEGROEPEN_OCW_JEUGDHULP' ? 'KLACHTBEHANDELAAR_OCW_JH' : 'KLACHTBEHANDELAAR_OCW_ALGEMEEN';} else {  value = dienstMap[dienstName];}",
       "attributes" : {
         "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.toewijzen-zaak-aan-zaakbehandelaar-pv.klachtteam"
       }
@@ -185,7 +185,7 @@
     {
       "key" : "pv.zaakbehandelaarEmail",
       "data" : {
-        "url" : "../api/v1/users/authority/ROLE_KLACHTEN_KLACHTBEHANDELAAR_{{data.pv.klachtteam}}",
+        "url" : "../api/v1/users/authority/ROLE_KLACHTEN_{{data.pv.klachtteam}}",
         "method" : "GET",
         "headers" : [
           {
@@ -276,7 +276,7 @@
         "show" : true,
         "when" : "pv.zaakbehandelaarKlacht"
       },
-      "customDefaultValue" : "value = JSON.parse(localStorage.getItem('userIdentity')).email",
+      "defaultValue" : "klachten-coordinator@example.com",
       "attributes" : {
         "data-testid" : "klachten.eerstelijns-klachten.informeel-afhandelen-klacht.toewijzen-zaak-aan-zaakbehandelaar-pv.zaakbehandelaarEmail"
       }
