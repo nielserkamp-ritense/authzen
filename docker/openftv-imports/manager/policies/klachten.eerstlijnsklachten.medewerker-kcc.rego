@@ -18,6 +18,29 @@ has_action(actions) if {
 	input.action.id == a
 }
 
+# ---- com.ritense.case.domain.CaseTab --------------------------------------------------------------
+
+kcc_case_tab_1 if {
+	has_resource_type("com.ritense.case.domain.CaseTab")
+	has_action(["view"])
+	has_role("ROLE_KLACHTEN_KCC")
+}
+
+allow if kcc_case_tab_1
+
+filter contains {
+    "type": "ValtimoAuthorizationPermission",
+	"resourceType": "com.ritense.case.domain.CaseTab",
+	"actions": ["view"],
+	"conditionContainer": {"conditions": []},
+	"role": "ROLE_KLACHTEN_KCC",
+	"contextResourceType": null,
+	"contextConditionContainer": {"conditions": []},
+} if {
+	has_resource_type("com.ritense.case.domain.CaseTab")
+	has_action(["view"])
+}
+
 # ---- com.ritense.case_.domain.definition.CaseDefinition ------------------------------------------
 
 kcc_case_definition_1 if {
@@ -114,6 +137,42 @@ filter contains {
 	has_action(["view_list"])
 }
 
+kcc_json_schema_document_2 if {
+	has_resource_type("com.ritense.document.domain.impl.JsonSchemaDocument")
+	has_action(["view"])
+	has_role("ROLE_KLACHTEN_KCC")
+}
+
+allow if kcc_json_schema_document_2
+
+filter contains {
+    "type": "ValtimoAuthorizationPermission",
+	"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+	"actions": ["view"],
+	"conditionContainer": {"conditions": [
+		{
+			"type": "container",
+			"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+			"conditions": [{
+				"type": "container",
+				"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+				"conditions": [{
+					"type": "field",
+					"field": "zaakTypeUrl",
+					"operator": "==",
+					"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+				}]
+			}]
+		}
+	]},
+	"role": "ROLE_KLACHTEN_KCC",
+	"contextResourceType": null,
+	"contextConditionContainer": {"conditions": []},
+} if {
+	has_resource_type("com.ritense.document.domain.impl.JsonSchemaDocument")
+	has_action(["view"])
+}
+
 # ---- com.ritense.document.domain.impl.JsonSchemaDocumentDefinition -------------------------------
 
 kcc_json_schema_document_definition_1 if {
@@ -200,6 +259,94 @@ filter contains {
 } if {
 	has_resource_type("com.ritense.document.domain.impl.searchfield.SearchField")
 	has_action(["view_list"])
+}
+
+# ---- com.ritense.documentenapi.authorization.ZgwDocument ------------------------------------------
+
+kcc_zgw_document_1 if {
+	has_resource_type("com.ritense.documentenapi.authorization.ZgwDocument")
+	has_action(["view", "view_list"])
+	has_role("ROLE_KLACHTEN_KCC")
+}
+
+allow if kcc_zgw_document_1
+
+filter contains {
+    "type": "ValtimoAuthorizationPermission",
+	"resourceType": "com.ritense.documentenapi.authorization.ZgwDocument",
+	"actions": ["view", "view_list"],
+	"conditionContainer": {"conditions": [
+		{
+			"type": "container",
+			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+			"conditions": [
+				{
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
+				}
+			]
+		}
+	]},
+	"role": "ROLE_KLACHTEN_KCC",
+	"contextResourceType": null,
+	"contextConditionContainer": {"conditions": []},
+} if {
+	has_resource_type("com.ritense.documentenapi.authorization.ZgwDocument")
+	has_action(["view", "view_list"])
+}
+
+# ---- com.ritense.note.domain.Note -----------------------------------------------------------------
+
+kcc_note_1 if {
+	has_resource_type("com.ritense.note.domain.Note")
+	has_action(["view", "view_list"])
+	has_role("ROLE_KLACHTEN_KCC")
+}
+
+allow if kcc_note_1
+
+filter contains {
+    "type": "ValtimoAuthorizationPermission",
+	"resourceType": "com.ritense.note.domain.Note",
+	"actions": ["view", "view_list"],
+	"conditionContainer": {"conditions": [
+		{
+			"type": "container",
+			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+			"conditions": [
+				{
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
+				}
+			]
+		}
+	]},
+	"role": "ROLE_KLACHTEN_KCC",
+	"contextResourceType": null,
+	"contextConditionContainer": {"conditions": []},
+} if {
+	has_resource_type("com.ritense.note.domain.Note")
+	has_action(["view", "view_list"])
 }
 
 # ---- com.ritense.resource.authorization.ResourcePermission ---------------------------------------
