@@ -8,7 +8,8 @@ Usage:
   scripts/klachten-authz-check.py [--user klachten-behandelaar-szw ...] [--check open ...] [--verbose]
 
 Every run seeds fresh complaints, one per scope (unassigned, OCW before verkenning, each dienst and OCW
-group), each stopped at an open task and with one note. Only these seeds are judged.
+group, and an OCW-JGZ complaint moved to SZW), each stopped at an open task and with one note. Only these
+seeds are judged.
 
 Checks:
   list         complaint is in the case list (case search)
@@ -48,7 +49,11 @@ SEEDS = {
        for d in ["SZW", "DBV", "DPZ", "DSB", "DSO", "BSD", "GGD", "VTH"]},
     **{f"OCW_{g}": (dict(route="informeel-behandelaar", dienst="OCW", autorisatiegroep=g, terugkoppeling="on"),
                     BEHANDELAAR_TASK) for g in ["ALG", "JGZ", "JH"]},
+    "OCW_JGZ_MOVED": (dict(route="informeel-behandelaar", dienst="OCW", autorisatiegroep="JGZ", terugkoppeling="on"),
+                      BEHANDELAAR_TASK),
 }
+# Seeds moved to another dienst after the verkenning, keeping their autorisatiegroep (like herbeoordelen does).
+MOVED = {"OCW_JGZ_MOVED": "SZW"}
 ALL = set(SEEDS)
 
 # user → (list scope, read scope, write scope). Read: open, notes, files, zaak.
@@ -60,7 +65,8 @@ EXPECTED = {
     "klachten-coordinator": (ALL - {"GGD", "VTH"},) * 3,
     "klachten-coordinator-ggd": ({"GGD", "UNASSIGNED"},) * 3,
     "klachten-coordinator-vth": ({"VTH", "UNASSIGNED"},) * 3,
-    **{f"klachten-behandelaar-{d.lower()}": ({d},) * 3 for d in ["SZW", "DBV", "DPZ", "DSB", "DSO", "BSD"]},
+    **{f"klachten-behandelaar-{d.lower()}": ({d},) * 3 for d in ["DBV", "DPZ", "DSB", "DSO", "BSD"]},
+    "klachten-behandelaar-szw": ({"SZW", "OCW_JGZ_MOVED"},) * 3,
     "klachten-behandelaar-ocw": ({"OCW_ALG", "OCW_PRE"},) * 3,
     "klachten-behandelaar-ocw-jgz": ({"OCW_JGZ"},) * 3,
     "klachten-behandelaar-ocw-jh": ({"OCW_JH"},) * 3,
@@ -98,6 +104,10 @@ def seed_all():
         groups = {r[0] for r in psql(f"select group_id_ from act_ru_identitylink "
                                      f"where task_id_ = '{task_id}' and type_ = 'candidate'")}
         seed = Seed(scope, report.document_id, task_id, groups)
+        if scope in MOVED:
+            psql(f"update json_schema_document set json_document_content = jsonb_set(json_document_content, "
+                 f"'{{rapportageCategorieen,toegewezenDienst,dienst,name}}', '\"{MOVED[scope]}\"') "
+                 f"where json_schema_document_id = '{seed.document_id}'")
         psql(f"insert into note (id, created_by_user_id, created_by_user_full_name, created_date, content, document_id) "
              f"values (gen_random_uuid(), 'authz-check', 'Authz check', now(), 'Notitie {scope}', '{seed.document_id}')")
         seed.notes = int(psql(f"select count(*) from note where document_id = '{seed.document_id}'")[0][0])

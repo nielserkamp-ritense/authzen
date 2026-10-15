@@ -115,10 +115,26 @@ filter contains {
 	"actions": ["view"],
 	"conditionContainer": {"conditions": [
 		{
-			"type": "field",
-			"field": "documentDefinitionId.name",
+			"type": "container",
+			"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+			"conditions": [{
+				"type": "container",
+				"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+				"conditions": [{
+					"type": "field",
+					"field": "zaakTypeUrl",
+					"operator": "==",
+					"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+				}]
+			}]
+		},
+		{
+			"type": "expression",
+			"field": "content.content",
+			"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
 			"operator": "==",
-			"value": "eerstelijns-klachten"
+			"value": "OCW",
+			"clazz": "java.lang.String"
 		},
 		{
 			"type": "expression",
@@ -151,10 +167,26 @@ filter contains {
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
 		{
-			"type": "field",
-			"field": "documentDefinitionId.name",
+			"type": "container",
+			"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+			"conditions": [{
+				"type": "container",
+				"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+				"conditions": [{
+					"type": "field",
+					"field": "zaakTypeUrl",
+					"operator": "==",
+					"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+				}]
+			}]
+		},
+		{
+			"type": "expression",
+			"field": "content.content",
+			"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
 			"operator": "==",
-			"value": "eerstelijns-klachten"
+			"value": "OCW",
+			"clazz": "java.lang.String"
 		},
 		{
 			"type": "expression",
@@ -187,10 +219,26 @@ filter contains {
 	"actions": ["modify"],
 	"conditionContainer": {"conditions": [
 		{
-			"type": "field",
-			"field": "documentDefinitionId.name",
+			"type": "container",
+			"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+			"conditions": [{
+				"type": "container",
+				"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+				"conditions": [{
+					"type": "field",
+					"field": "zaakTypeUrl",
+					"operator": "==",
+					"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+				}]
+			}]
+		},
+		{
+			"type": "expression",
+			"field": "content.content",
+			"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
 			"operator": "==",
-			"value": "eerstelijns-klachten"
+			"value": "OCW",
+			"clazz": "java.lang.String"
 		},
 		{
 			"type": "expression",
@@ -223,10 +271,26 @@ filter contains {
 	"actions": ["claim"],
 	"conditionContainer": {"conditions": [
 		{
-			"type": "field",
-			"field": "documentDefinitionId.name",
+			"type": "container",
+			"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+			"conditions": [{
+				"type": "container",
+				"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+				"conditions": [{
+					"type": "field",
+					"field": "zaakTypeUrl",
+					"operator": "==",
+					"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+				}]
+			}]
+		},
+		{
+			"type": "expression",
+			"field": "content.content",
+			"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
 			"operator": "==",
-			"value": "eerstelijns-klachten"
+			"value": "OCW",
+			"clazz": "java.lang.String"
 		},
 		{
 			"type": "expression",
@@ -259,10 +323,26 @@ filter contains {
 	"actions": ["assign"],
 	"conditionContainer": {"conditions": [
 		{
-			"type": "field",
-			"field": "documentDefinitionId.name",
+			"type": "container",
+			"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+			"conditions": [{
+				"type": "container",
+				"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+				"conditions": [{
+					"type": "field",
+					"field": "zaakTypeUrl",
+					"operator": "==",
+					"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+				}]
+			}]
+		},
+		{
+			"type": "expression",
+			"field": "content.content",
+			"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
 			"operator": "==",
-			"value": "eerstelijns-klachten"
+			"value": "OCW",
+			"clazz": "java.lang.String"
 		},
 		{
 			"type": "expression",
@@ -295,10 +375,26 @@ filter contains {
 	"actions": ["assignable"],
 	"conditionContainer": {"conditions": [
 		{
-			"type": "field",
-			"field": "documentDefinitionId.name",
+			"type": "container",
+			"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+			"conditions": [{
+				"type": "container",
+				"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+				"conditions": [{
+					"type": "field",
+					"field": "zaakTypeUrl",
+					"operator": "==",
+					"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+				}]
+			}]
+		},
+		{
+			"type": "expression",
+			"field": "content.content",
+			"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
 			"operator": "==",
-			"value": "eerstelijns-klachten"
+			"value": "OCW",
+			"clazz": "java.lang.String"
 		},
 		{
 			"type": "expression",

@@ -137,10 +137,18 @@ filter contains {
 	"actions": ["assign", "assignable", "claim", "modify", "view", "view_list"],
 	"conditionContainer": {"conditions": [
 		{
-			"type": "field",
-			"field": "documentDefinitionId.name",
-			"operator": "==",
-			"value": "eerstelijns-klachten"
+			"type": "container",
+			"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+			"conditions": [{
+				"type": "container",
+				"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+				"conditions": [{
+					"type": "field",
+					"field": "zaakTypeUrl",
+					"operator": "==",
+					"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+				}]
+			}]
 		},
 		{
 			"type": "expression",

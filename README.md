@@ -32,9 +32,10 @@ The first run builds the GZAC backend (including Valtimo) and the OpenFTV images
 | `./run.sh --stop` | Stop the stack. Containers and data are kept; `./run.sh` resumes. |
 | `./run.sh --down` | Remove all containers, networks and volumes. Nothing persists. |
 | `./run.sh --reset` | `--down`, then start fresh. Combine with `-d` to run in the background. |
+| `./run.sh --reload-policies` | Reload the OpenFTV policies from `docker/openftv-imports/manager/policies`. Only the OpenFTV database and manager are recreated, so GZAC data is kept. The PDP picks up the policies within about 30 seconds. |
 | `./run.sh --help` | Show usage. |
 
-Use `--reset` after pulling changes to seed data, the Keycloak realm or OpenFTV policies (see [Known limitations](#known-limitations)).
+Use `--reset` after pulling changes to seed data or the Keycloak realm. For OpenFTV policies, `--reload-policies` is enough (see [Known limitations](#known-limitations)).
 
 ## Services
 
@@ -146,7 +147,7 @@ scripts/klachten-authz-check.py                                   # all users, a
 scripts/klachten-authz-check.py --user klachten-behandelaar-szw --check open --check task-list
 ```
 
-Every run seeds 13 fresh complaints: one unassigned, one for OCW before the verkenning, and one per dienst and OCW group. Each stops at an open task and has a note. Only these seeds are judged. For each user × seed it checks:
+Every run seeds 14 fresh complaints: one unassigned, one for OCW before the verkenning, one per dienst and OCW group, and one OCW-JGZ complaint that was moved to SZW afterwards. Each stops at an open task and has a note. Only these seeds are judged. For each user × seed it checks:
 - `list`, `open`: the case list and the complaint by id (direct URL);
 - `notes`, `files`, `zaak`: notes, zaak documents and the zaak;
 - `task-list`, `task-open`, `claim`: the open task (a claim is undone right away);
@@ -157,8 +158,8 @@ It prints a grid per user and every difference with the expected result, and exi
 
 ## Known limitations
 
-- **Seeds load only into an empty database.** The OpenFTV manager seeds policies only when its store is empty. Keycloak imports the realm only when it doesn't exist yet. Run `./run.sh --reset` after pulling changes to policies, the realm or other seed data.
-- **Policy changes made in the OpenFTV UI are lost** on `--down` or `--reset`. Nothing persists between resets.
+- **Seeds load only into an empty database.** The OpenFTV manager seeds policies only when its store is empty. Keycloak imports the realm only when it doesn't exist yet. Run `./run.sh --reset` after pulling changes to the realm or other seed data, or `./run.sh --reload-policies` after changes to policies only.
+- **Policy changes made in the OpenFTV UI are lost** on `--down`, `--reset` or `--reload-policies`. Nothing persists between resets.
 - **Fixed ports.** The stack publishes many host ports: 80, 3000, 5005, 5010, 5400, 5433, 5672–5673, 6379, 8001–8002, 8010–8012, 8080–8081, 8088, 8100, 8180, 8443, 8480, 9000, 9100, 9104, 9200, 15672–15673, 54319–54329. Stop anything else that uses them first.
 - **The first build is slow** (about 8 minutes), because it compiles Valtimo.
 - **Klachten process stubs.** Email, notifications, the ontvangstbevestiging and the KTO data delivery are `${true}` stubs. Nothing is sent.
@@ -174,5 +175,5 @@ It prints a grid per user and every difference with the expected result, and exi
 
 - **Port already allocated:** another process uses one of the ports above. Stop it, or change the host port in `docker/docker-compose.yaml`.
 - **The backend doesn't start:** follow its logs with `docker compose -f docker/docker-compose.yaml --profile gzac logs -f gzac-backend`.
-- **A new user or policy is missing:** run `./run.sh --reset`.
+- **A new user is missing:** run `./run.sh --reset`. **A policy change has no effect:** run `./run.sh --reload-policies` and wait about 30 seconds.
 - **Submodule error from `run.sh`:** run `git submodule update --init`.

@@ -18,6 +18,9 @@ Usage: ./run.sh [option]
   --stop         Stop the stack. Containers and data are kept; ./run.sh resumes.
   --down         Remove containers, networks and volumes. Nothing persists.
   --reset        Same as --down, then start the stack fresh (combine with -d to detach).
+  --reload-policies
+                 Reload the OpenFTV policies from docker/openftv-imports/manager/policies. Only the OpenFTV
+                 database and manager are recreated; GZAC state is kept. The PDP picks them up within ~30 seconds.
   -h, --help     Show this help.
 EOF
 }
@@ -61,6 +64,7 @@ while [[ $# -gt 0 ]]; do
         --reset) reset=true ;;
         --stop) action=stop ;;
         --down) action=down ;;
+        --reload-policies) action=reload-policies ;;
         -h|--help) usage; exit 0 ;;
         *) echo "Unknown option: $1" >&2; usage >&2; exit 2 ;;
     esac
@@ -75,6 +79,12 @@ case "$action" in
         ;;
     down)
         "${COMPOSE[@]}" down -v --remove-orphans
+        ;;
+    reload-policies)
+        # The manager seeds the policies only into an empty store, so start it with a fresh database.
+        "${COMPOSE[@]}" rm --stop --force --volumes openftv-database openftv-manager
+        "${COMPOSE[@]}" up -d --wait openftv-database openftv-manager
+        echo "Policies reloaded. The PDP picks up the new bundle within ~30 seconds."
         ;;
     up)
         if $reset; then
