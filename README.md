@@ -116,6 +116,14 @@ scripts/klachten-walkthrough.py --route informeel-coordinator --zaakbehandelaar 
 
 For each step the script prints ✅ or ❌. At the end it checks the zaak status and resultaat in Open Zaak, the internal case status, Operaton incidents, and ERROR lines in the backend log. It exits with 1 on any failure. Add `--verbose` to see the submitted form data.
 
+The walkthrough submits the document paths the schema expects, so it can't catch a form field whose key doesn't match the schema. `scripts/check-forms-schema.py` checks that statically, without the stack:
+
+```bash
+scripts/check-forms-schema.py
+```
+
+It lists every submitted form field that isn't in the document definition (with `additionalProperties: false`, such a field makes the form submission fail), and every conditional that points at a missing field. It exits with 1 when it finds anything. Run it after changing a form or the document definition.
+
 ## Known limitations
 
 - **Seeds load only into an empty database.** The OpenFTV manager seeds policies only when its store is empty. Keycloak imports the realm only when it doesn't exist yet. Run `./run.sh --reset` after pulling changes to policies, the realm or other seed data.

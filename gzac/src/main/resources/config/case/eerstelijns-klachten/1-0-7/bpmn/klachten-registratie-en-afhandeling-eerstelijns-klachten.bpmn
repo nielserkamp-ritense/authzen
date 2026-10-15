@@ -1413,7 +1413,7 @@ Nieuwe zaakstatus: Afgehandeld</bpmn:text>
           <camunda:inputParameter name="datumAangemaakt">${documentDelegateService.findValueByJsonPointerOrDefault("/klacht/datumOntvangst",execution,"")}</camunda:inputParameter>
                               
           
-          <camunda:inputParameter name="emailToAlgemeen">jacob.klaren@ritense.com</camunda:inputParameter>
+          <camunda:inputParameter name="emailToAlgemeen">klachten@example.com</camunda:inputParameter>
                             
         
         </camunda:inputOutput>
