@@ -33,39 +33,6 @@
                   
       
       <bpmn:extensionElements>
-                        
-        
-        <camunda:inputOutput>
-                              
-          
-          <camunda:outputParameter name="afdeling">${documentWriterService.removeValueAtPath("/rapportageCategorieen/afdeling", execution.businessKey)}</camunda:outputParameter>
-                              
-          
-          <camunda:outputParameter name="sector">${documentWriterService.removeValueAtPath("/rapportageCategorieen/sector", execution.businessKey)}</camunda:outputParameter>
-                              
-          
-          <camunda:outputParameter name="producten">${documentWriterService.removeValueAtPath("/rapportageCategorieen/producten", execution.businessKey)}</camunda:outputParameter>
-                              
-          
-          <camunda:outputParameter name="themas">${documentWriterService.removeValueAtPath("/rapportageCategorieen/themas", execution.businessKey)}</camunda:outputParameter>
-                              
-          
-          <camunda:outputParameter name="verkenning">${documentWriterService.removeValueAtPath("/verkenning", execution.businessKey)}</camunda:outputParameter>
-                              
-          
-          <camunda:outputParameter name="behandelingDoorKlachtencommissie">${documentWriterService.removeValueAtPath("/behandelingDoorKlachtencommissie", execution.businessKey)}</camunda:outputParameter>
-                              
-          
-          <camunda:outputParameter name="eersteBeoordeling">${documentWriterService.removeValueAtPath("/eersteBeoordeling", execution.businessKey)}</camunda:outputParameter>
-                              
-          
-          <camunda:outputParameter name="formeleAfhandeling">${documentWriterService.removeValueAtPath("/formeleAfhandeling", execution.businessKey)}</camunda:outputParameter>
-                              
-          
-          <camunda:outputParameter name="informeleAfhandeling">${documentWriterService.removeValueAtPath("/informeleAfhandeling", execution.businessKey)}</camunda:outputParameter>
-                            
-        
-        </camunda:inputOutput>
                       
       
       </bpmn:extensionElements>
