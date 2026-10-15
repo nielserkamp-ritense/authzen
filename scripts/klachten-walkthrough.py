@@ -65,6 +65,7 @@ STEP_TIMEOUT = 45
 # Backend ERROR lines that come from Valtimo itself, not from the klachten configuration.
 KNOWN_BACKEND_NOISE = {
     "TaskUpdateListener": "Valtimo SSE TaskUpdateListener looks up a process instance that has just ended",
+    "AsyncRequestNotUsableException": "a browser dropped an async/SSE request (an open GZAC tab, not this script)",
 }
 MAX_STEPS = 40
 
