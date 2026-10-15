@@ -197,6 +197,7 @@ services:
       POSTGRES_DB: gzac
     volumes:
       - ./gzac-imports/gzac/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+      - ./gzac-imports/gzac/choice-fields.sql:/docker-entrypoint-initdb.d/zz-choice-fields.sql
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -h 127.0.0.1 -U $${POSTGRES_USER} -d $${POSTGRES_DB:-$${POSTGRES_USER}}" ]
       interval: 5s

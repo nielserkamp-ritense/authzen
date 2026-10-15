@@ -93,6 +93,7 @@ Where the seed data lives:
 |---|---|
 | `gzac/src/main/resources/config/` | Case definition, BPMN, forms, plugin configurations and permissions. GZAC deploys them on startup. |
 | `docker/gzac-imports/` | Keycloak realm with users, and the Open Zaak, Objecten, Objecttypen and Open Notificaties database seeds |
+| `docker/gzac-imports/gzac/choice-fields.sql` | GZAC choice fields (diensten, autorisatiegroepen, sectoren/afdelingen, producten, thema's, oordeel, behoorlijkheidsnormen) |
 | `docker/openftv-imports/manager/policies/` | Rego policies, one per role (`klachten.*.rego`), plus `valtimo.rego` |
 | `docker/openftv-imports/keycloak/` | OpenFTV Keycloak realm |
 

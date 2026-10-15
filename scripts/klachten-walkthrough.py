@@ -328,8 +328,6 @@ class Context:
             self.choice_cache[key] = body.get("choiceFieldValues", []) if status == 200 and isinstance(body, dict) else None
             if self.choice_cache[key] is None:
                 self.report.warn(f"choice field {key} not found (HTTP {status})")
-            elif len(self.choice_cache[key]) <= 1:
-                self.report.warn(f"choice field {key} has only {len(self.choice_cache[key])} value(s)")
         values = self.choice_cache[key] or []
         for v in values:
             if preferred and v.get("name") == preferred:
@@ -424,12 +422,7 @@ def data_eerste_beoordeling(ctx, task):
 def data_verkenning(ctx, task):
     klachtenteam = task["prefill"].get("pv", {}).get("klachtenteam")
     datum = task["prefill"].get("klacht", {}).get("datumOntvangst") or now(-1)
-    autorisatiegroep = None
-    if klachtenteam:
-        autorisatiegroep = ctx.choice(f"AUTORISATIEGROEPEN_{klachtenteam}", ctx.autorisatiegroep)
-    if autorisatiegroep is None and ctx.autorisatiegroep:
-        ctx.report.warn(f"sending synthetic autorisatieGroep {ctx.autorisatiegroep}")
-        autorisatiegroep = {"name": ctx.autorisatiegroep, "value": ctx.autorisatiegroep}
+    autorisatiegroep = ctx.choice(f"AUTORISATIEGROEPEN_{klachtenteam}", ctx.autorisatiegroep, required=True) if klachtenteam else None
     sector = ctx.choice(f"{klachtenteam}_SECTOR") if klachtenteam else None
     afdeling = ctx.choice(sector["name"]) if sector else None
     afhandeltermijn = (datetime.datetime.fromisoformat(datum.replace("Z", "+00:00")) + datetime.timedelta(weeks=6)).isoformat()
