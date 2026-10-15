@@ -96,6 +96,25 @@ Where the seed data lives:
 | `docker/openftv-imports/manager/policies/` | Rego policies, one per role (`klachten.*.rego`), plus `valtimo.rego` |
 | `docker/openftv-imports/keycloak/` | OpenFTV Keycloak realm |
 
+## Klachten walkthrough
+
+`scripts/klachten-walkthrough.py` walks the klachten process end to end through the GZAC API, as the demo user that owns each task. Use it to check that the process still works after a change. It needs only `python3` and the running stack.
+
+```bash
+scripts/klachten-walkthrough.py                                   # all routes, dienst SZW
+scripts/klachten-walkthrough.py --route informeel-behandelaar --dienst OCW --autorisatiegroep JGZ
+scripts/klachten-walkthrough.py --route informeel-coordinator --zaakbehandelaar MIJZELF --terugkoppeling on
+```
+
+| Route | Flow |
+|---|---|
+| `informeel-coordinator` | The coordinator handles the complaint informally |
+| `informeel-behandelaar` | The behandelaar of the dienst handles it, the coordinator checks it |
+| `formeel` | The melder disagrees with the informal solution, so it is handled formally |
+| `commissie` | The coordinator hands the complaint over to the klachtencommissie |
+
+For each step the script prints ✅ or ❌. At the end it checks the zaak status and resultaat in Open Zaak, the internal case status, Operaton incidents, and ERROR lines in the backend log. It exits with 1 on any failure. Add `--verbose` to see the submitted form data.
+
 ## Known limitations
 
 - **Seeds load only into an empty database.** The OpenFTV manager seeds policies only when its store is empty. Keycloak imports the realm only when it doesn't exist yet. Run `./run.sh --reset` after pulling changes to policies, the realm or other seed data.
