@@ -1253,7 +1253,3 @@ filter contains {
      	has_resource_type("com.ritense.zakenapi.security.Zaak")
      	has_action(["view"])
 }
-
-context := {
-    "filter": sort(filter)
-}
