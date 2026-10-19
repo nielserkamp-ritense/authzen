@@ -96,6 +96,38 @@ Every klachten decision comes from the role's policy in `docker/openftv-imports/
 - Outside the scope, a direct URL (complaint, task, notes, zaak documents, user action) returns 403 or 404.
 - `scripts/klachten-authz-check.py` checks this whole table (see [Authorization check](#authorization-check)).
 
+### Policies
+
+All policies are in `docker/openftv-imports/manager/policies/`, in one Rego package (`authz`). The manager loads each file as a separate policy, with the tags from its `.meta` file.
+
+| File | Contents |
+|---|---|
+| `klachten.*.rego` | One per klachten role. It only states the role's scope: its kind of rights and which complaints it handles |
+| `klachten.rego` | The rights per kind of klachten role, and the rules that turn every scope into permissions |
+| `valtimo.rego` | Generic rights for `ROLE_ADMIN` and `ROLE_USER`, as a table of permissions |
+| `authz.rego` | Shared helpers, resource types, and the response GZAC reads (`allow` and `context.filter`) |
+
+A klachten role file looks like this:
+
+```rego
+# Klachtenbehandelaar SZW: handles the complaints assigned to dienst SZW.
+klachten_scopes["ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW"] := {
+	"rights": "behandelaar",
+	"diensten": ["SZW"],
+}
+```
+
+A scope can also have `"diensten": "all"`, `"unassigned": true` (complaints not assigned to a dienst yet), and for OCW `"autorisatiegroepen"` or `"except_autorisatiegroepen"`. The kinds of rights are `behandelaar`, `coordinator`, `hoofdcoordinator`, `meelezen` (KCC) and `registratie` (IB/Post); see `klachten.rego`.
+
+After changing a policy file, check it and load it:
+
+```bash
+docker run --rm -v "$PWD/docker/openftv-imports/manager/policies":/p:ro openpolicyagent/opa:latest check /p --ignore '*.meta' --ignore cedar
+./run.sh --reload-policies
+```
+
+`scripts/policy-filter-dump.py` shows what the PDP decides per role. Use `--out before.json` before a change and `--compare before.json` after it, to see exactly which permissions changed.
+
 ## How it fits together
 
 ```
@@ -105,7 +137,7 @@ GZAC frontend ──> GZAC backend ──AuthZEN──> OpenFTV PDP <──bundl
 ```
 
 - The GZAC backend (`gzac/`) is built from the `valtimo` submodule as a Gradle composite build. Its `authorization-authzen` module sends access checks to the PDP.
-- The OpenFTV images are built from the `open-ftv` submodule. The manager seeds the Rego policies and publishes them to the PDP as a bundle.
+- The OpenFTV images are built from the `open-ftv` submodule. The manager seeds the Rego policies and publishes them to the PDP as a bundle: automatically about 15 seconds after a fresh start, and after that every time someone clicks "Publiceren" in the management UI.
 
 Where the seed data lives:
 
@@ -114,7 +146,7 @@ Where the seed data lives:
 | `gzac/src/main/resources/config/` | Case definition, BPMN, forms, plugin configurations and permissions. GZAC deploys them on startup. |
 | `docker/gzac-imports/` | Keycloak realm with users, and the Open Zaak, Objecten, Objecttypen and Open Notificaties database seeds |
 | `docker/gzac-imports/gzac/choice-fields.sql` | GZAC choice fields (diensten, autorisatiegroepen, sectoren/afdelingen, producten, thema's, oordeel, behoorlijkheidsnormen) |
-| `docker/openftv-imports/manager/policies/` | Rego policies, one per role (`klachten.*.rego`), plus `valtimo.rego` |
+| `docker/openftv-imports/manager/policies/` | Rego policies, see [Policies](#policies) |
 | `docker/openftv-imports/keycloak/` | OpenFTV Keycloak realm |
 
 ## Klachten walkthrough
@@ -176,6 +208,49 @@ Every run seeds 14 fresh complaints: one unassigned, one for OCW before the verk
 
 It prints a grid per user and every difference with the expected result. It also checks that every allowed upload was stored on the zaak, and it reports the known upstream bypasses (see below) without counting them. It exits with 1 when anything is wrong. The seeds, their notes and the uploaded files stay in the database.
 
+After a live policy change, tell the check what to expect instead:
+
+| Option | Effect |
+|---|---|
+| `--grant USER=SCOPE` | `USER` also has the complaints of seed scope `SCOPE` (e.g. `klachten-behandelaar-szw=DSO`). Tasks still follow the candidate group, so SZW is not expected to see DSO's tasks |
+| `--revoke USER` | `USER` has no complaints at all |
+
+## Live policy change
+
+The demo moment: change a role's rights in the OpenFTV manager and show the effect in GZAC, without a release or a restart. A change is active about a second after "Publiceren"; there is no cache in GZAC or the PDP.
+
+**Grant: SZW also handles DSO complaints**
+
+1. In GZAC (http://localhost), log in as `klachten-behandelaar-szw`. Show the case list: only SZW complaints. Open a DSO complaint URL: no access.
+2. In the OpenFTV management UI (http://localhost:8180), log in as `admin-user` / `password`.
+3. Open the policy `klachten.eerstlijnsklachten.klachtenbehandelaar-szw`. It only says which complaints SZW handles:
+   ```rego
+   klachten_scopes["ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW"] := {
+   	"rights": "behandelaar",
+   	"diensten": ["SZW"],
+   }
+   ```
+4. Click "Bewerken", change the line to `"diensten": ["SZW", "DSO"],` and click "Opslaan". Nothing changes in GZAC yet.
+5. Go to "Publicaties" and click "Publiceren". Wait until the publication is finished (a second or two).
+6. Refresh GZAC: the case list now also has the DSO complaints, and SZW can open them, read and add notes and zaak documents, and start user actions. The DSO tasks stay with the DSO behandelaar: a task also has to be meant for the role (candidate group). That is a separate rule.
+
+**Revoke: KCC no longer reads complaints**
+
+1. Log in to GZAC as `klachten-kcc`: every complaint is visible, read only.
+2. In the manager, edit `klachten.eerstlijnsklachten.medewerker-kcc`: change `"diensten": "all",` to `"diensten": [],`. Opslaan, then Publiceren.
+3. Refresh GZAC: the case list is empty, and opening a complaint is denied.
+
+**Prove it and undo it**
+
+```bash
+scripts/klachten-authz-check.py --user klachten-behandelaar-szw --grant klachten-behandelaar-szw=DSO
+scripts/klachten-authz-check.py --user klachten-kcc --revoke klachten-kcc
+```
+
+To undo, edit the lines back and publish again, or run `./run.sh --reload-policies` to reset every policy to the files in git (about 30 seconds). The "Versies" panel in the manager is empty, so it can't be used to undo.
+
+**Be careful with typos.** The manager doesn't check Rego. A policy that doesn't compile is still published as "Finished successfully", and neither the manager nor the PDP logs an error. The PDP then has only part of the policies, so most klachten users suddenly see nothing. Fix the edit and publish again, or run `./run.sh --reload-policies`. Check a policy file before you load it with `opa check` (see [Policies](#policies)).
+
 ## Known limitations
 
 - **Seeds load only into an empty database.** The OpenFTV manager seeds policies only when its store is empty. Keycloak imports the realm only when it doesn't exist yet. Run `./run.sh --reset` after pulling changes to the realm or other seed data, or `./run.sh --reload-policies` after changes to policies only.
@@ -190,14 +265,12 @@ It prints a grid per user and every difference with the expected result. It also
 - **Log noise.** After every subprocess, Valtimo's SSE `TaskUpdateListener` logs `ERROR … Process instance not found`. An open GZAC browser tab also causes `AsyncRequestNotUsableException … disconnected client` errors. Both are harmless, and the walkthrough reports them as known noise.
 - **The GZAC database dump contains 2 old klachten cases** from 2026-09-23. They have dummy choice values and open Operaton incidents, and they show up in the case list.
 - **Temporary uploads are not scoped by complaint.** Every role except KCC may upload a temporary file (`ResourcePermission`), because a form upload happens before the file is linked to a complaint. Storing it as a zaak document is checked against the complaint (`ZgwDocument:create`).
-- **Coordinators' notes and zaak documents cover eerstelijns klachten only.** Their rules for tweedelijns klachten and interventieverzoeken are kept, but those processes are not deployed.
-- **Coordinators also see unassigned complaints.** Their policies exclude the diensten they don't handle (`!=`), and that lets a complaint without a dienst through. This is intended, because coordinators assign complaints.
+- **Only eerstelijns klachten are covered.** The klachten policies have no rules for tweedelijns klachten and interventieverzoeken, because those processes are not deployed.
 - **Upstream endpoints that skip authorization.** Valtimo serves some endpoints without checking the case, so no policy can close them. A logged-in user who knows a process instance ID can read its variables (`POST /api/v1/process-instance/{id}/variables`) and its state, history and BPMN (`GET /api/v1/process/{id}`, `/history`, `/activities`, `/xml`). The authorization check reports them. The tab list and the case's process links are readable too, but they are configuration only.
 - **A denied form submission returns 400, not 403.** Valtimo's form-submission handler turns the `AccessDeniedException` into a generic 400 with a reference ID. Nothing is started.
 - **`ROLE_USER` still grants generic access.** Every demo user also has `ROLE_USER` (`valtimo.rego`). For klachten users that gives the user list, object-management configuration and the user dashboard, but no klachten data. Widget data on a klachten case is excluded there and granted per klachten role instead.
 - **The Valtimo permission files in `gzac/src/main/resources/config/global/permission/` are not used for decisions.** GZAC still imports them, but with AuthZEN on, every decision comes from the OpenFTV policies.
 - **If the PDP is unreachable, everything is denied**, also for admin. Each request waits for the PDP timeout first (about 3 seconds).
-- `scripts/permissions-to-rego.py` was a one-time aid to convert Valtimo permission files into the initial Rego policies. The Rego files in git are the source of truth.
 
 ## Troubleshooting
 
