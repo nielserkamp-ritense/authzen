@@ -59,6 +59,10 @@ task := "com.ritense.valtimo.operaton.domain.OperatonTask"
 
 upload := "com.ritense.resource.authorization.ResourcePermission"
 
+dashboard := "com.ritense.dashboard.domain.Dashboard"
+
+user := "com.ritense.valtimo.contract.authentication.User"
+
 # ---- rights per kind of role ----------------------------------------------------------------------
 #
 # `on` says which resources the actions apply to:
@@ -68,6 +72,7 @@ upload := "com.ritense.resource.authorization.ResourcePermission"
 #   part         what belongs to such a complaint (notes, zaak documents)
 #   started_on   what is started on or shown with such a complaint (user actions, widgets)
 #   task         the tasks of such a complaint that are meant for the role
+#   any_task     every task of such a complaint
 #   starting     starting a new case
 #
 # `"of": "all"` widens a right from the role's scope to every klachten complaint.
@@ -111,6 +116,28 @@ klachten_rights["registratie"] := array.concat(case_rights, [
 	{"type": user_action, "actions": ["create"], "on": "starting"},
 	{"type": user_action, "actions": ["create"], "on": "started_on"},
 	{"type": task, "actions": ["view", "view_list", "claim", "complete", "assign", "assignable"], "on": "task", "of": "all"},
+	{"type": upload, "actions": ["view", "view_list", "create", "modify", "delete"], "on": "anything"},
+])
+
+# Handles the complaints of their scope, the tasks meant for them, and assigns complaints to behandelaars.
+klachten_rights["coordinator"] := array.concat(coordinator_rights, [
+	{"type": task, "actions": ["view", "view_list", "claim", "complete", "assign", "assignable"], "on": "task"},
+])
+
+# As a coordinator, but sees and handles every task of the complaints in their scope.
+klachten_rights["hoofdcoordinator"] := array.concat(coordinator_rights, [
+	{"type": task, "actions": ["view", "view_list", "claim", "complete", "assign", "assignable"], "on": "any_task"},
+])
+
+coordinator_rights := array.concat(case_rights, [
+	{"type": dashboard, "actions": ["view", "view_list"], "on": "anything"},
+	{"type": user, "actions": ["view", "view_list"], "on": "anything"},
+	{"type": document, "actions": ["view", "view_list", "modify", "claim", "assign", "assignable"], "on": "complaint"},
+	{"type": document, "actions": ["create"], "on": "complaint", "of": "all"},
+	{"type": note, "actions": ["view", "view_list", "create", "modify", "delete"], "on": "part"},
+	{"type": zaak_document, "actions": ["view", "view_list", "create", "modify", "delete"], "on": "part"},
+	{"type": widget, "actions": ["view"], "on": "started_on"},
+	{"type": user_action, "actions": ["create"], "on": "anything"},
 	{"type": upload, "actions": ["view", "view_list", "create", "modify", "delete"], "on": "anything"},
 ])
 
@@ -167,6 +194,8 @@ conditions("task", right, role, scope) := [[
 	related("com.ritense.valtimo.operaton.domain.OperatonIdentityLink", [field("groupId", "==", role)]),
 	related(document, c),
 ] | some c in scoped(right, scope)]
+
+conditions("any_task", right, _, scope) := [[related(document, c)] | some c in scoped(right, scope)]
 
 # ---- decision -------------------------------------------------------------------------------------
 
