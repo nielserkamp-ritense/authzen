@@ -137,7 +137,7 @@ GZAC frontend ──> GZAC backend ──AuthZEN──> OpenFTV PDP <──bundl
 ```
 
 - The GZAC backend (`gzac/`) is built from the `valtimo` submodule as a Gradle composite build. Its `authorization-authzen` module sends access checks to the PDP.
-- The OpenFTV images are built from the `open-ftv` submodule. The manager seeds the Rego policies and publishes them to the PDP as a bundle.
+- The OpenFTV images are built from the `open-ftv` submodule. The manager seeds the Rego policies and publishes them to the PDP as a bundle: automatically about 15 seconds after a fresh start, and after that every time someone clicks "Publiceren" in the management UI.
 
 Where the seed data lives:
 
@@ -207,6 +207,49 @@ Every run seeds 14 fresh complaints: one unassigned, one for OCW before the verk
 - `file-upload`, `file-modify`: uploading a zaak document from the documents tab, and changing a document's title.
 
 It prints a grid per user and every difference with the expected result. It also checks that every allowed upload was stored on the zaak, and it reports the known upstream bypasses (see below) without counting them. It exits with 1 when anything is wrong. The seeds, their notes and the uploaded files stay in the database.
+
+After a live policy change, tell the check what to expect instead:
+
+| Option | Effect |
+|---|---|
+| `--grant USER=SCOPE` | `USER` also has the complaints of seed scope `SCOPE` (e.g. `klachten-behandelaar-szw=DSO`). Tasks still follow the candidate group, so SZW is not expected to see DSO's tasks |
+| `--revoke USER` | `USER` has no complaints at all |
+
+## Live policy change
+
+The demo moment: change a role's rights in the OpenFTV manager and show the effect in GZAC, without a release or a restart. A change is active about a second after "Publiceren"; there is no cache in GZAC or the PDP.
+
+**Grant: SZW also handles DSO complaints**
+
+1. In GZAC (http://localhost), log in as `klachten-behandelaar-szw`. Show the case list: only SZW complaints. Open a DSO complaint URL: no access.
+2. In the OpenFTV management UI (http://localhost:8180), log in as `admin-user` / `password`.
+3. Open the policy `klachten.eerstlijnsklachten.klachtenbehandelaar-szw`. It only says which complaints SZW handles:
+   ```rego
+   klachten_scopes["ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW"] := {
+   	"rights": "behandelaar",
+   	"diensten": ["SZW"],
+   }
+   ```
+4. Click "Bewerken", change the line to `"diensten": ["SZW", "DSO"],` and click "Opslaan". Nothing changes in GZAC yet.
+5. Go to "Publicaties" and click "Publiceren". Wait until the publication is finished (a second or two).
+6. Refresh GZAC: the case list now also has the DSO complaints, and SZW can open them, read and add notes and zaak documents, and start user actions. The DSO tasks stay with the DSO behandelaar: a task also has to be meant for the role (candidate group). That is a separate rule.
+
+**Revoke: KCC no longer reads complaints**
+
+1. Log in to GZAC as `klachten-kcc`: every complaint is visible, read only.
+2. In the manager, edit `klachten.eerstlijnsklachten.medewerker-kcc`: change `"diensten": "all",` to `"diensten": [],`. Opslaan, then Publiceren.
+3. Refresh GZAC: the case list is empty, and opening a complaint is denied.
+
+**Prove it and undo it**
+
+```bash
+scripts/klachten-authz-check.py --user klachten-behandelaar-szw --grant klachten-behandelaar-szw=DSO
+scripts/klachten-authz-check.py --user klachten-kcc --revoke klachten-kcc
+```
+
+To undo, edit the lines back and publish again, or run `./run.sh --reload-policies` to reset every policy to the files in git (about 30 seconds). The "Versies" panel in the manager is empty, so it can't be used to undo.
+
+**Be careful with typos.** The manager doesn't check Rego. A policy that doesn't compile is still published as "Finished successfully", and neither the manager nor the PDP logs an error. The PDP then has only part of the policies, so most klachten users suddenly see nothing. Fix the edit and publish again, or run `./run.sh --reload-policies`. Check a policy file before you load it with `opa check` (see [Policies](#policies)).
 
 ## Known limitations
 

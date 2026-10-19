@@ -6,6 +6,10 @@ comes from the OpenFTV policies via AuthZEN.
 
 Usage:
   scripts/klachten-authz-check.py [--user klachten-behandelaar-szw ...] [--check open ...] [--verbose]
+                                  [--grant USER=SCOPE ...] [--revoke USER ...]
+
+--grant and --revoke change the expected matrix, to prove a live policy change: e.g. after giving SZW
+the DSO complaints, run with --user klachten-behandelaar-szw --grant klachten-behandelaar-szw=DSO.
 
 Every run seeds fresh complaints, one per scope (unassigned, OCW before verkenning, each dienst and OCW
 group, and an OCW-JGZ complaint moved to SZW), each stopped at an open task and with one note. Only these
@@ -363,14 +367,32 @@ def report(checker, verbose):
     return differences
 
 
+def apply_overrides(parser, grants, revokes):
+    """Changes the expected scopes for a live policy change (see the README)."""
+    for grant in grants:
+        user, _, scope = grant.partition("=")
+        if user not in EXPECTED or scope not in SEEDS:
+            parser.error(f"--grant {grant}: expected USER=SCOPE with USER in {list(EXPECTED)} and SCOPE in {list(SEEDS)}")
+        EXPECTED[user] = tuple(s | {scope} for s in EXPECTED[user])
+        print(f"=== expecting {user} to also have {scope}")
+    for user in revokes:
+        EXPECTED[user] = (set(), set(), set())
+        print(f"=== expecting {user} to have no complaints")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--user", action="append", choices=list(EXPECTED), help="only these users (repeatable)")
     parser.add_argument("--check", action="append", choices=CHECKS, help="only these checks (repeatable)")
+    parser.add_argument("--grant", action="append", default=[], metavar="USER=SCOPE",
+                        help="expect USER to also have seed scope SCOPE, e.g. klachten-behandelaar-szw=DSO (repeatable)")
+    parser.add_argument("--revoke", action="append", default=[], choices=list(EXPECTED), metavar="USER",
+                        help="expect USER to have no complaints at all (repeatable)")
     parser.add_argument("--verbose", action="store_true")
     args = parser.parse_args()
     users = args.user or list(EXPECTED)
     checks = [c for c in CHECKS if not args.check or c in args.check]
+    apply_overrides(parser, args.grant, args.revoke)
 
     started = time.time()
     try:
