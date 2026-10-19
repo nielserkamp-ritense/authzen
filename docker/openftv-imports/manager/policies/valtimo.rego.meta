@@ -1,5 +1,5 @@
 id: "valtimo"
 language: "rego"
 metadata:
-  description: "Scenario 1 (Testcase 1): wie mag een laadpaal-aanvraag indienen"
+  description: "Generic Valtimo rights for ROLE_ADMIN and ROLE_USER"
   tags: ["valtimo"]

@@ -35,34 +35,6 @@ autorisatiegroepen := {
 	"JH": "AUTORISATIEGROEPEN_OCW_JEUGDHULP",
 }
 
-# ---- resource types -------------------------------------------------------------------------------
-
-case_tab := "com.ritense.case.domain.CaseTab"
-
-case := "com.ritense.case_.domain.definition.CaseDefinition"
-
-document_definition := "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition"
-
-search_field := "com.ritense.document.domain.impl.searchfield.SearchField"
-
-document := "com.ritense.document.domain.impl.JsonSchemaDocument"
-
-note := "com.ritense.note.domain.Note"
-
-zaak_document := "com.ritense.documentenapi.authorization.ZgwDocument"
-
-widget := "com.ritense.case_.domain.tab.CaseWidgetTabWidget"
-
-user_action := "com.ritense.valtimo.operaton.domain.OperatonExecution"
-
-task := "com.ritense.valtimo.operaton.domain.OperatonTask"
-
-upload := "com.ritense.resource.authorization.ResourcePermission"
-
-dashboard := "com.ritense.dashboard.domain.Dashboard"
-
-user := "com.ritense.valtimo.contract.authentication.User"
-
 # ---- rights per kind of role ----------------------------------------------------------------------
 #
 # `on` says which resources the actions apply to:
@@ -167,7 +139,7 @@ group_conditions(scope) := array.concat(
 )
 
 klachten_zaaktype := related(case, [
-	related("com.ritense.zakenapi.domain.ZaakTypeLink", [field("zaakTypeUrl", "==", zaaktype)]),
+	related(zaaktype_link, [field("zaakTypeUrl", "==", zaaktype)]),
 ])
 
 # The complaints a right applies to: the role's scope, or every klachten complaint.
@@ -191,7 +163,7 @@ conditions("complaint", right, _, scope) := scoped(right, scope)
 conditions("part", right, _, scope) := [[related(document, c)] | some c in scoped(right, scope)]
 
 conditions("task", right, role, scope) := [[
-	related("com.ritense.valtimo.operaton.domain.OperatonIdentityLink", [field("groupId", "==", role)]),
+	related(identity_link, [field("groupId", "==", role)]),
 	related(document, c),
 ] | some c in scoped(right, scope)]
 
@@ -225,7 +197,7 @@ filter contains context_permission(role, right.type, right.actions, document, c)
 	some c in scoped(right, scope)
 }
 
-filter contains context_permission(role, right.type, right.actions, "com.ritense.authorization.NoContext", []) if {
+filter contains context_permission(role, right.type, right.actions, no_context, []) if {
 	some role, scope in klachten_scopes
 	some right in klachten_rights[scope.rights]
 	has_resource_type(right.type)

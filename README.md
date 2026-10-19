@@ -96,6 +96,38 @@ Every klachten decision comes from the role's policy in `docker/openftv-imports/
 - Outside the scope, a direct URL (complaint, task, notes, zaak documents, user action) returns 403 or 404.
 - `scripts/klachten-authz-check.py` checks this whole table (see [Authorization check](#authorization-check)).
 
+### Policies
+
+All policies are in `docker/openftv-imports/manager/policies/`, in one Rego package (`authz`). The manager loads each file as a separate policy, with the tags from its `.meta` file.
+
+| File | Contents |
+|---|---|
+| `klachten.*.rego` | One per klachten role. It only states the role's scope: its kind of rights and which complaints it handles |
+| `klachten.rego` | The rights per kind of klachten role, and the rules that turn every scope into permissions |
+| `valtimo.rego` | Generic rights for `ROLE_ADMIN` and `ROLE_USER`, as a table of permissions |
+| `authz.rego` | Shared helpers, resource types, and the response GZAC reads (`allow` and `context.filter`) |
+
+A klachten role file looks like this:
+
+```rego
+# Klachtenbehandelaar SZW: handles the complaints assigned to dienst SZW.
+klachten_scopes["ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW"] := {
+	"rights": "behandelaar",
+	"diensten": ["SZW"],
+}
+```
+
+A scope can also have `"diensten": "all"`, `"unassigned": true` (complaints not assigned to a dienst yet), and for OCW `"autorisatiegroepen"` or `"except_autorisatiegroepen"`. The kinds of rights are `behandelaar`, `coordinator`, `hoofdcoordinator`, `meelezen` (KCC) and `registratie` (IB/Post); see `klachten.rego`.
+
+After changing a policy file, check it and load it:
+
+```bash
+docker run --rm -v "$PWD/docker/openftv-imports/manager/policies":/p:ro openpolicyagent/opa:latest check /p --ignore '*.meta' --ignore cedar
+./run.sh --reload-policies
+```
+
+`scripts/policy-filter-dump.py` shows what the PDP decides per role. Use `--out before.json` before a change and `--compare before.json` after it, to see exactly which permissions changed.
+
 ## How it fits together
 
 ```
@@ -114,7 +146,7 @@ Where the seed data lives:
 | `gzac/src/main/resources/config/` | Case definition, BPMN, forms, plugin configurations and permissions. GZAC deploys them on startup. |
 | `docker/gzac-imports/` | Keycloak realm with users, and the Open Zaak, Objecten, Objecttypen and Open Notificaties database seeds |
 | `docker/gzac-imports/gzac/choice-fields.sql` | GZAC choice fields (diensten, autorisatiegroepen, sectoren/afdelingen, producten, thema's, oordeel, behoorlijkheidsnormen) |
-| `docker/openftv-imports/manager/policies/` | Rego policies, one per role (`klachten.*.rego`), plus `valtimo.rego` |
+| `docker/openftv-imports/manager/policies/` | Rego policies, see [Policies](#policies) |
 | `docker/openftv-imports/keycloak/` | OpenFTV Keycloak realm |
 
 ## Klachten walkthrough
@@ -196,7 +228,6 @@ It prints a grid per user and every difference with the expected result. It also
 - **`ROLE_USER` still grants generic access.** Every demo user also has `ROLE_USER` (`valtimo.rego`). For klachten users that gives the user list, object-management configuration and the user dashboard, but no klachten data. Widget data on a klachten case is excluded there and granted per klachten role instead.
 - **The Valtimo permission files in `gzac/src/main/resources/config/global/permission/` are not used for decisions.** GZAC still imports them, but with AuthZEN on, every decision comes from the OpenFTV policies.
 - **If the PDP is unreachable, everything is denied**, also for admin. Each request waits for the PDP timeout first (about 3 seconds).
-- `scripts/permissions-to-rego.py` was a one-time aid to convert Valtimo permission files into the initial Rego policies. The Rego files in git are the source of truth.
 
 ## Troubleshooting
 

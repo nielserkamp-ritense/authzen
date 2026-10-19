@@ -22,6 +22,55 @@ has_action(actions) if {
 	input.action.id == a
 }
 
+# ---- resource types -------------------------------------------------------------------------------
+
+case_tab := "com.ritense.case.domain.CaseTab"
+
+case := "com.ritense.case_.domain.definition.CaseDefinition"
+
+document_definition := "com.ritense.document.domain.impl.JsonSchemaDocumentDefinition"
+
+search_field := "com.ritense.document.domain.impl.searchfield.SearchField"
+
+document := "com.ritense.document.domain.impl.JsonSchemaDocument"
+
+note := "com.ritense.note.domain.Note"
+
+zaak_document := "com.ritense.documentenapi.authorization.ZgwDocument"
+
+widget := "com.ritense.case_.domain.tab.CaseWidgetTabWidget"
+
+user_action := "com.ritense.valtimo.operaton.domain.OperatonExecution"
+
+task := "com.ritense.valtimo.operaton.domain.OperatonTask"
+
+upload := "com.ritense.resource.authorization.ResourcePermission"
+
+dashboard := "com.ritense.dashboard.domain.Dashboard"
+
+user := "com.ritense.valtimo.contract.authentication.User"
+
+document_snapshot := "com.ritense.document.domain.impl.snapshot.JsonSchemaDocumentSnapshot"
+
+zaak := "com.ritense.zakenapi.security.Zaak"
+
+zaaktype_link := "com.ritense.zakenapi.domain.ZaakTypeLink"
+
+identity_link := "com.ritense.valtimo.operaton.domain.OperatonIdentityLink"
+
+timer := "com.ritense.valtimo.operaton.domain.OperatonTimer"
+
+api_object := "com.ritense.objectenapi.security.Object"
+
+object_management := "com.ritense.objectmanagement.domain.ObjectManagement"
+
+iko_view := "com.ritense.iko.domain.IkoView"
+
+team := "com.ritense.team.domain.Team"
+
+# The context of a permission that is not about a specific resource (e.g. starting a new case).
+no_context := "com.ritense.authorization.NoContext"
+
 # ---- building blocks for filter rows --------------------------------------------------------------
 
 # A permission on the resource itself.

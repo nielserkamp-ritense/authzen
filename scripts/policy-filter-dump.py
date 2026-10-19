@@ -85,12 +85,11 @@ def dump():
     result = {role: {"allow": [], "filter": []} for role in ROLES}
     for resource_type, actions in ACTIONS.items():
         for action in actions:
-            evaluations = evaluate(resource_type, action)
-            rows = (evaluations[0].get("context") or {}).get("filter") or []
-            for role, evaluation in zip(ROLES, evaluations):
+            for role, evaluation in zip(ROLES, evaluate(resource_type, action)):
                 if evaluation.get("decision"):
                     result[role]["allow"].append(f"{resource_type} {action}")
-                for row in rows:
+                # The rows a user with only this role gets (a rule may depend on the user's roles).
+                for row in (evaluation.get("context") or {}).get("filter") or []:
                     if row["role"] == role and action in row["actions"]:
                         row = normalize({**row, "actions": [action]})
                         result[role]["filter"].append(json.dumps(row, sort_keys=True))
