@@ -99,6 +99,60 @@ filter contains {
 	has_action(["view"])
 }
 
+# ---- com.ritense.case_.domain.tab.CaseWidgetTabWidget ---------------------------------------------
+
+klachtbehandelaar_ocw_jh_case_widget_tab_widget_1 if {
+	has_resource_type("com.ritense.case_.domain.tab.CaseWidgetTabWidget")
+	has_action(["view"])
+	has_role("ROLE_KLACHTEN_KLACHTBEHANDELAAR_OCW_JH")
+}
+
+allow if klachtbehandelaar_ocw_jh_case_widget_tab_widget_1
+
+filter contains {
+    "type": "ValtimoAuthorizationPermission",
+	"resourceType": "com.ritense.case_.domain.tab.CaseWidgetTabWidget",
+	"actions": ["view"],
+	"conditionContainer": {"conditions": []},
+	"role": "ROLE_KLACHTEN_KLACHTBEHANDELAAR_OCW_JH",
+	"contextResourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+	"contextConditionContainer": {"conditions": [
+		{
+			"type": "container",
+			"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+			"conditions": [{
+				"type": "container",
+				"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+				"conditions": [{
+					"type": "field",
+					"field": "zaakTypeUrl",
+					"operator": "==",
+					"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+				}]
+			}]
+		},
+		{
+			"type": "expression",
+			"field": "content.content",
+			"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+			"operator": "==",
+			"value": "OCW",
+			"clazz": "java.lang.String"
+		},
+		{
+			"type": "expression",
+			"field": "content.content",
+			"path": "$.verkenning.autorisatieGroep.name",
+			"operator": "==",
+			"value": "AUTORISATIEGROEPEN_OCW_JEUGDHULP",
+			"clazz": "java.lang.String"
+		}
+	]},
+} if {
+	has_resource_type("com.ritense.case_.domain.tab.CaseWidgetTabWidget")
+	has_action(["view"])
+}
+
 # ---- com.ritense.document.domain.impl.JsonSchemaDocument -----------------------------------------
 
 klachtbehandelaar_ocw_jh_json_schema_document_1 if {

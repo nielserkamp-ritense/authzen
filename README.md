@@ -149,13 +149,13 @@ scripts/klachten-authz-check.py --user klachten-behandelaar-szw --check open --c
 
 Every run seeds 14 fresh complaints: one unassigned, one for OCW before the verkenning, one per dienst and OCW group, and one OCW-JGZ complaint that was moved to SZW afterwards. Each stops at an open task and has a note. Only these seeds are judged. For each user × seed it checks:
 - `list`, `open`: the case list and the complaint by id (direct URL);
-- `notes`, `files`, `zaak`: notes, zaak documents and the zaak;
+- `notes`, `files`, `zaak`, `widgets`: notes, zaak documents, the zaak and the data of a summary widget;
 - `task-list`, `task-open`, `claim`: the open task (a claim is undone right away);
 - `action`: the start form of a user action;
 - `note-create`: adding a note;
 - `file-upload`, `file-modify`: uploading a zaak document from the documents tab, and changing a document's title.
 
-It prints a grid per user and every difference with the expected result. It also checks that every allowed upload was stored on the zaak. It exits with 1 when anything is wrong. The seeds, their notes and the uploaded files stay in the database.
+It prints a grid per user and every difference with the expected result. It also checks that every allowed upload was stored on the zaak, and it reports the known upstream bypasses (see below) without counting them. It exits with 1 when anything is wrong. The seeds, their notes and the uploaded files stay in the database.
 
 ## Known limitations
 
@@ -172,6 +172,11 @@ It prints a grid per user and every difference with the expected result. It also
 - **The GZAC database dump contains 2 old klachten cases** from 2026-09-23. They have dummy choice values and open Operaton incidents, and they show up in the case list.
 - **Temporary uploads are not scoped by complaint.** Every role except KCC may upload a temporary file (`ResourcePermission`), because a form upload happens before the file is linked to a complaint. Storing it as a zaak document is checked against the complaint (`ZgwDocument:create`).
 - **Coordinators' notes and zaak documents cover eerstelijns klachten only.** Their rules for tweedelijns klachten and interventieverzoeken are kept, but those processes are not deployed.
+- **Upstream endpoints that skip authorization.** Valtimo serves some endpoints without checking the case, so no policy can close them. A logged-in user who knows a process instance ID can read its variables (`POST /api/v1/process-instance/{id}/variables`) and its state, history and BPMN (`GET /api/v1/process/{id}`, `/history`, `/activities`, `/xml`). The authorization check reports them. The tab list and the case's process links are readable too, but they are configuration only.
+- **A denied form submission returns 400, not 403.** Valtimo's form-submission handler turns the `AccessDeniedException` into a generic 400 with a reference ID. Nothing is started.
+- **`ROLE_USER` still grants generic access.** Every demo user also has `ROLE_USER` (`valtimo.rego`). For klachten users that gives the user list, object-management configuration and the user dashboard, but no klachten data. Widget data on a klachten case is excluded there and granted per klachten role instead.
+- **The Valtimo permission files in `gzac/src/main/resources/config/global/permission/` are not used for decisions.** GZAC still imports them, but with AuthZEN on, every decision comes from the OpenFTV policies.
+- **If the PDP is unreachable, everything is denied**, also for admin. Each request waits for the PDP timeout first (about 3 seconds).
 - `scripts/permissions-to-rego.py` was a one-time aid to convert Valtimo permission files into the initial Rego policies. The Rego files in git are the source of truth.
 
 ## Troubleshooting

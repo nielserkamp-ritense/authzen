@@ -75,29 +75,6 @@ filter contains {
 	has_action(["view", "view_list"])
 }
 
-# ---- com.ritense.case_.domain.tab.CaseWidgetTabWidget --------------------------------------------
-
-klachtencoordinator_case_widget_tab_widget_1 if {
-	has_resource_type("com.ritense.case_.domain.tab.CaseWidgetTabWidget")
-	has_action(["view"])
-	has_role("ROLE_KLACHTEN_KLACHTENCOORDINATOR")
-}
-
-allow if klachtencoordinator_case_widget_tab_widget_1
-
-filter contains {
-    "type": "ValtimoAuthorizationPermission",
-	"resourceType": "com.ritense.case_.domain.tab.CaseWidgetTabWidget",
-	"actions": ["view"],
-	"conditionContainer": {"conditions": []},
-	"role": "ROLE_KLACHTEN_KLACHTENCOORDINATOR",
-	"contextResourceType": null,
-	"contextConditionContainer": {"conditions": []},
-} if {
-	has_resource_type("com.ritense.case_.domain.tab.CaseWidgetTabWidget")
-	has_action(["view"])
-}
-
 # ---- com.ritense.dashboard.domain.Dashboard ------------------------------------------------------
 
 klachtencoordinator_dashboard_1 if {
@@ -119,6 +96,60 @@ filter contains {
 } if {
 	has_resource_type("com.ritense.dashboard.domain.Dashboard")
 	has_action(["view", "view_list"])
+}
+
+# ---- com.ritense.case_.domain.tab.CaseWidgetTabWidget ---------------------------------------------
+
+klachtencoordinator_case_widget_tab_widget_1 if {
+	has_resource_type("com.ritense.case_.domain.tab.CaseWidgetTabWidget")
+	has_action(["view"])
+	has_role("ROLE_KLACHTEN_KLACHTENCOORDINATOR")
+}
+
+allow if klachtencoordinator_case_widget_tab_widget_1
+
+filter contains {
+    "type": "ValtimoAuthorizationPermission",
+	"resourceType": "com.ritense.case_.domain.tab.CaseWidgetTabWidget",
+	"actions": ["view"],
+	"conditionContainer": {"conditions": []},
+	"role": "ROLE_KLACHTEN_KLACHTENCOORDINATOR",
+	"contextResourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+	"contextConditionContainer": {"conditions": [
+		{
+			"type": "container",
+			"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+			"conditions": [{
+				"type": "container",
+				"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+				"conditions": [{
+					"type": "field",
+					"field": "zaakTypeUrl",
+					"operator": "==",
+					"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+				}]
+			}]
+		},
+		{
+			"type": "expression",
+			"field": "content.content",
+			"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+			"operator": "!=",
+			"value": "GGD",
+			"clazz": "java.lang.String"
+		},
+		{
+			"type": "expression",
+			"field": "content.content",
+			"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+			"operator": "!=",
+			"value": "VTH",
+			"clazz": "java.lang.String"
+		}
+	]},
+} if {
+	has_resource_type("com.ritense.case_.domain.tab.CaseWidgetTabWidget")
+	has_action(["view"])
 }
 
 # ---- com.ritense.document.domain.impl.JsonSchemaDocument -----------------------------------------

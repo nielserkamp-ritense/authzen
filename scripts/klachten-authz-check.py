@@ -17,6 +17,7 @@ Checks:
   notes        all notes of the complaint are visible
   files        all zaak documents of the complaint are visible
   zaak         GET the zaak of the complaint
+  widgets      data of the first widget on the complaint's summary tab
   task-list    the open task of the complaint is in the task list
   task-open    GET the open task and its form by id
   action       open the start form of user action 'Wijzigen informatie melder' (OperatonExecution:create)
@@ -78,7 +79,7 @@ EXPECTED = {
 # These see tasks through the case document, not through the task's candidate groups.
 TASK_BY_DOCUMENT = {"admin", "klachten-coordinator"}
 
-READ_CHECKS = ["list", "open", "notes", "files", "zaak"]
+READ_CHECKS = ["list", "open", "notes", "files", "zaak", "widgets"]
 TASK_CHECKS = ["task-list", "task-open", "claim"]
 WRITE_CHECKS = TASK_CHECKS + ["action", "note-create", "file-upload", "file-modify"]
 CHECKS = READ_CHECKS + ["task-list", "task-open", "action", "claim", "note-create", "file-upload", "file-modify"]
@@ -190,6 +191,11 @@ class Checker:
         self.results = {}  # (user, check, scope) → (actual, detail)
         links = api_ok("GET", f"/api/v1/case-definition/{CASE}/case-process-link", "admin")
         self.action_pd = next(l["id"]["processDefinitionId"] for l in links if l["processDefinitionKey"] == USER_ACTION)
+        # Every seed has the same case definition, so the same widget tabs.
+        some_seed = next(iter(seeds.values())).document_id
+        tab = next(t["key"] for t in api_ok("GET", f"/api/v1/document/{some_seed}/tab", "admin") if t["type"] == "widgets")
+        widget = api_ok("GET", f"/api/v1/document/{some_seed}/widget-tab/{tab}", "admin")["widgets"][0]["key"]
+        self.widget = (tab, widget)
 
     def record(self, user, check, seed, result):
         self.results[(user, check, seed.scope)] = result
@@ -219,6 +225,9 @@ class Checker:
                 result = counted(*api("GET", f"/api/v2/zaken-api/document/{d}/files?page=0&size=100", user), seed.files)
             elif check == "zaak":
                 result = outcome(api("GET", f"/api/v1/zaken-api/document/{d}/zaak", user)[0])
+            elif check == "widgets":
+                tab, widget = self.widget
+                result = outcome(api("GET", f"/api/v1/document/{d}/widget-tab/{tab}/widget/{widget}", user)[0])
             elif check == "task-list":
                 result = (ALLOWED if seed.task_id in tasks else DENIED, "")
             elif check == "task-open":
@@ -301,6 +310,27 @@ def check_uploads_stored(seeds):
     return problems
 
 
+# Endpoints that upstream Valtimo serves without (or around) authorization. A policy can't close them,
+# so they are reported for one user of another dienst, without failing the check.
+KNOWN_BYPASSES = [
+    ("POST", "/api/v1/process-instance/{pi}/variables", ["klachtenteam", "emailDienst"], "process variables"),
+    ("GET", "/api/v1/process/{pi}", None, "process instance"),
+    ("GET", "/api/v1/process/{pi}/history", None, "activity history"),
+    ("GET", "/api/v1/process/{pi}/xml", None, "process definition (BPMN)"),
+]
+
+
+def report_bypasses(seeds, user="klachten-behandelaar-dbv", scope="SZW"):
+    seed = seeds[scope]
+    pi = psql(f"select proc_inst_id_ from act_hi_procinst where business_key_ = '{seed.document_id}' "
+              f"and super_process_instance_id_ is null order by start_time_ limit 1")[0][0]
+    print(f"\n=== known upstream bypasses ({user} on the {scope} seed; not counted as differences)")
+    for method, path, body, what in KNOWN_BYPASSES:
+        status, _ = api(method, path.format(pi=pi), user, body)
+        state = "open" if status < 300 else f"closed (HTTP {status})"
+        print(f"  {method:4} {path:45} {what:28} {state}")
+
+
 # ---- report -------------------------------------------------------------------------------------
 
 def report(checker, verbose):
@@ -356,6 +386,7 @@ def main():
         sys.exit(2)
     differences = report(checker, args.verbose)
     problems = check_uploads_stored(seeds) if "file-upload" in checks else []
+    report_bypasses(seeds)
     for problem in problems:
         print(f"  ❌ upload not stored: {problem}")
     print(f"\n  done in {time.time() - started:.0f}s")
