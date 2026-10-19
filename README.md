@@ -77,6 +77,25 @@ All demo users log in to GZAC at http://localhost. The password is the same as t
 
 Generic accounts: `admin` / `admin`, `developer` / `developer` and `user` / `user`.
 
+## Roles and rights
+
+Every klachten decision comes from the role's policy in `docker/openftv-imports/manager/policies/klachten.*.rego`. A role's scope is the set of complaints it may act on, based on the dienst (and for OCW the autorisatiegroep) the complaint is assigned to:
+
+| Role | Case list | Open, notes, zaak documents | Tasks, user actions, add notes and documents |
+|---|---|---|---|
+| KCC | All complaints | All complaints | Nothing |
+| IB/Post | Unassigned complaints | All complaints | Unassigned complaints |
+| Coordinator (general) | All except GGD and VTH, incl. unassigned | Same | Same |
+| Coordinator GGD / VTH | GGD / VTH, plus unassigned | Same | Same |
+| Behandelaar BSD, DBV, DPZ, DSB, DSO, SZW | Own dienst | Same | Same |
+| Behandelaar OCW | OCW without autorisatiegroep or with ALGEMEEN | Same | Same |
+| Behandelaar OCW-JGZ / OCW-JH | OCW with their own autorisatiegroep | Same | Same |
+
+- A user sees, claims and completes a task only when the complaint is in their scope **and** the task is meant for their role (candidate group). The general coordinator sees every task of the complaints in their scope.
+- The klachten zaaktype and the dienst are checked together, so a document of the right dienst on another case definition or zaaktype is not visible.
+- Outside the scope, a direct URL (complaint, task, notes, zaak documents, user action) returns 403 or 404.
+- `scripts/klachten-authz-check.py` checks this whole table (see [Authorization check](#authorization-check)).
+
 ## How it fits together
 
 ```
@@ -172,6 +191,7 @@ It prints a grid per user and every difference with the expected result. It also
 - **The GZAC database dump contains 2 old klachten cases** from 2026-09-23. They have dummy choice values and open Operaton incidents, and they show up in the case list.
 - **Temporary uploads are not scoped by complaint.** Every role except KCC may upload a temporary file (`ResourcePermission`), because a form upload happens before the file is linked to a complaint. Storing it as a zaak document is checked against the complaint (`ZgwDocument:create`).
 - **Coordinators' notes and zaak documents cover eerstelijns klachten only.** Their rules for tweedelijns klachten and interventieverzoeken are kept, but those processes are not deployed.
+- **Coordinators also see unassigned complaints.** Their policies exclude the diensten they don't handle (`!=`), and that lets a complaint without a dienst through. This is intended, because coordinators assign complaints.
 - **Upstream endpoints that skip authorization.** Valtimo serves some endpoints without checking the case, so no policy can close them. A logged-in user who knows a process instance ID can read its variables (`POST /api/v1/process-instance/{id}/variables`) and its state, history and BPMN (`GET /api/v1/process/{id}`, `/history`, `/activities`, `/xml`). The authorization check reports them. The tab list and the case's process links are readable too, but they are configuration only.
 - **A denied form submission returns 400, not 403.** Valtimo's form-submission handler turns the `AccessDeniedException` into a generic 400 with a reference ID. Nothing is started.
 - **`ROLE_USER` still grants generic access.** Every demo user also has `ROLE_USER` (`valtimo.rego`). For klachten users that gives the user list, object-management configuration and the user dashboard, but no klachten data. Widget data on a klachten case is excluded there and granted per klachten role instead.
