@@ -99,6 +99,52 @@ filter contains {
 	has_action(["view"])
 }
 
+# ---- com.ritense.case_.domain.tab.CaseWidgetTabWidget ---------------------------------------------
+
+klachtbehandelaar_szw_case_widget_tab_widget_1 if {
+	has_resource_type("com.ritense.case_.domain.tab.CaseWidgetTabWidget")
+	has_action(["view"])
+	has_role("ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW")
+}
+
+allow if klachtbehandelaar_szw_case_widget_tab_widget_1
+
+filter contains {
+    "type": "ValtimoAuthorizationPermission",
+	"resourceType": "com.ritense.case_.domain.tab.CaseWidgetTabWidget",
+	"actions": ["view"],
+	"conditionContainer": {"conditions": []},
+	"role": "ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW",
+	"contextResourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+	"contextConditionContainer": {"conditions": [
+		{
+			"type": "container",
+			"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+			"conditions": [{
+				"type": "container",
+				"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+				"conditions": [{
+					"type": "field",
+					"field": "zaakTypeUrl",
+					"operator": "==",
+					"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+				}]
+			}]
+		},
+		{
+			"type": "expression",
+			"field": "content.content",
+			"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+			"operator": "==",
+			"value": "SZW",
+			"clazz": "java.lang.String"
+		}
+	]},
+} if {
+	has_resource_type("com.ritense.case_.domain.tab.CaseWidgetTabWidget")
+	has_action(["view"])
+}
+
 # ---- com.ritense.document.domain.impl.JsonSchemaDocument -----------------------------------------
 
 klachtbehandelaar_szw_json_schema_document_1 if {
@@ -115,10 +161,18 @@ filter contains {
 	"actions": ["view"],
 	"conditionContainer": {"conditions": [
 		{
-			"type": "field",
-			"field": "documentDefinitionId.name",
-			"operator": "==",
-			"value": "eerstelijns-klachten"
+			"type": "container",
+			"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+			"conditions": [{
+				"type": "container",
+				"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+				"conditions": [{
+					"type": "field",
+					"field": "zaakTypeUrl",
+					"operator": "==",
+					"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+				}]
+			}]
 		},
 		{
 			"type": "expression",
@@ -151,10 +205,18 @@ filter contains {
 	"actions": ["view_list"],
 	"conditionContainer": {"conditions": [
 		{
-			"type": "field",
-			"field": "documentDefinitionId.name",
-			"operator": "==",
-			"value": "eerstelijns-klachten"
+			"type": "container",
+			"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+			"conditions": [{
+				"type": "container",
+				"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+				"conditions": [{
+					"type": "field",
+					"field": "zaakTypeUrl",
+					"operator": "==",
+					"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+				}]
+			}]
 		},
 		{
 			"type": "expression",
@@ -187,10 +249,18 @@ filter contains {
 	"actions": ["modify"],
 	"conditionContainer": {"conditions": [
 		{
-			"type": "field",
-			"field": "documentDefinitionId.name",
-			"operator": "==",
-			"value": "eerstelijns-klachten"
+			"type": "container",
+			"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+			"conditions": [{
+				"type": "container",
+				"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+				"conditions": [{
+					"type": "field",
+					"field": "zaakTypeUrl",
+					"operator": "==",
+					"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+				}]
+			}]
 		},
 		{
 			"type": "expression",
@@ -223,10 +293,18 @@ filter contains {
 	"actions": ["claim"],
 	"conditionContainer": {"conditions": [
 		{
-			"type": "field",
-			"field": "documentDefinitionId.name",
-			"operator": "==",
-			"value": "eerstelijns-klachten"
+			"type": "container",
+			"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+			"conditions": [{
+				"type": "container",
+				"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+				"conditions": [{
+					"type": "field",
+					"field": "zaakTypeUrl",
+					"operator": "==",
+					"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+				}]
+			}]
 		},
 		{
 			"type": "expression",
@@ -259,10 +337,18 @@ filter contains {
 	"actions": ["assign"],
 	"conditionContainer": {"conditions": [
 		{
-			"type": "field",
-			"field": "documentDefinitionId.name",
-			"operator": "==",
-			"value": "eerstelijns-klachten"
+			"type": "container",
+			"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+			"conditions": [{
+				"type": "container",
+				"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+				"conditions": [{
+					"type": "field",
+					"field": "zaakTypeUrl",
+					"operator": "==",
+					"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+				}]
+			}]
 		},
 		{
 			"type": "expression",
@@ -295,10 +381,18 @@ filter contains {
 	"actions": ["assignable"],
 	"conditionContainer": {"conditions": [
 		{
-			"type": "field",
-			"field": "documentDefinitionId.name",
-			"operator": "==",
-			"value": "eerstelijns-klachten"
+			"type": "container",
+			"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+			"conditions": [{
+				"type": "container",
+				"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+				"conditions": [{
+					"type": "field",
+					"field": "zaakTypeUrl",
+					"operator": "==",
+					"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+				}]
+			}]
 		},
 		{
 			"type": "expression",
@@ -405,11 +499,63 @@ filter contains {
 	has_action(["view_list"])
 }
 
-# ---- com.ritense.note.domain.Note ----------------------------------------------------------------
+# ---- com.ritense.documentenapi.authorization.ZgwDocument ------------------------------------------
+
+klachtbehandelaar_szw_zgw_document_1 if {
+	has_resource_type("com.ritense.documentenapi.authorization.ZgwDocument")
+	has_action(["create", "modify", "view", "view_list"])
+	has_role("ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW")
+}
+
+allow if klachtbehandelaar_szw_zgw_document_1
+
+filter contains {
+    "type": "ValtimoAuthorizationPermission",
+	"resourceType": "com.ritense.documentenapi.authorization.ZgwDocument",
+	"actions": ["create", "modify", "view", "view_list"],
+	"conditionContainer": {"conditions": [
+		{
+			"type": "container",
+			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+			"conditions": [
+				{
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "==",
+					"value": "SZW",
+					"clazz": "java.lang.String"
+				}
+			]
+		}
+	]},
+	"role": "ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW",
+	"contextResourceType": null,
+	"contextConditionContainer": {"conditions": []},
+} if {
+	has_resource_type("com.ritense.documentenapi.authorization.ZgwDocument")
+	has_action(["create", "modify", "view", "view_list"])
+}
+
+# ---- com.ritense.note.domain.Note -----------------------------------------------------------------
 
 klachtbehandelaar_szw_note_1 if {
 	has_resource_type("com.ritense.note.domain.Note")
-	has_action(["view"])
+	has_action(["create", "delete", "modify", "view", "view_list"])
 	has_role("ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW")
 }
 
@@ -418,17 +564,33 @@ allow if klachtbehandelaar_szw_note_1
 filter contains {
     "type": "ValtimoAuthorizationPermission",
 	"resourceType": "com.ritense.note.domain.Note",
-	"actions": ["view"],
+	"actions": ["create", "delete", "modify", "view", "view_list"],
 	"conditionContainer": {"conditions": [
 		{
 			"type": "container",
 			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
 			"conditions": [
 				{
-					"type": "field",
-					"field": "documentDefinitionId.name",
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
 					"operator": "==",
-					"value": "eerstelijns-klachten"
+					"value": "SZW",
+					"clazz": "java.lang.String"
 				}
 			]
 		}
@@ -438,143 +600,7 @@ filter contains {
 	"contextConditionContainer": {"conditions": []},
 } if {
 	has_resource_type("com.ritense.note.domain.Note")
-	has_action(["view"])
-}
-
-klachtbehandelaar_szw_note_2 if {
-	has_resource_type("com.ritense.note.domain.Note")
-	has_action(["view_list"])
-	has_role("ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW")
-}
-
-allow if klachtbehandelaar_szw_note_2
-
-filter contains {
-    "type": "ValtimoAuthorizationPermission",
-	"resourceType": "com.ritense.note.domain.Note",
-	"actions": ["view_list"],
-	"conditionContainer": {"conditions": [
-		{
-			"type": "container",
-			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
-			"conditions": [
-				{
-					"type": "field",
-					"field": "documentDefinitionId.name",
-					"operator": "==",
-					"value": "eerstelijns-klachten"
-				}
-			]
-		}
-	]},
-	"role": "ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW",
-	"contextResourceType": null,
-	"contextConditionContainer": {"conditions": []},
-} if {
-	has_resource_type("com.ritense.note.domain.Note")
-	has_action(["view_list"])
-}
-
-klachtbehandelaar_szw_note_3 if {
-	has_resource_type("com.ritense.note.domain.Note")
-	has_action(["create"])
-	has_role("ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW")
-}
-
-allow if klachtbehandelaar_szw_note_3
-
-filter contains {
-    "type": "ValtimoAuthorizationPermission",
-	"resourceType": "com.ritense.note.domain.Note",
-	"actions": ["create"],
-	"conditionContainer": {"conditions": [
-		{
-			"type": "container",
-			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
-			"conditions": [
-				{
-					"type": "field",
-					"field": "documentDefinitionId.name",
-					"operator": "==",
-					"value": "eerstelijns-klachten"
-				}
-			]
-		}
-	]},
-	"role": "ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW",
-	"contextResourceType": null,
-	"contextConditionContainer": {"conditions": []},
-} if {
-	has_resource_type("com.ritense.note.domain.Note")
-	has_action(["create"])
-}
-
-klachtbehandelaar_szw_note_4 if {
-	has_resource_type("com.ritense.note.domain.Note")
-	has_action(["modify"])
-	has_role("ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW")
-}
-
-allow if klachtbehandelaar_szw_note_4
-
-filter contains {
-    "type": "ValtimoAuthorizationPermission",
-	"resourceType": "com.ritense.note.domain.Note",
-	"actions": ["modify"],
-	"conditionContainer": {"conditions": [
-		{
-			"type": "container",
-			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
-			"conditions": [
-				{
-					"type": "field",
-					"field": "documentDefinitionId.name",
-					"operator": "==",
-					"value": "eerstelijns-klachten"
-				}
-			]
-		}
-	]},
-	"role": "ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW",
-	"contextResourceType": null,
-	"contextConditionContainer": {"conditions": []},
-} if {
-	has_resource_type("com.ritense.note.domain.Note")
-	has_action(["modify"])
-}
-
-klachtbehandelaar_szw_note_5 if {
-	has_resource_type("com.ritense.note.domain.Note")
-	has_action(["delete"])
-	has_role("ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW")
-}
-
-allow if klachtbehandelaar_szw_note_5
-
-filter contains {
-    "type": "ValtimoAuthorizationPermission",
-	"resourceType": "com.ritense.note.domain.Note",
-	"actions": ["delete"],
-	"conditionContainer": {"conditions": [
-		{
-			"type": "container",
-			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
-			"conditions": [
-				{
-					"type": "field",
-					"field": "documentDefinitionId.name",
-					"operator": "==",
-					"value": "eerstelijns-klachten"
-				}
-			]
-		}
-	]},
-	"role": "ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW",
-	"contextResourceType": null,
-	"contextConditionContainer": {"conditions": []},
-} if {
-	has_resource_type("com.ritense.note.domain.Note")
-	has_action(["delete"])
+	has_action(["create", "delete", "modify", "view", "view_list"])
 }
 
 # ---- com.ritense.resource.authorization.ResourcePermission ---------------------------------------
@@ -600,7 +626,7 @@ filter contains {
 	has_action(["create", "delete", "modify", "view", "view_list"])
 }
 
-# ---- com.ritense.valtimo.operaton.domain.OperatonExecution ---------------------------------------
+# ---- com.ritense.valtimo.operaton.domain.OperatonExecution ----------------------------------------
 
 klachtbehandelaar_szw_operaton_execution_1 if {
 	has_resource_type("com.ritense.valtimo.operaton.domain.OperatonExecution")
@@ -616,8 +642,31 @@ filter contains {
 	"actions": ["create"],
 	"conditionContainer": {"conditions": []},
 	"role": "ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW",
-	"contextResourceType": null,
-	"contextConditionContainer": {"conditions": []},
+	"contextResourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+	"contextConditionContainer": {"conditions": [
+		{
+			"type": "container",
+			"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+			"conditions": [{
+				"type": "container",
+				"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+				"conditions": [{
+					"type": "field",
+					"field": "zaakTypeUrl",
+					"operator": "==",
+					"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+				}]
+			}]
+		},
+		{
+			"type": "expression",
+			"field": "content.content",
+			"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+			"operator": "==",
+			"value": "SZW",
+			"clazz": "java.lang.String"
+		}
+	]},
 } if {
 	has_resource_type("com.ritense.valtimo.operaton.domain.OperatonExecution")
 	has_action(["create"])
@@ -647,6 +696,34 @@ filter contains {
 					"field": "groupId",
 					"operator": "==",
 					"value": "ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW"
+				}
+			]
+		},
+		{
+			"type": "container",
+			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+			"conditions": [
+				{
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "==",
+					"value": "SZW",
+					"clazz": "java.lang.String"
 				}
 			]
 		}
@@ -683,6 +760,34 @@ filter contains {
 					"value": "ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW"
 				}
 			]
+		},
+		{
+			"type": "container",
+			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+			"conditions": [
+				{
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "==",
+					"value": "SZW",
+					"clazz": "java.lang.String"
+				}
+			]
 		}
 	]},
 	"role": "ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW",
@@ -715,6 +820,34 @@ filter contains {
 					"field": "groupId",
 					"operator": "==",
 					"value": "ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW"
+				}
+			]
+		},
+		{
+			"type": "container",
+			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+			"conditions": [
+				{
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "==",
+					"value": "SZW",
+					"clazz": "java.lang.String"
 				}
 			]
 		}
@@ -751,6 +884,34 @@ filter contains {
 					"value": "ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW"
 				}
 			]
+		},
+		{
+			"type": "container",
+			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+			"conditions": [
+				{
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "==",
+					"value": "SZW",
+					"clazz": "java.lang.String"
+				}
+			]
 		}
 	]},
 	"role": "ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW",
@@ -785,6 +946,34 @@ filter contains {
 					"value": "ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW"
 				}
 			]
+		},
+		{
+			"type": "container",
+			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+			"conditions": [
+				{
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "==",
+					"value": "SZW",
+					"clazz": "java.lang.String"
+				}
+			]
 		}
 	]},
 	"role": "ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW",
@@ -817,6 +1006,34 @@ filter contains {
 					"field": "groupId",
 					"operator": "==",
 					"value": "ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW"
+				}
+			]
+		},
+		{
+			"type": "container",
+			"resourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+			"conditions": [
+				{
+					"type": "container",
+					"resourceType": "com.ritense.case_.domain.definition.CaseDefinition",
+					"conditions": [{
+						"type": "container",
+						"resourceType": "com.ritense.zakenapi.domain.ZaakTypeLink",
+						"conditions": [{
+							"type": "field",
+							"field": "zaakTypeUrl",
+							"operator": "==",
+							"value": "http://host.docker.internal:8001/catalogi/api/v1/zaaktypen/dfab41b0-7baa-4efa-8e41-07cfd40f48bc"
+						}]
+					}]
+				},
+				{
+					"type": "expression",
+					"field": "content.content",
+					"path": "$.rapportageCategorieen.toegewezenDienst.dienst.name",
+					"operator": "==",
+					"value": "SZW",
+					"clazz": "java.lang.String"
 				}
 			]
 		}

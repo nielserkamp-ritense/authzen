@@ -32,9 +32,10 @@ The first run builds the GZAC backend (including Valtimo) and the OpenFTV images
 | `./run.sh --stop` | Stop the stack. Containers and data are kept; `./run.sh` resumes. |
 | `./run.sh --down` | Remove all containers, networks and volumes. Nothing persists. |
 | `./run.sh --reset` | `--down`, then start fresh. Combine with `-d` to run in the background. |
+| `./run.sh --reload-policies` | Reload the OpenFTV policies from `docker/openftv-imports/manager/policies`. Only the OpenFTV database and manager are recreated, so GZAC data is kept. The PDP picks up the policies within about 30 seconds. |
 | `./run.sh --help` | Show usage. |
 
-Use `--reset` after pulling changes to seed data, the Keycloak realm or OpenFTV policies (see [Known limitations](#known-limitations)).
+Use `--reset` after pulling changes to seed data or the Keycloak realm. For OpenFTV policies, `--reload-policies` is enough (see [Known limitations](#known-limitations)).
 
 ## Services
 
@@ -75,6 +76,25 @@ All demo users log in to GZAC at http://localhost. The password is the same as t
 | `klachten-coordinator-vth` | `ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH` | Klachtencoördinator VTH |
 
 Generic accounts: `admin` / `admin`, `developer` / `developer` and `user` / `user`.
+
+## Roles and rights
+
+Every klachten decision comes from the role's policy in `docker/openftv-imports/manager/policies/klachten.*.rego`. A role's scope is the set of complaints it may act on, based on the dienst (and for OCW the autorisatiegroep) the complaint is assigned to:
+
+| Role | Case list | Open, notes, zaak documents | Tasks, user actions, add notes and documents |
+|---|---|---|---|
+| KCC | All complaints | All complaints | Nothing |
+| IB/Post | Unassigned complaints | All complaints | Unassigned complaints |
+| Coordinator (general) | All except GGD and VTH, incl. unassigned | Same | Same |
+| Coordinator GGD / VTH | GGD / VTH, plus unassigned | Same | Same |
+| Behandelaar BSD, DBV, DPZ, DSB, DSO, SZW | Own dienst | Same | Same |
+| Behandelaar OCW | OCW without autorisatiegroep or with ALGEMEEN | Same | Same |
+| Behandelaar OCW-JGZ / OCW-JH | OCW with their own autorisatiegroep | Same | Same |
+
+- A user sees, claims and completes a task only when the complaint is in their scope **and** the task is meant for their role (candidate group). The general coordinator sees every task of the complaints in their scope.
+- The klachten zaaktype and the dienst are checked together, so a document of the right dienst on another case definition or zaaktype is not visible.
+- Outside the scope, a direct URL (complaint, task, notes, zaak documents, user action) returns 403 or 404.
+- `scripts/klachten-authz-check.py` checks this whole table (see [Authorization check](#authorization-check)).
 
 ## How it fits together
 
@@ -117,7 +137,7 @@ scripts/klachten-walkthrough.py --route informeel-coordinator --zaakbehandelaar 
 | Option | Effect |
 |---|---|
 | `--dienst SZW\|OCW\|DPZ\|DSB\|DSO\|DBV\|BSD\|GGD\|VTH` | Dienst the complaint is assigned to (default SZW) |
-| `--autorisatiegroep JGZ\|JH` | For OCW: assign to OCW-JGZ or OCW-Jeugdhulp instead of OCW algemeen |
+| `--autorisatiegroep ALG\|JGZ\|JH` | For OCW: the autorisatiegroep chosen at verkenning (default: the first one, OCW algemeen) |
 | `--zaakbehandelaar MIJZELF\|ANDERE_KLACHTENCOORDINATOR` | informeel-coordinator: who handles the complaint |
 | `--terugkoppeling on` | Send a terugkoppeling to the melder, which stores a dummy letter on the zaak |
 | `--post` | The melder wants communication by post (adds the "afdrukken brief" task) |
@@ -137,10 +157,29 @@ scripts/check-forms-schema.py
 
 It lists every submitted form field that isn't in the document definition (with `additionalProperties: false`, such a field makes the form submission fail), and every conditional that points at a missing field. It exits with 1 when it finds anything. Run it after changing a form or the document definition.
 
+## Authorization check
+
+`scripts/klachten-authz-check.py` checks, for every demo user, what they can see and do on the klachten, against the expected role × dienst matrix in the script (`EXPECTED`). Everything goes through the GZAC API, so every answer comes from the OpenFTV policies.
+
+```bash
+scripts/klachten-authz-check.py                                   # all users, all checks (about 5 minutes)
+scripts/klachten-authz-check.py --user klachten-behandelaar-szw --check open --check task-list
+```
+
+Every run seeds 14 fresh complaints: one unassigned, one for OCW before the verkenning, one per dienst and OCW group, and one OCW-JGZ complaint that was moved to SZW afterwards. Each stops at an open task and has a note. Only these seeds are judged. For each user × seed it checks:
+- `list`, `open`: the case list and the complaint by id (direct URL);
+- `notes`, `files`, `zaak`, `widgets`: notes, zaak documents, the zaak and the data of a summary widget;
+- `task-list`, `task-open`, `claim`: the open task (a claim is undone right away);
+- `action`: the start form of a user action;
+- `note-create`: adding a note;
+- `file-upload`, `file-modify`: uploading a zaak document from the documents tab, and changing a document's title.
+
+It prints a grid per user and every difference with the expected result. It also checks that every allowed upload was stored on the zaak, and it reports the known upstream bypasses (see below) without counting them. It exits with 1 when anything is wrong. The seeds, their notes and the uploaded files stay in the database.
+
 ## Known limitations
 
-- **Seeds load only into an empty database.** The OpenFTV manager seeds policies only when its store is empty. Keycloak imports the realm only when it doesn't exist yet. Run `./run.sh --reset` after pulling changes to policies, the realm or other seed data.
-- **Policy changes made in the OpenFTV UI are lost** on `--down` or `--reset`. Nothing persists between resets.
+- **Seeds load only into an empty database.** The OpenFTV manager seeds policies only when its store is empty. Keycloak imports the realm only when it doesn't exist yet. Run `./run.sh --reset` after pulling changes to the realm or other seed data, or `./run.sh --reload-policies` after changes to policies only.
+- **Policy changes made in the OpenFTV UI are lost** on `--down`, `--reset` or `--reload-policies`. Nothing persists between resets.
 - **Fixed ports.** The stack publishes many host ports: 80, 3000, 5005, 5010, 5400, 5433, 5672–5673, 6379, 8001–8002, 8010–8012, 8080–8081, 8088, 8100, 8180, 8443, 8480, 9000, 9100, 9104, 9200, 15672–15673, 54319–54329. Stop anything else that uses them first.
 - **The first build is slow** (about 8 minutes), because it compiles Valtimo.
 - **Klachten process stubs.** Email, notifications, the ontvangstbevestiging and the KTO data delivery are `${true}` stubs. Nothing is sent.
@@ -150,11 +189,19 @@ It lists every submitted form field that isn't in the document definition (with 
 - **The dienst email isn't updated after "dienst aanpassen"** in the eerste beoordeling. Only the stubbed notifications use it.
 - **Log noise.** After every subprocess, Valtimo's SSE `TaskUpdateListener` logs `ERROR … Process instance not found`. An open GZAC browser tab also causes `AsyncRequestNotUsableException … disconnected client` errors. Both are harmless, and the walkthrough reports them as known noise.
 - **The GZAC database dump contains 2 old klachten cases** from 2026-09-23. They have dummy choice values and open Operaton incidents, and they show up in the case list.
+- **Temporary uploads are not scoped by complaint.** Every role except KCC may upload a temporary file (`ResourcePermission`), because a form upload happens before the file is linked to a complaint. Storing it as a zaak document is checked against the complaint (`ZgwDocument:create`).
+- **Coordinators' notes and zaak documents cover eerstelijns klachten only.** Their rules for tweedelijns klachten and interventieverzoeken are kept, but those processes are not deployed.
+- **Coordinators also see unassigned complaints.** Their policies exclude the diensten they don't handle (`!=`), and that lets a complaint without a dienst through. This is intended, because coordinators assign complaints.
+- **Upstream endpoints that skip authorization.** Valtimo serves some endpoints without checking the case, so no policy can close them. A logged-in user who knows a process instance ID can read its variables (`POST /api/v1/process-instance/{id}/variables`) and its state, history and BPMN (`GET /api/v1/process/{id}`, `/history`, `/activities`, `/xml`). The authorization check reports them. The tab list and the case's process links are readable too, but they are configuration only.
+- **A denied form submission returns 400, not 403.** Valtimo's form-submission handler turns the `AccessDeniedException` into a generic 400 with a reference ID. Nothing is started.
+- **`ROLE_USER` still grants generic access.** Every demo user also has `ROLE_USER` (`valtimo.rego`). For klachten users that gives the user list, object-management configuration and the user dashboard, but no klachten data. Widget data on a klachten case is excluded there and granted per klachten role instead.
+- **The Valtimo permission files in `gzac/src/main/resources/config/global/permission/` are not used for decisions.** GZAC still imports them, but with AuthZEN on, every decision comes from the OpenFTV policies.
+- **If the PDP is unreachable, everything is denied**, also for admin. Each request waits for the PDP timeout first (about 3 seconds).
 - `scripts/permissions-to-rego.py` was a one-time aid to convert Valtimo permission files into the initial Rego policies. The Rego files in git are the source of truth.
 
 ## Troubleshooting
 
 - **Port already allocated:** another process uses one of the ports above. Stop it, or change the host port in `docker/docker-compose.yaml`.
 - **The backend doesn't start:** follow its logs with `docker compose -f docker/docker-compose.yaml --profile gzac logs -f gzac-backend`.
-- **A new user or policy is missing:** run `./run.sh --reset`.
+- **A new user is missing:** run `./run.sh --reset`. **A policy change has no effect:** run `./run.sh --reload-policies` and wait about 30 seconds.
 - **Submodule error from `run.sh`:** run `git submodule update --init`.

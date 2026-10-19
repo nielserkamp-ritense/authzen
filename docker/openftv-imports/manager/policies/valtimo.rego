@@ -155,8 +155,28 @@ filter contains {
 	"actions": ["view"],
 	"conditionContainer": {"conditions": []},
 	"role": "ROLE_USER",
-	"contextResourceType": null,
+	"contextResourceType": "com.ritense.authorization.NoContext",
 	"contextConditionContainer": {"conditions": []},
+} if {
+     	has_resource_type("com.ritense.case_.domain.tab.CaseWidgetTabWidget")
+     	has_action(["view"])
+     	}
+
+# Widget data on a case is only checked against the widget, not the case document, so ROLE_USER must not
+# reach the klachten: each klachten role gets the widgets of its own complaints in its own policy.
+filter contains {
+    "type": "ValtimoAuthorizationPermission",
+	"resourceType": "com.ritense.case_.domain.tab.CaseWidgetTabWidget",
+	"actions": ["view"],
+	"conditionContainer": {"conditions": []},
+	"role": "ROLE_USER",
+	"contextResourceType": "com.ritense.document.domain.impl.JsonSchemaDocument",
+	"contextConditionContainer": {"conditions": [{
+		"type": "field",
+		"field": "documentDefinitionId.name",
+		"operator": "!=",
+		"value": "eerstelijns-klachten",
+	}]},
 } if {
      	has_resource_type("com.ritense.case_.domain.tab.CaseWidgetTabWidget")
      	has_action(["view"])
