@@ -122,7 +122,7 @@ A scope can also have `"diensten": "all"`, `"unassigned": true` (complaints not 
 After changing a policy file, check it and load it:
 
 ```bash
-docker run --rm -v "$PWD/docker/openftv-imports/manager/policies":/p:ro openpolicyagent/opa:latest check /p --ignore '*.meta' --ignore cedar
+scripts/policy-check.py        # opa check with the PDP's OPA version, in docker
 ./run.sh --reload-policies
 ```
 
@@ -231,7 +231,7 @@ The demo moment: change a role's rights in the OpenFTV manager and show the effe
    }
    ```
 4. Click "Bewerken", change the line to `"diensten": ["SZW", "DSO"],` and click "Opslaan". Nothing changes in GZAC yet.
-5. Go to "Publicaties" and click "Publiceren". Wait until the publication is finished (a second or two).
+5. Check the edit: `scripts/policy-check.py --manager` must say `OK`. Then go to "Publicaties" and click "Publiceren". Wait until the publication is finished (a second or two).
 6. Refresh GZAC: the case list now also has the DSO complaints, and SZW can open them, read and add notes and zaak documents, and start user actions. The DSO tasks stay with the DSO behandelaar: a task also has to be meant for the role (candidate group). That is a separate rule.
 
 **Revoke: KCC no longer reads complaints**
@@ -249,7 +249,7 @@ scripts/klachten-authz-check.py --user klachten-kcc --revoke klachten-kcc
 
 To undo, edit the lines back and publish again, or run `./run.sh --reload-policies` to reset every policy to the files in git (about 30 seconds). The "Versies" panel in the manager is empty, so it can't be used to undo.
 
-**Be careful with typos.** The manager doesn't check Rego. A policy that doesn't compile is still published as "Finished successfully", and neither the manager nor the PDP logs an error. The PDP then has only part of the policies, so most klachten users suddenly see nothing. Fix the edit and publish again, or run `./run.sh --reload-policies`. Check a policy file before you load it with `opa check` (see [Policies](#policies)).
+**Be careful with typos.** The manager doesn't check Rego. A policy that doesn't compile is still published as "Finished successfully", and neither the manager nor the PDP logs an error. The PDP then has only part of the policies, so most klachten users suddenly see nothing. Fix the edit and publish again, or run `./run.sh --reload-policies`. Check the policies with `scripts/policy-check.py --manager` before you publish (or `scripts/policy-check.py` for the files, see [Policies](#policies)).
 
 ## Known limitations
 
