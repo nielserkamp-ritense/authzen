@@ -18,7 +18,7 @@ services:
 
       PDP_PORT: 8443
       PDP_HEALTH_PORT: 8080
-      PDP_LOG_LEVEL: debug
+      PDP_LOG_LEVEL: warn                                        # errors only; info logs every decision.
       PDP_LOG_FORMAT: text
       PDP_POLICIES_LANGUAGE: REGO
       PDP_POLICIES_STORE: /etc/pdp/policies-rego
@@ -26,9 +26,11 @@ services:
 
       PDP_PIP_STORE: /etc/pdp/pip
       PDP_PIP_STORE_RECURSE: "true"
-      PDP_LOG_OUTPUT: /dev/null
       PDP_ADL_PG_URL: "postgres://user:password@openftv-database:5432/openftv_adl?sslmode=disable"  # ADL, migrated at startup.
       PDP_ADL_SERVICE_NAME: pdp
+    depends_on:
+      openftv-database:
+        condition: service_healthy                               # the ADL is migrated at startup.
     volumes:
       - ./openftv-imports/pdp/policies:/etc/pdp/policies-rego:ro
       - ./openftv-imports/pdp/pip:/etc/pdp/pip:ro
