@@ -5,3 +5,5 @@
   name: Klachten policies
 - id: bezwaar
   name: Bezwaar policies
+- id: todo
+  name: ToDo policies
