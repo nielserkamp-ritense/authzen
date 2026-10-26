@@ -1,0 +1,26 @@
+[
+    {
+        "key": "taal",
+        "defaultValue": "nld",
+        "visible": true,
+        "readonly": false
+    },
+    {
+        "key": "vertrouwelijkheidaanduiding",
+        "defaultValue": "zaakvertrouwelijk",
+        "visible": true,
+        "readonly": false
+    },
+    {
+        "key": "informatieobjecttype",
+        "defaultValue": "http://host.docker.internal:8001/catalogi/api/v1/informatieobjecttypen/efc332f2-be3b-4bad-9e3c-49a6219c92ad",
+        "visible": true,
+        "readonly": false
+    },
+    {
+        "key": "status",
+        "defaultValue": "in_bewerking",
+        "visible": true,
+        "readonly": false
+    }
+]

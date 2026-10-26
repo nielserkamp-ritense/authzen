@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+    xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+    xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+    xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1p8obyi" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.39.0">
+    <bpmn:collaboration id="Collaboration_00emdqk" isClosed="false">
+        <bpmn:participant id="bezwaar-indienen" name="Bezwaar indienen" processRef="bezwaar" />
+    </bpmn:collaboration>
+    <bpmn:process id="bezwaar" name="Bezwaar" processType="None" isClosed="false" isExecutable="true" camunda:versionTag="CD:bezwaar:1.0.0">
+        <bpmn:laneSet id="LaneSet_0hbrp35">
+            <bpmn:lane id="Lane_04l6c3s">
+                <bpmn:flowNodeRef>start-event-bezwaar-proces-gestart</bpmn:flowNodeRef>
+                <bpmn:flowNodeRef>set-status-to-aanvraag-ontvangen</bpmn:flowNodeRef>
+                <bpmn:flowNodeRef>validate-request</bpmn:flowNodeRef>
+                <bpmn:flowNodeRef>set-status-to-in-behandeling</bpmn:flowNodeRef>
+                <bpmn:flowNodeRef>in-behandeling</bpmn:flowNodeRef>
+                <bpmn:flowNodeRef>set-status-to-informatieverzoek-uitgezet</bpmn:flowNodeRef>
+                <bpmn:flowNodeRef>Event_0m4dd1v</bpmn:flowNodeRef>
+            </bpmn:lane>
+        </bpmn:laneSet>
+        <bpmn:startEvent id="start-event-bezwaar-proces-gestart" name="Bezwaar proces gestart">
+            <bpmn:outgoing>Flow_162004p</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:sequenceFlow id="Flow_162004p" sourceRef="start-event-bezwaar-proces-gestart" targetRef="set-status-to-aanvraag-ontvangen" />
+        <bpmn:serviceTask id="set-status-to-aanvraag-ontvangen" name="Set status to &#39;aanvraag-ontvangen&#39;" implementation="##WebService" camunda:expression="${documentDelegateService.setInternalStatus(execution,&#39;aanvraag-ontvangen&#39;)}">
+            <bpmn:incoming>Flow_162004p</bpmn:incoming>
+            <bpmn:outgoing>Flow_0pvsnml</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:sequenceFlow id="Flow_0pvsnml" sourceRef="set-status-to-aanvraag-ontvangen" targetRef="validate-request" />
+        <bpmn:userTask id="validate-request" name="Valideer gegevens aanvrager" implementation="##unspecified" camunda:candidateGroups="ROLE_BEZWAAR_BEHANDELAAR">
+            <bpmn:extensionElements />
+            <bpmn:incoming>Flow_0pvsnml</bpmn:incoming>
+            <bpmn:outgoing>Flow_0ytx5d7</bpmn:outgoing>
+        </bpmn:userTask>
+        <bpmn:sequenceFlow id="Flow_0ytx5d7" sourceRef="validate-request" targetRef="set-status-to-in-behandeling" />
+        <bpmn:serviceTask id="set-status-to-in-behandeling" name="Set status to &#39;in-behandeling&#39;" implementation="##WebService" camunda:expression="${documentDelegateService.setInternalStatus(execution,&#39;in-behandeling&#39;)}">
+            <bpmn:incoming>Flow_0ytx5d7</bpmn:incoming>
+            <bpmn:outgoing>Flow_0wlgg1s</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:sequenceFlow id="Flow_0wlgg1s" sourceRef="set-status-to-in-behandeling" targetRef="in-behandeling" />
+        <bpmn:userTask id="in-behandeling" name="In behandeling" implementation="##unspecified" camunda:candidateGroups="ROLE_BEZWAAR_BEHANDELAAR">
+            <bpmn:extensionElements />
+            <bpmn:incoming>Flow_0wlgg1s</bpmn:incoming>
+            <bpmn:outgoing>Flow_0iz8cth</bpmn:outgoing>
+        </bpmn:userTask>
+        <bpmn:sequenceFlow id="Flow_0iz8cth" sourceRef="in-behandeling" targetRef="set-status-to-informatieverzoek-uitgezet" />
+        <bpmn:serviceTask id="set-status-to-informatieverzoek-uitgezet" name="Set status to &#39;informatieverzoek-uitgezet&#39;" implementation="##WebService" camunda:expression="${documentDelegateService.setInternalStatus(execution,&#39;informatieverzoek-uitgezet&#39;)}">
+            <bpmn:incoming>Flow_0iz8cth</bpmn:incoming>
+            <bpmn:outgoing>Flow_0bedy3g</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:sequenceFlow id="Flow_0bedy3g" sourceRef="set-status-to-informatieverzoek-uitgezet" targetRef="Event_0m4dd1v" />
+        <bpmn:endEvent id="Event_0m4dd1v">
+            <bpmn:extensionElements />
+            <bpmn:incoming>Flow_0bedy3g</bpmn:incoming>
+        </bpmn:endEvent>
+    </bpmn:process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+        <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_00emdqk">
+            <bpmndi:BPMNShape id="Participant_0icnm3z_di" bpmnElement="bezwaar-indienen" isHorizontal="true">
+                <dc:Bounds x="160" y="100" width="1060" height="220" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Lane_04l6c3s_di" bpmnElement="Lane_04l6c3s" isHorizontal="true">
+                <dc:Bounds x="190" y="100" width="1030" height="220" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Event_054suvz_di" bpmnElement="start-event-bezwaar-proces-gestart">
+                <dc:Bounds x="272" y="192" width="36" height="36" />
+                <bpmndi:BPMNLabel>
+                    <dc:Bounds x="252" y="235" width="79" height="27" />
+                </bpmndi:BPMNLabel>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_08acdbe_di" bpmnElement="set-status-to-aanvraag-ontvangen">
+                <dc:Bounds x="370" y="170" width="100" height="80" />
+                <bpmndi:BPMNLabel />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_1ij6xo1_di" bpmnElement="validate-request">
+                <dc:Bounds x="520" y="170" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_1guw1kq_di" bpmnElement="set-status-to-in-behandeling">
+                <dc:Bounds x="670" y="170" width="100" height="80" />
+                <bpmndi:BPMNLabel />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_1px2knc_di" bpmnElement="in-behandeling">
+                <dc:Bounds x="820" y="170" width="100" height="80" />
+                <bpmndi:BPMNLabel />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Activity_0ecal00_di" bpmnElement="set-status-to-informatieverzoek-uitgezet">
+                <dc:Bounds x="970" y="170" width="100" height="80" />
+                <bpmndi:BPMNLabel />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="Event_0m4dd1v_di" bpmnElement="Event_0m4dd1v">
+                <dc:Bounds x="1122" y="192" width="36" height="36" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="Flow_162004p_di" bpmnElement="Flow_162004p">
+                <di:waypoint x="308" y="210" />
+                <di:waypoint x="370" y="210" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_0pvsnml_di" bpmnElement="Flow_0pvsnml">
+                <di:waypoint x="470" y="210" />
+                <di:waypoint x="520" y="210" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_0ytx5d7_di" bpmnElement="Flow_0ytx5d7">
+                <di:waypoint x="620" y="210" />
+                <di:waypoint x="670" y="210" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_0wlgg1s_di" bpmnElement="Flow_0wlgg1s">
+                <di:waypoint x="770" y="210" />
+                <di:waypoint x="820" y="210" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_0iz8cth_di" bpmnElement="Flow_0iz8cth">
+                <di:waypoint x="920" y="210" />
+                <di:waypoint x="970" y="210" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_0bedy3g_di" bpmnElement="Flow_0bedy3g">
+                <di:waypoint x="1070" y="210" />
+                <di:waypoint x="1122" y="210" />
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,33 @@
+[
+    {
+        "key": "widgets",
+        "name": "Widgets",
+        "type": "widgets",
+        "contentKey": "-",
+        "showTasks": true
+    },
+    {
+        "name": "Summary",
+        "key": "summary",
+        "type": "standard",
+        "contentKey": "summary"
+    },
+    {
+        "name": "Progress",
+        "key": "progress",
+        "type": "standard",
+        "contentKey": "progress"
+    },
+    {
+        "name": "Documents",
+        "key": "documents",
+        "type": "standard",
+        "contentKey": "documents"
+    },
+    {
+        "name": "Notes",
+        "key": "notes",
+        "type": "standard",
+        "contentKey": "notes"
+    }
+]
