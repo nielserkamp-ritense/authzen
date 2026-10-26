@@ -58,6 +58,8 @@ zaaktype_link := "com.ritense.zakenapi.domain.ZaakTypeLink"
 
 identity_link := "com.ritense.valtimo.operaton.domain.OperatonIdentityLink"
 
+process_definition := "com.ritense.valtimo.operaton.domain.OperatonProcessDefinition"
+
 timer := "com.ritense.valtimo.operaton.domain.OperatonTimer"
 
 api_object := "com.ritense.objectenapi.security.Object"
@@ -86,12 +88,17 @@ permission(role, resource_type, actions, conditions) := {
 
 # A permission that only applies in the context of another resource (e.g. starting a process on a
 # case: the conditions are about the case, not about the process).
-context_permission(role, resource_type, actions, context_type, context_conditions) := {
+context_permission(role, resource_type, actions, context_type, context_conditions) := context_permission_with(
+	role, resource_type, actions, [], context_type, context_conditions,
+)
+
+# As context_permission, with conditions on the resource as well (e.g. which process may be started).
+context_permission_with(role, resource_type, actions, conditions, context_type, context_conditions) := {
 	"type": "ValtimoAuthorizationPermission",
 	"role": role,
 	"resourceType": resource_type,
 	"actions": actions,
-	"conditionContainer": {"conditions": []},
+	"conditionContainer": {"conditions": conditions},
 	"contextResourceType": context_type,
 	"contextConditionContainer": {"conditions": context_conditions},
 }

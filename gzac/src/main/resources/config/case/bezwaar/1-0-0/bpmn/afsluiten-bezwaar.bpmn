@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+    xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+    xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+    xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_afsluiten_bezwaar" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.39.0">
+    <bpmn:process id="afsluiten-bezwaar" name="Afsluiten bezwaar" isExecutable="true" camunda:versionTag="CD:bezwaar:1.0.0">
+        <bpmn:startEvent id="start-afsluiten-bezwaar" name="Afsluiten bezwaar">
+            <bpmn:outgoing>Flow_start</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:sequenceFlow id="Flow_start" sourceRef="start-afsluiten-bezwaar" targetRef="get-resultaattype" />
+        <bpmn:serviceTask id="get-resultaattype" name="Ophalen resultaattype" camunda:expression="${true}">
+            <bpmn:incoming>Flow_start</bpmn:incoming>
+            <bpmn:outgoing>Flow_resultaattype</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:sequenceFlow id="Flow_resultaattype" sourceRef="get-resultaattype" targetRef="create-zaakresultaat" />
+        <bpmn:serviceTask id="create-zaakresultaat" name="Zaakresultaat vastleggen" camunda:expression="${true}">
+            <bpmn:incoming>Flow_resultaattype</bpmn:incoming>
+            <bpmn:outgoing>Flow_resultaat</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:sequenceFlow id="Flow_resultaat" sourceRef="create-zaakresultaat" targetRef="get-statustype" />
+        <bpmn:serviceTask id="get-statustype" name="Ophalen statustype 'Zaak afgerond'" camunda:expression="${true}">
+            <bpmn:incoming>Flow_resultaat</bpmn:incoming>
+            <bpmn:outgoing>Flow_statustype</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:sequenceFlow id="Flow_statustype" sourceRef="get-statustype" targetRef="set-zaakstatus" />
+        <bpmn:serviceTask id="set-zaakstatus" name="Zaakstatus 'Zaak afgerond' zetten" camunda:expression="${true}">
+            <bpmn:incoming>Flow_statustype</bpmn:incoming>
+            <bpmn:outgoing>Flow_status</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:sequenceFlow id="Flow_status" sourceRef="set-zaakstatus" targetRef="set-status-to-afgerond" />
+        <bpmn:serviceTask id="set-status-to-afgerond" name="Set status to &#39;afgerond&#39;" camunda:expression="${documentDelegateService.setInternalStatus(execution,&#39;afgerond&#39;)}">
+            <bpmn:incoming>Flow_status</bpmn:incoming>
+            <bpmn:outgoing>Flow_end</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:sequenceFlow id="Flow_end" sourceRef="set-status-to-afgerond" targetRef="end-afsluiten-bezwaar" />
+        <bpmn:endEvent id="end-afsluiten-bezwaar" name="Bezwaar afgesloten">
+            <bpmn:incoming>Flow_end</bpmn:incoming>
+        </bpmn:endEvent>
+    </bpmn:process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_afsluiten_bezwaar">
+        <bpmndi:BPMNPlane id="BPMNPlane_afsluiten_bezwaar" bpmnElement="afsluiten-bezwaar">
+            <bpmndi:BPMNShape id="start-afsluiten-bezwaar_di" bpmnElement="start-afsluiten-bezwaar">
+                <dc:Bounds x="152" y="102" width="36" height="36" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="get-resultaattype_di" bpmnElement="get-resultaattype">
+                <dc:Bounds x="240" y="80" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="create-zaakresultaat_di" bpmnElement="create-zaakresultaat">
+                <dc:Bounds x="390" y="80" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="get-statustype_di" bpmnElement="get-statustype">
+                <dc:Bounds x="540" y="80" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="set-zaakstatus_di" bpmnElement="set-zaakstatus">
+                <dc:Bounds x="690" y="80" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="set-status-to-afgerond_di" bpmnElement="set-status-to-afgerond">
+                <dc:Bounds x="840" y="80" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="end-afsluiten-bezwaar_di" bpmnElement="end-afsluiten-bezwaar">
+                <dc:Bounds x="992" y="102" width="36" height="36" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="Flow_start_di" bpmnElement="Flow_start">
+                <di:waypoint x="188" y="120" />
+                <di:waypoint x="240" y="120" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_resultaattype_di" bpmnElement="Flow_resultaattype">
+                <di:waypoint x="340" y="120" />
+                <di:waypoint x="390" y="120" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_resultaat_di" bpmnElement="Flow_resultaat">
+                <di:waypoint x="490" y="120" />
+                <di:waypoint x="540" y="120" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_statustype_di" bpmnElement="Flow_statustype">
+                <di:waypoint x="640" y="120" />
+                <di:waypoint x="690" y="120" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_status_di" bpmnElement="Flow_status">
+                <di:waypoint x="790" y="120" />
+                <di:waypoint x="840" y="120" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_end_di" bpmnElement="Flow_end">
+                <di:waypoint x="940" y="120" />
+                <di:waypoint x="992" y="120" />
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</bpmn:definitions>

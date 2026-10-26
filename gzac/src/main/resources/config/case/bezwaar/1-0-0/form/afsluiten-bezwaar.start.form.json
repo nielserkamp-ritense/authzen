@@ -1,0 +1,50 @@
+{
+    "display": "form",
+    "components": [
+        {
+            "key": "pv.resultaat",
+            "type": "select",
+            "input": true,
+            "label": "Resultaat",
+            "tableView": true,
+            "widget": "choicesjs",
+            "data": {
+                "values": [
+                    {
+                        "label": "Gegrond",
+                        "value": "Gegrond"
+                    },
+                    {
+                        "label": "Afgewezen",
+                        "value": "Afgewezen"
+                    },
+                    {
+                        "label": "Ingetrokken",
+                        "value": "Ingetrokken"
+                    }
+                ]
+            },
+            "validate": {
+                "required": true
+            }
+        },
+        {
+            "key": "pv.toelichting",
+            "type": "textarea",
+            "input": true,
+            "label": "Toelichting",
+            "tableView": true,
+            "validate": {
+                "required": false
+            }
+        },
+        {
+            "key": "submit",
+            "type": "button",
+            "input": true,
+            "label": "Bezwaar afsluiten",
+            "tableView": false,
+            "disableOnInvalid": true
+        }
+    ]
+}

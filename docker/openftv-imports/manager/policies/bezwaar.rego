@@ -2,9 +2,13 @@ package authz
 
 import rego.v1
 
-# Shared by every bezwaar role. A role's own policy only says what kind of rights it has, for example:
+# Shared by every bezwaar role. A role's own policy only says what kind of rights it has, and which
+# user actions it may start on a bezwaar, for example:
 #
-#   bezwaar_scopes["ROLE_BEZWAAR_BEHANDELAAR"] := {"rights": "behandelaar"}
+#   bezwaar_scopes["ROLE_BEZWAAR_BEHANDELAAR"] := {
+#   	"rights": "behandelaar",
+#   	"acties": ["change-name", "patch-zaak", "afsluiten-bezwaar"],
+#   }
 #
 # This policy turns every scope into the permissions GZAC applies. Everything that changes a bezwaar
 # stops once its internal status is "afgerond": it stays visible, but is read only.
@@ -29,7 +33,6 @@ afgerond := "afgerond"
 #   task             the tasks of a bezwaar that are meant for the role
 #   open_task        those tasks, while the bezwaar is not afgerond
 #   started_on       what is shown with a bezwaar (widgets)
-#   started_on_open  what is started on a bezwaar that is not afgerond (user actions)
 #   starting         starting a new bezwaar
 #
 # The internal status is only checked on rights that change an existing bezwaar: a new bezwaar has no
@@ -42,7 +45,7 @@ bezwaar_case_rights := [
 	{"type": search_field, "actions": ["view_list"], "on": "the_case"},
 ]
 
-# Handles bezwaren: creates them, does the tasks and starts the user actions.
+# Handles bezwaren: creates them and does the tasks. Which user actions it starts is in `acties`.
 bezwaar_rights["behandelaar"] := array.concat(bezwaar_case_rights, [
 	{"type": document, "actions": ["view", "view_list", "create"], "on": "bezwaar"},
 	{"type": document, "actions": ["modify", "claim", "assign", "assignable"], "on": "open_bezwaar"},
@@ -51,7 +54,6 @@ bezwaar_rights["behandelaar"] := array.concat(bezwaar_case_rights, [
 	{"type": zaak_document, "actions": ["view", "view_list"], "on": "part"},
 	{"type": zaak_document, "actions": ["create", "modify"], "on": "open_part"},
 	{"type": widget, "actions": ["view"], "on": "started_on"},
-	{"type": user_action, "actions": ["create"], "on": "started_on_open"},
 	{"type": user_action, "actions": ["create"], "on": "starting"},
 	{"type": task, "actions": ["view", "view_list"], "on": "task"},
 	{"type": task, "actions": ["claim", "complete", "assign", "assignable"], "on": "open_task"},
@@ -100,10 +102,10 @@ bezwaar_conditions("open_task", _, role) := [
 ]
 
 # The case conditions of rights that apply in the context of a bezwaar.
-bezwaar_context := {
-	"started_on": [is_bezwaar],
-	"started_on_open": [is_bezwaar, not_afgerond],
-}
+bezwaar_context := {"started_on": [is_bezwaar]}
+
+# The process a user action starts.
+process_is(keys) := related(process_definition, [field("key", "in", keys)])
 
 # ---- decision -------------------------------------------------------------------------------------
 
@@ -120,7 +122,7 @@ filter contains permission(role, right.type, right.actions, bezwaar_conditions(r
 	some right in bezwaar_rights[scope.rights]
 	has_resource_type(right.type)
 	has_action(right.actions)
-	not right.on in {"started_on", "started_on_open", "starting"}
+	not right.on in {"started_on", "starting"}
 }
 
 filter contains context_permission(role, right.type, right.actions, document, bezwaar_context[right.on]) if {
@@ -131,10 +133,27 @@ filter contains context_permission(role, right.type, right.actions, document, be
 	right.on in object.keys(bezwaar_context)
 }
 
-filter contains context_permission(role, right.type, right.actions, no_context, []) if {
+# Starting a new bezwaar: only its main process.
+filter contains context_permission_with(role, right.type, right.actions, [process_is([bezwaar_case_definition])], no_context, []) if {
 	some role, scope in bezwaar_scopes
 	some right in bezwaar_rights[scope.rights]
 	has_resource_type(right.type)
 	has_action(right.actions)
 	right.on == "starting"
+}
+
+# The user actions of `acties`, on a bezwaar that is not afgerond.
+allow if {
+	some role, scope in bezwaar_scopes
+	has_role(role)
+	count(object.get(scope, "acties", [])) > 0
+	has_resource_type(user_action)
+	has_action(["create"])
+}
+
+filter contains context_permission_with(role, user_action, ["create"], [process_is(scope.acties)], document, [is_bezwaar, not_afgerond]) if {
+	some role, scope in bezwaar_scopes
+	count(object.get(scope, "acties", [])) > 0
+	has_resource_type(user_action)
+	has_action(["create"])
 }

@@ -13,5 +13,10 @@
         "processDefinitionKey": "patch-zaak",
         "canInitializeDocument": false,
         "startableByUser": true
+    },
+    {
+        "processDefinitionKey": "afsluiten-bezwaar",
+        "canInitializeDocument": false,
+        "startableByUser": true
     }
 ]

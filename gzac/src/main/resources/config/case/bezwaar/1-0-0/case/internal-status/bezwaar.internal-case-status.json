@@ -19,5 +19,12 @@
         "retentionPeriodInDays": 365,
         "visibleInCaseListByDefault": true,
         "color": "GREEN"
+    },
+    {
+        "key": "afgerond",
+        "title": "Afgerond",
+        "retentionPeriodInDays": -1,
+        "visibleInCaseListByDefault": true,
+        "color": "GRAY"
     }
 ]
