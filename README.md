@@ -44,9 +44,9 @@ Use `--reset` after pulling changes to seed data or the Keycloak realm. For Open
 | GZAC frontend | http://localhost | see [Demo accounts](#demo-accounts) |
 | GZAC backend | http://localhost:8080 (debug port 5005) | |
 | GZAC Keycloak | http://localhost:8081/auth | `admin` / `admin` |
-| OpenFTV management UI | http://localhost:8180 | `admin-user`, `author-user`, `auditor-user` / `password` |
+| OpenFTV management UI | http://localhost:8180 | `author-user` (edit and publish policies), `admin-user` (settings only), `auditor-user` (read only) / `password` |
 | OpenFTV Keycloak | http://localhost:8088 | `admin` / `admin` |
-| OpenFTV manager API | http://localhost:9000 | |
+| OpenFTV manager API | http://localhost:9000 | no token needed; policy ids are UUIDs, the file name is in `metadata.title` |
 | OpenFTV PDP (AuthZEN) | http://localhost:8443/.well-known/authzen-configuration | |
 | Open Zaak | http://localhost:8001/admin/ | `admin` / `admin` |
 | Objecten API | http://localhost:8010/admin/ | `admin` / `admin` |
@@ -122,7 +122,7 @@ A scope can also have `"diensten": "all"`, `"unassigned": true` (complaints not 
 After changing a policy file, check it and load it:
 
 ```bash
-docker run --rm -v "$PWD/docker/openftv-imports/manager/policies":/p:ro openpolicyagent/opa:latest check /p --ignore '*.meta' --ignore cedar
+scripts/policy-check.py        # opa check with the PDP's OPA version, in docker
 ./run.sh --reload-policies
 ```
 
@@ -138,6 +138,24 @@ GZAC frontend ──> GZAC backend ──AuthZEN──> OpenFTV PDP <──bundl
 
 - The GZAC backend (`gzac/`) is built from the `valtimo` submodule as a Gradle composite build. Its `authorization-authzen` module sends access checks to the PDP.
 - The OpenFTV images are built from the `open-ftv` submodule. The manager seeds the Rego policies and publishes them to the PDP as a bundle: automatically about 15 seconds after a fresh start, and after that every time someone clicks "Publiceren" in the management UI.
+
+### OpenFTV version
+
+The demo runs on OpenFTV **v0.5.2** (release of 2026-10-09). The `open-ftv` submodule points to the branch `poc/authzen-v0.5.2` of the fork [nielserkamp-ritense/open-ftv](https://github.com/nielserkamp-ritense/open-ftv). That branch is the upstream tag without changes. Upstream is [gitlab.com/digilab.overheid.nl/ecosystem/ftv/open-ftv](https://gitlab.com/digilab.overheid.nl/ecosystem/ftv/open-ftv); its release notes are in the annotated tags.
+
+To move to a newer release:
+
+1. In `open-ftv`: add upstream as a remote (`git remote add upstream <url>`), `git fetch upstream --tags`, create the branch `poc/authzen-<tag>` from the tag, and push it to the fork.
+2. In this repo: `git add open-ftv` to point the submodule at it.
+3. Compare the `openftv-*` env in `docker/docker-compose.yaml` with the flags in `open-ftv/apps/{pdp,manager,management-interface}/config/config.go`. Each flag `x-y` is read from `PDP_X_Y` or `MANAGER_X_Y`, and an env var without a flag is ignored without a warning.
+4. Set `OPA_IMAGE` in `scripts/policy-check.py` to the `open-policy-agent/opa` version in `open-ftv/go.mod`.
+5. Check it: `./run.sh --reset -d`, `scripts/policy-check.py`, `scripts/policy-filter-dump.py --compare` against a dump from before the update, `scripts/klachten-authz-check.py`, `scripts/klachten-walkthrough.py`, and the [live policy change](#live-policy-change).
+
+### Logs and decisions
+
+- **PDP log:** `docker logs authzen_openftv_pdp` shows warnings and errors only (`PDP_LOG_LEVEL: warn`). At `info` the PDP logs every single decision.
+- **Manager log:** `docker logs authzen_openftv_manager` (JSON). It shows the seeding and every publication ("bundle-runner").
+- **Decision log:** the PDP stores every request it answers, in the OpenFTV database `openftv_adl` (table `decision`, the full request in `body`). The management UI shows it under "Logboek". It is emptied by `--reload-policies` and `--reset`.
 
 Where the seed data lives:
 
@@ -222,7 +240,7 @@ The demo moment: change a role's rights in the OpenFTV manager and show the effe
 **Grant: SZW also handles DSO complaints**
 
 1. In GZAC (http://localhost), log in as `klachten-behandelaar-szw`. Show the case list: only SZW complaints. Open a DSO complaint URL: no access.
-2. In the OpenFTV management UI (http://localhost:8180), log in as `admin-user` / `password`.
+2. In the OpenFTV management UI (http://localhost:8180), log in as `author-user` / `password`. Only the author role can edit and publish policies; `admin-user` sees them read only.
 3. Open the policy `klachten.eerstlijnsklachten.klachtenbehandelaar-szw`. It only says which complaints SZW handles:
    ```rego
    klachten_scopes["ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW"] := {
@@ -231,7 +249,7 @@ The demo moment: change a role's rights in the OpenFTV manager and show the effe
    }
    ```
 4. Click "Bewerken", change the line to `"diensten": ["SZW", "DSO"],` and click "Opslaan". Nothing changes in GZAC yet.
-5. Go to "Publicaties" and click "Publiceren". Wait until the publication is finished (a second or two).
+5. Check the edit: `scripts/policy-check.py --manager` must say `OK`. Then go to "Publicaties" and click "Publiceren". Wait until the publication is finished (a second or two).
 6. Refresh GZAC: the case list now also has the DSO complaints, and SZW can open them, read and add notes and zaak documents, and start user actions. The DSO tasks stay with the DSO behandelaar: a task also has to be meant for the role (candidate group). That is a separate rule.
 
 **Revoke: KCC no longer reads complaints**
@@ -247,13 +265,13 @@ scripts/klachten-authz-check.py --user klachten-behandelaar-szw --grant klachten
 scripts/klachten-authz-check.py --user klachten-kcc --revoke klachten-kcc
 ```
 
-To undo, edit the lines back and publish again, or run `./run.sh --reload-policies` to reset every policy to the files in git (about 30 seconds). The "Versies" panel in the manager is empty, so it can't be used to undo.
+To undo, edit the lines back and publish again, or run `./run.sh --reload-policies` to reset every policy to the files in git (about 30 seconds). The "Versies" panel in the manager can't be used to undo: it only records versions of policies with status "accepted" when they are published, and the UI has no way to set that status (only the API: `PATCH /v1/policy/{id}/status`).
 
-**Be careful with typos.** The manager doesn't check Rego. A policy that doesn't compile is still published as "Finished successfully", and neither the manager nor the PDP logs an error. The PDP then has only part of the policies, so most klachten users suddenly see nothing. Fix the edit and publish again, or run `./run.sh --reload-policies`. Check a policy file before you load it with `opa check` (see [Policies](#policies)).
+**Be careful with typos.** The manager doesn't check Rego. A policy that doesn't compile is still published as "Finished successfully", and neither the manager nor the PDP logs an error. The PDP then drops the klachten rules, so every klachten user suddenly sees nothing (admin and `ROLE_USER` rights stay). Fix the edit and publish again, or run `./run.sh --reload-policies`. Check the policies with `scripts/policy-check.py --manager` before you publish (or `scripts/policy-check.py` for the files, see [Policies](#policies)).
 
 ## Known limitations
 
-- **Seeds load only into an empty database.** The OpenFTV manager seeds policies only when its store is empty. Keycloak imports the realm only when it doesn't exist yet. Run `./run.sh --reset` after pulling changes to the realm or other seed data, or `./run.sh --reload-policies` after changes to policies only.
+- **Changed seeds don't load on a restart.** The OpenFTV manager adds a seed policy file only when that policy doesn't exist yet. It doesn't update a policy it already has. Keycloak imports the realm only when it doesn't exist yet. Run `./run.sh --reset` after pulling changes to the realm or other seed data, or `./run.sh --reload-policies` after changes to policies only.
 - **Policy changes made in the OpenFTV UI are lost** on `--down`, `--reset` or `--reload-policies`. Nothing persists between resets.
 - **Fixed ports.** The stack publishes many host ports: 80, 3000, 5005, 5010, 5400, 5433, 5672–5673, 6379, 8001–8002, 8010–8012, 8080–8081, 8088, 8100, 8180, 8443, 8480, 9000, 9100, 9104, 9200, 15672–15673, 54319–54329. Stop anything else that uses them first.
 - **The first build is slow** (about 8 minutes), because it compiles Valtimo.
@@ -262,7 +280,7 @@ To undo, edit the lines back and publish again, or run `./run.sh --reload-polici
 - **"Mijzelf" assigns a fixed user.** When a coordinator assigns the complaint to "Mijzelf", the case always goes to `klachten-coordinator`, also for GGD and VTH.
 - **Herbeoordelen keeps the earlier answers.** "Terugzetten naar eerste beoordeling" restarts the beoordeling, but doesn't clear the verkenning, informal or formal answers.
 - **The dienst email isn't updated after "dienst aanpassen"** in the eerste beoordeling. Only the stubbed notifications use it.
-- **Log noise.** After every subprocess, Valtimo's SSE `TaskUpdateListener` logs `ERROR … Process instance not found`. An open GZAC browser tab also causes `AsyncRequestNotUsableException … disconnected client` errors. Both are harmless, and the walkthrough reports them as known noise.
+- **Log noise.** After every subprocess, Valtimo's SSE `TaskUpdateListener` logs `ERROR … Process instance not found`. An open GZAC browser tab also causes `AsyncRequestNotUsableException … disconnected client` errors. The OpenFTV PDP logs `ERROR failed to parse body … application/octet-stream` on every publication, also when it succeeds. All are harmless. The walkthrough reports the two Valtimo errors as known noise.
 - **The GZAC database dump contains 2 old klachten cases** from 2026-09-23. They have dummy choice values and open Operaton incidents, and they show up in the case list.
 - **Temporary uploads are not scoped by complaint.** Every role except KCC may upload a temporary file (`ResourcePermission`), because a form upload happens before the file is linked to a complaint. Storing it as a zaak document is checked against the complaint (`ZgwDocument:create`).
 - **Only eerstelijns klachten are covered.** The klachten policies have no rules for tweedelijns klachten and interventieverzoeken, because those processes are not deployed.
@@ -270,6 +288,7 @@ To undo, edit the lines back and publish again, or run `./run.sh --reload-polici
 - **A denied form submission returns 400, not 403.** Valtimo's form-submission handler turns the `AccessDeniedException` into a generic 400 with a reference ID. Nothing is started.
 - **`ROLE_USER` still grants generic access.** Every demo user also has `ROLE_USER` (`valtimo.rego`). For klachten users that gives the user list, object-management configuration and the user dashboard, but no klachten data. Widget data on a klachten case is excluded there and granted per klachten role instead.
 - **The Valtimo permission files in `gzac/src/main/resources/config/global/permission/` are not used for decisions.** GZAC still imports them, but with AuthZEN on, every decision comes from the OpenFTV policies.
+- **The OpenFTV manager doesn't enforce its roles.** Only the management UI does: `author-user` edits and publishes, `admin-user` manages settings, `auditor-user` reads. The manager API lets any logged-in user, and calls without a token, change and publish policies. For example, `author-user` can publish although the manager's Cedar policy `publish_admin_only.cedar` allows only admin. The scripts rely on token-less access.
 - **If the PDP is unreachable, everything is denied**, also for admin. Each request waits for the PDP timeout first (about 3 seconds).
 
 ## Troubleshooting

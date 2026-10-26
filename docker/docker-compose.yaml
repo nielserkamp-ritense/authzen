@@ -18,7 +18,7 @@ services:
 
       PDP_PORT: 8443
       PDP_HEALTH_PORT: 8080
-      PDP_LOG_LEVEL: debug
+      PDP_LOG_LEVEL: warn                                        # errors only; info logs every decision.
       PDP_LOG_FORMAT: text
       PDP_POLICIES_LANGUAGE: REGO
       PDP_POLICIES_STORE: /etc/pdp/policies-rego
@@ -26,13 +26,11 @@ services:
 
       PDP_PIP_STORE: /etc/pdp/pip
       PDP_PIP_STORE_RECURSE: "true"
-      PDP_LOG_OUTPUT: /dev/null
-      PDP_ADL_MIGRATE_SOURCE: ""
-      PDP_ADL_TYPE: postgresql
-      PDP_ADL_PG_URL: "postgres://user:password@openftv-database:5432/openftv_adl?sslmode=disable"
-      PDP_ADL_SERVICE_NAME: manager
-      PDP_MIGRATE_AUTO: true                                     # ADL migrations.
-      PDP_MIGRATE_SOURCE: "*embed*"
+      PDP_ADL_PG_URL: "postgres://user:password@openftv-database:5432/openftv_adl?sslmode=disable"  # ADL, migrated at startup.
+      PDP_ADL_SERVICE_NAME: pdp
+    depends_on:
+      openftv-database:
+        condition: service_healthy                               # the ADL is migrated at startup.
     volumes:
       - ./openftv-imports/pdp/policies:/etc/pdp/policies-rego:ro
       - ./openftv-imports/pdp/pip:/etc/pdp/pip:ro
@@ -88,10 +86,7 @@ services:
       - "9100:9443"
       - "8100:8080"
     environment:
-      - MANAGER_PERSIST_TYPE=postgres             # persistent storage for the managed policies and data.
-      - MANAGER_PERSIST_POSTGRES_URL=postgres://user:password@openftv-database:5432/openftv?sslmode=disable
-      - MANAGER_MIGRATE_AUTO=true                 # migration setup for the persistent storage.
-      - MANAGER_MIGRATE_SOURCE=*embed*
+      - MANAGER_DATABASE_URL=postgres://user:password@openftv-database:5432/openftv?sslmode=disable  # managed policies and data, migrated at startup.
       - MANAGER_POLICIES_LANGUAGE=cedar            # default policy language.
       - MANAGER_POLICIES_STORE=/tmp/data/policies # local policies to evaluate access by the management-interface.
       - MANAGER_POLICIES_STORE_RECURSE=true
@@ -102,15 +97,19 @@ services:
       - MANAGER_BUNDLE_CONFIGS=/tmp/data/bundles  # bundle management for PDPs.
       - MANAGER_BUNDLE_RECURSE=true
       - MANAGER_BUNDLE_SEND_TIMEOUT=60s
-      - MANAGER_ADL_TYPE=postgresql               # ADL.
       - MANAGER_ADL_PG_URL=postgres://user:password@openftv-database:5432/openftv_adl?sslmode=disable
+      - MANAGER_OIDC_JWKS_URL=http://openftv-keycloak:8080/realms/openftv/protocol/openid-connect/certs  # validate the frontend's bearer tokens.
+      - MANAGER_OIDC_ISSUER=http://localhost:8088/realms/openftv  # issuer as seen by the browser.
+      - MANAGER_OIDC_AUDIENCE=openftv
     depends_on:
       openftv-database:
         condition: service_healthy
+      openftv-keycloak:
+        condition: service_healthy  # the JWKS is fetched at startup.
     volumes:
       - ./openftv-imports/manager:/tmp/data
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/healthz" ]
+      test: [ "CMD-SHELL", "wget -q -O- http://127.0.0.1:8080/healthz || exit 1" ]
       interval: 4s
       timeout: 10s
       retries: 5
@@ -132,6 +131,12 @@ services:
     depends_on:
       openftv-manager:
         condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -q -O- http://127.0.0.1:8081/healthz || exit 1" ]
+      interval: 4s
+      timeout: 10s
+      retries: 5
+      start_period: 2s
 
   gzac-keycloak:
     container_name: authzen_gzac_keycloak
@@ -357,11 +362,11 @@ services:
       test: [ "CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])" ]
       interval: 30s
       timeout: 5s
-      retries: 3
+      retries: 5
       # This should allow for enough time for migrations to run before the max
       # retries have passed. This healthcheck in turn allows other containers
       # to wait for the database migrations.
-      start_period: 30s
+      start_period: 120s
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
