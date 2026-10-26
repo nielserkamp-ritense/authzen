@@ -1,6 +1,6 @@
 # AuthZEN + GZAC proof of concept
 
-A local demo of GZAC (Valtimo) with fully externalized authorization. GZAC asks an [OpenFTV](https://gitlab.com/digilab.overheid.nl/ecosystem/ftv/open-ftv) policy decision point (PDP) through the [AuthZEN](https://openid.net/wg/authzen/) API instead of using its built-in permissions. The demo uses the klachten (complaints) process of Gemeente Den Haag with one role per afdeling.
+A local demo of GZAC (Valtimo) with fully externalized authorization. GZAC asks an [OpenFTV](https://gitlab.com/digilab.overheid.nl/ecosystem/ftv/open-ftv) policy decision point (PDP) through the [AuthZEN](https://openid.net/wg/authzen/) API instead of using its built-in permissions. The demo has two zaak-based processes: the klachten (complaints) process of Gemeente Den Haag with one role per afdeling, and a bezwaar process with a behandelaar and a juridisch adviseur. Each has its own policy.
 
 ## Prerequisites
 
@@ -74,10 +74,16 @@ All demo users log in to GZAC at http://localhost. The password is the same as t
 | `klachten-coordinator` | `ROLE_KLACHTEN_KLACHTENCOORDINATOR` | Klachtencoördinator (general) |
 | `klachten-coordinator-ggd` | `ROLE_KLACHTEN_KLACHTENCOORDINATOR_GGD` | Klachtencoördinator GGD |
 | `klachten-coordinator-vth` | `ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH` | Klachtencoördinator VTH |
+| `bezwaar-behandelaar` | `ROLE_BEZWAAR_BEHANDELAAR` | Bezwaarbehandelaar: creates and handles bezwaren |
+| `bezwaar-adviseur` | `ROLE_BEZWAAR_ADVISEUR` | Juridisch adviseur: reads bezwaren, adds notes and documents |
 
 Generic accounts: `admin` / `admin`, `developer` / `developer` and `user` / `user`.
 
 ## Roles and rights
+
+Klachten and bezwaar roles don't see each other's cases. `ROLE_USER`, which every demo user has, gives no rights on any case: only generic things such as the dashboard, the user list and tasks of the user's own group or team (`valtimo.rego`).
+
+### Klachten
 
 Every klachten decision comes from the role's policy in `docker/openftv-imports/manager/policies/klachten.*.rego`. A role's scope is the set of complaints it may act on, based on the dienst (and for OCW the autorisatiegroep) the complaint is assigned to:
 
@@ -96,6 +102,21 @@ Every klachten decision comes from the role's policy in `docker/openftv-imports/
 - Outside the scope, a direct URL (complaint, task, notes, zaak documents, user action) returns 403 or 404.
 - `scripts/klachten-authz-check.py` checks this whole table (see [Authorization check](#authorization-check)).
 
+### Bezwaar
+
+Every bezwaar decision comes from `bezwaar.rego` and the role files `bezwaar.*.rego`. Both roles see every bezwaar. Once a bezwaar is closed with "Afsluiten bezwaar", its internal status is `afgerond` and it is read only for everyone:
+
+| | Behandelaar | Adviseur | Afgerond (both) |
+|---|---|---|---|
+| Case list, open, notes, zaak documents, widgets | ✓ | ✓ | ✓ |
+| Add notes and zaak documents | ✓ | ✓ | – |
+| Create a bezwaar | ✓ | – | – |
+| Claim, assign and edit the bezwaar | ✓ | – | – |
+| Tasks (see / claim and complete) | ✓ / ✓ | – | see only |
+| User actions | its `acties`: Wijzigen aanvraaggegevens, Zaak bijwerken, Afsluiten bezwaar | its `acties`: none | – |
+
+`scripts/bezwaar-authz-check.py` checks this table (see [Bezwaar walkthrough and check](#bezwaar-walkthrough-and-check)).
+
 ### Policies
 
 All policies are in `docker/openftv-imports/manager/policies/`, in one Rego package (`authz`). The manager loads each file as a separate policy, with the tags from its `.meta` file.
@@ -104,7 +125,9 @@ All policies are in `docker/openftv-imports/manager/policies/`, in one Rego pack
 |---|---|
 | `klachten.*.rego` | One per klachten role. It only states the role's scope: its kind of rights and which complaints it handles |
 | `klachten.rego` | The rights per kind of klachten role, and the rules that turn every scope into permissions |
-| `valtimo.rego` | Generic rights for `ROLE_ADMIN` and `ROLE_USER`, as a table of permissions |
+| `bezwaar.*.rego` | One per bezwaar role: its kind of rights and the user actions (`acties`) it may start |
+| `bezwaar.rego` | The rights per kind of bezwaar role, the afgerond rule, and the rules that turn every scope into permissions |
+| `valtimo.rego` | Rights for `ROLE_ADMIN` (everything), and the generic non-case rights of `ROLE_USER`, as a table of permissions |
 | `authz.rego` | Shared helpers, resource types, and the response GZAC reads (`allow` and `context.filter`) |
 
 A klachten role file looks like this:
@@ -118,6 +141,18 @@ klachten_scopes["ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW"] := {
 ```
 
 A scope can also have `"diensten": "all"`, `"unassigned": true` (complaints not assigned to a dienst yet), and for OCW `"autorisatiegroepen"` or `"except_autorisatiegroepen"`. The kinds of rights are `behandelaar`, `coordinator`, `hoofdcoordinator`, `meelezen` (KCC) and `registratie` (IB/Post); see `klachten.rego`.
+
+A bezwaar role file names its kind of rights (`behandelaar` or `adviseur`, see `bezwaar.rego`) and, by process key, the user actions it may start on a bezwaar that is not afgerond:
+
+```rego
+# Bezwaarbehandelaar: creates and handles bezwaren, does their tasks and starts their user actions.
+bezwaar_scopes["ROLE_BEZWAAR_BEHANDELAAR"] := {
+	"rights": "behandelaar",
+	"acties": ["change-name", "patch-zaak", "afsluiten-bezwaar"],
+}
+```
+
+The klachten files are tagged `klachten`, the bezwaar files `bezwaar`, and `valtimo.rego` `valtimo`. The PDP bundle (`docker/openftv-imports/manager/bundles/pdp1.yaml`) takes all three tags.
 
 After changing a policy file, check it and load it:
 
@@ -149,7 +184,7 @@ To move to a newer release:
 2. In this repo: `git add open-ftv` to point the submodule at it.
 3. Compare the `openftv-*` env in `docker/docker-compose.yaml` with the flags in `open-ftv/apps/{pdp,manager,management-interface}/config/config.go`. Each flag `x-y` is read from `PDP_X_Y` or `MANAGER_X_Y`, and an env var without a flag is ignored without a warning.
 4. Set `OPA_IMAGE` in `scripts/policy-check.py` to the `open-policy-agent/opa` version in `open-ftv/go.mod`.
-5. Check it: `./run.sh --reset -d`, `scripts/policy-check.py`, `scripts/policy-filter-dump.py --compare` against a dump from before the update, `scripts/klachten-authz-check.py`, `scripts/klachten-walkthrough.py`, and the [live policy change](#live-policy-change).
+5. Check it: `./run.sh --reset -d`, `scripts/policy-check.py`, `scripts/policy-filter-dump.py --compare` against a dump from before the update, `scripts/klachten-authz-check.py`, `scripts/klachten-walkthrough.py`, `scripts/bezwaar-authz-check.py`, `scripts/bezwaar-walkthrough.py`, and the [live policy change](#live-policy-change).
 
 ### Logs and decisions
 
@@ -161,7 +196,7 @@ Where the seed data lives:
 
 | Path | Contents |
 |---|---|
-| `gzac/src/main/resources/config/` | Case definition, BPMN, forms, plugin configurations and permissions. GZAC deploys them on startup. |
+| `gzac/src/main/resources/config/` | The case definitions `eerstelijns-klachten` and `bezwaar` (BPMN, forms, tabs, zaaktype link), plugin configurations and roles. GZAC deploys them on startup. |
 | `docker/gzac-imports/` | Keycloak realm with users, and the Open Zaak, Objecten, Objecttypen and Open Notificaties database seeds |
 | `docker/gzac-imports/gzac/choice-fields.sql` | GZAC choice fields (diensten, autorisatiegroepen, sectoren/afdelingen, producten, thema's, oordeel, behoorlijkheidsnormen) |
 | `docker/openftv-imports/manager/policies/` | Rego policies, see [Policies](#policies) |
@@ -233,6 +268,31 @@ After a live policy change, tell the check what to expect instead:
 | `--grant USER=SCOPE` | `USER` also has the complaints of seed scope `SCOPE` (e.g. `klachten-behandelaar-szw=DSO`). Tasks still follow the candidate group, so SZW is not expected to see DSO's tasks |
 | `--revoke USER` | `USER` has no complaints at all |
 
+## Bezwaar walkthrough and check
+
+The bezwaar case (`gzac/src/main/resources/config/case/bezwaar/`) runs on the bezwaar zaaktype "bezwaar-behandelen" in Open Zaak:
+
+1. `bezwaar-behandelaar` starts a bezwaar with the start form. Internal status "Aanvraag ontvangen".
+2. Task "Valideer gegevens aanvrager", then status "In behandeling".
+3. Task "In behandeling", then status "Informatieverzoek uitgezet".
+4. User actions on the bezwaar: "Wijzigen aanvraaggegevens" (a task to edit the bezwaar), "Zaak bijwerken" (the zaak in Open Zaak), and "Afsluiten bezwaar": choose a resultaat (Gegrond, Afgewezen or Ingetrokken), which sets the zaak resultaat, the end status "Zaak afgerond", and the internal status "Afgerond".
+
+`scripts/bezwaar-walkthrough.py` walks this as `bezwaar-behandelaar` and checks the end state (internal status, zaak status and resultaat, incidents, ERROR lines in the backend log):
+
+```bash
+scripts/bezwaar-walkthrough.py                         # closes with resultaat Gegrond
+scripts/bezwaar-walkthrough.py --resultaat Ingetrokken
+```
+
+`scripts/bezwaar-authz-check.py` checks the [bezwaar matrix](#bezwaar) for both bezwaar users, three klachten users and `user` (about 1.5 minutes). Every run seeds two bezwaren with a note and a zaak document: `open`, at its first task, and `afgerond`, closed straight away. For each user × seed it checks the list, open, notes, files, widgets, the task (list, open, claim), the user actions, the "Afsluiten bezwaar" start form, adding a note, uploading a zaak document, and (once) creating a bezwaar.
+
+```bash
+scripts/bezwaar-authz-check.py
+scripts/bezwaar-authz-check.py --user bezwaar-adviseur --check actions --verbose
+```
+
+After a live policy change, `--grant USER=CHECK[,CHECK]` expects those checks to be allowed on the open bezwaar, e.g. `--grant bezwaar-adviseur=actions,afsluiten`.
+
 ## Live policy change
 
 The demo moment: change a role's rights in the OpenFTV manager and show the effect in GZAC, without a release or a restart. A change is active about a second after "Publiceren"; there is no cache in GZAC or the PDP.
@@ -258,16 +318,23 @@ The demo moment: change a role's rights in the OpenFTV manager and show the effe
 2. In the manager, edit `klachten.eerstlijnsklachten.medewerker-kcc`: change `"diensten": "all",` to `"diensten": [],`. Opslaan, then Publiceren.
 3. Refresh GZAC: the case list is empty, and opening a complaint is denied.
 
+**Grant: the juridisch adviseur may close a bezwaar**
+
+1. Log in to GZAC as `bezwaar-adviseur` and open a bezwaar that is not afgerond: no user actions.
+2. In the manager, edit `bezwaar.adviseur`: change `"acties": [],` to `"acties": ["afsluiten-bezwaar"],`. Opslaan, then Publiceren.
+3. Refresh GZAC: the adviseur now has the user action "Afsluiten bezwaar", and only that one. On an afgerond bezwaar it still has nothing: the afgerond rule is separate.
+
 **Prove it and undo it**
 
 ```bash
 scripts/klachten-authz-check.py --user klachten-behandelaar-szw --grant klachten-behandelaar-szw=DSO
 scripts/klachten-authz-check.py --user klachten-kcc --revoke klachten-kcc
+scripts/bezwaar-authz-check.py --user bezwaar-adviseur --grant bezwaar-adviseur=actions,afsluiten
 ```
 
 To undo, edit the lines back and publish again, or run `./run.sh --reload-policies` to reset every policy to the files in git (about 30 seconds). The "Versies" panel in the manager can't be used to undo: it only records versions of policies with status "accepted" when they are published, and the UI has no way to set that status (only the API: `PATCH /v1/policy/{id}/status`).
 
-**Be careful with typos.** The manager doesn't check Rego. A policy that doesn't compile is still published as "Finished successfully", and neither the manager nor the PDP logs an error. The PDP then drops the klachten rules, so every klachten user suddenly sees nothing (admin and `ROLE_USER` rights stay). Fix the edit and publish again, or run `./run.sh --reload-policies`. Check the policies with `scripts/policy-check.py --manager` before you publish (or `scripts/policy-check.py` for the files, see [Policies](#policies)).
+**Be careful with typos.** The manager doesn't check Rego. A policy that doesn't compile is still published as "Finished successfully", and neither the manager nor the PDP logs an error. The PDP then drops the klachten and bezwaar rules, so every klachten and bezwaar user suddenly sees nothing (admin and `ROLE_USER` rights stay). Fix the edit and publish again, or run `./run.sh --reload-policies`. Check the policies with `scripts/policy-check.py --manager` before you publish (or `scripts/policy-check.py` for the files, see [Policies](#policies)).
 
 ## Known limitations
 
@@ -284,9 +351,13 @@ To undo, edit the lines back and publish again, or run `./run.sh --reload-polici
 - **The GZAC database dump contains 2 old klachten cases** from 2026-09-23. They have dummy choice values and open Operaton incidents, and they show up in the case list.
 - **Temporary uploads are not scoped by complaint.** Every role except KCC may upload a temporary file (`ResourcePermission`), because a form upload happens before the file is linked to a complaint. Storing it as a zaak document is checked against the complaint (`ZgwDocument:create`).
 - **Only eerstelijns klachten are covered.** The klachten policies have no rules for tweedelijns klachten and interventieverzoeken, because those processes are not deployed.
+- **The bezwaar case is a trimmed copy of Valtimo's dev case `bezwaar`,** not the GZAC Exchange app `kim-bezwaar-en-beroep`, which can't be downloaded. Its test parts (FVM, UI components, portaaltaak, besluiten, tags) are left out, and its forms are rewritten with Dutch labels.
+- **"Afsluiten bezwaar" is meant for the end of the bezwaar.** Started earlier, it leaves the open task of the main process behind, and nobody can complete it: an afgerond bezwaar is read only.
+- **The afgerond rule only covers rights on an existing bezwaar.** GZAC can't check the status of a case that has none, so creating and reading a bezwaar don't look at the status. A bezwaar gets its first status when it is created.
+- **The "Zaak bijwerken" form keeps the dev defaults** for geometry and betalingsindicatie, so they are sent to Open Zaak too.
 - **Upstream endpoints that skip authorization.** Valtimo serves some endpoints without checking the case, so no policy can close them. A logged-in user who knows a process instance ID can read its variables (`POST /api/v1/process-instance/{id}/variables`) and its state, history and BPMN (`GET /api/v1/process/{id}`, `/history`, `/activities`, `/xml`). The authorization check reports them. The tab list and the case's process links are readable too, but they are configuration only.
 - **A denied form submission returns 400, not 403.** Valtimo's form-submission handler turns the `AccessDeniedException` into a generic 400 with a reference ID. Nothing is started.
-- **`ROLE_USER` still grants generic access.** Every demo user also has `ROLE_USER` (`valtimo.rego`). For klachten users that gives the user list, object-management configuration and the user dashboard, but no klachten data. Widget data on a klachten case is excluded there and granted per klachten role instead.
+- **`ROLE_USER` still grants generic access.** Every demo user also has `ROLE_USER` (`valtimo.rego`). That gives the user list, object-management configuration, the user dashboard and tasks of the user's own group or team, but nothing on a case: case definitions, cases, notes, zaak documents, widgets and user actions come only from the klachten and bezwaar policies.
 - **The Valtimo permission files in `gzac/src/main/resources/config/global/permission/` are not used for decisions.** GZAC still imports them, but with AuthZEN on, every decision comes from the OpenFTV policies.
 - **The OpenFTV manager doesn't enforce its roles.** Only the management UI does: `author-user` edits and publishes, `admin-user` manages settings, `auditor-user` reads. The manager API lets any logged-in user, and calls without a token, change and publish policies. For example, `author-user` can publish although the manager's Cedar policy `publish_admin_only.cedar` allows only admin. The scripts rely on token-less access.
 - **If the PDP is unreachable, everything is denied**, also for admin. Each request waits for the PDP timeout first (about 3 seconds).

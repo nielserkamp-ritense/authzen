@@ -3,3 +3,5 @@
   name: Valtimo policies
 - id: klachten
   name: Klachten policies
+- id: bezwaar
+  name: Bezwaar policies

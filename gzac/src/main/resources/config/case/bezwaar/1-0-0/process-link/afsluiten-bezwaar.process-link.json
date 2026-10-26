@@ -1,0 +1,52 @@
+[
+    {
+        "activityId": "start-afsluiten-bezwaar",
+        "activityType": "bpmn:StartEvent:start",
+        "processLinkType": "form",
+        "formDefinitionName": "afsluiten-bezwaar.start"
+    },
+    {
+        "activityId": "get-resultaattype",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "22c78b91-0b0f-4008-8d8f-c4a84b8e71ec",
+        "pluginActionDefinitionKey": "get-resultaattype",
+        "actionProperties": {
+            "resultaattype": "pv:resultaat",
+            "processVariable": "resultaatTypeUrl"
+        }
+    },
+    {
+        "activityId": "create-zaakresultaat",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3079d6fe-42e3-4f8f-a9db-52ce2507b7ee",
+        "pluginActionDefinitionKey": "create-zaakresultaat",
+        "actionProperties": {
+            "resultaattypeUrl": "pv:resultaatTypeUrl",
+            "toelichting": "pv:toelichting"
+        }
+    },
+    {
+        "activityId": "get-statustype",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "22c78b91-0b0f-4008-8d8f-c4a84b8e71ec",
+        "pluginActionDefinitionKey": "get-statustype",
+        "actionProperties": {
+            "statustype": "Zaak afgerond",
+            "processVariable": "statusTypeUrl"
+        }
+    },
+    {
+        "activityId": "set-zaakstatus",
+        "activityType": "bpmn:ServiceTask:start",
+        "processLinkType": "plugin",
+        "pluginConfigurationId": "3079d6fe-42e3-4f8f-a9db-52ce2507b7ee",
+        "pluginActionDefinitionKey": "set-zaakstatus",
+        "actionProperties": {
+            "statustypeUrl": "pv:statusTypeUrl",
+            "statustoelichting": "pv:toelichting"
+        }
+    }
+]

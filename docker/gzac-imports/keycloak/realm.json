@@ -282,6 +282,22 @@
       "clientRole" : false,
       "containerId" : "valtimo",
       "attributes" : { }
+    }, {
+      "id" : "fff5bbaa-2a50-4acf-95f2-0d75c5bfd082",
+      "name" : "ROLE_BEZWAAR_BEHANDELAAR",
+      "description" : "",
+      "composite" : false,
+      "clientRole" : false,
+      "containerId" : "valtimo",
+      "attributes" : { }
+    }, {
+      "id" : "29f1ca0f-8ffb-40c4-a041-6091d08188f0",
+      "name" : "ROLE_BEZWAAR_ADVISEUR",
+      "description" : "",
+      "composite" : false,
+      "clientRole" : false,
+      "containerId" : "valtimo",
+      "attributes" : { }
     } ],
     "client" : {
       "realm-management" : [ {
@@ -1096,6 +1112,36 @@
     } ],
     "requiredActions" : [ ],
     "realmRoles" : [ "ROLE_USER", "default-roles-valtimo", "ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH" ],
+    "groups" : [ ]
+  }, {
+    "username" : "bezwaar-behandelaar",
+    "firstName" : "Bezwaarbehandelaar",
+    "lastName" : "Demo",
+    "email" : "bezwaar-behandelaar@example.com",
+    "emailVerified" : true,
+    "enabled" : true,
+    "credentials" : [ {
+      "type" : "password",
+      "value" : "bezwaar-behandelaar",
+      "temporary" : false
+    } ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ROLE_USER", "default-roles-valtimo", "ROLE_BEZWAAR_BEHANDELAAR" ],
+    "groups" : [ ]
+  }, {
+    "username" : "bezwaar-adviseur",
+    "firstName" : "Juridisch adviseur",
+    "lastName" : "Demo",
+    "email" : "bezwaar-adviseur@example.com",
+    "emailVerified" : true,
+    "enabled" : true,
+    "credentials" : [ {
+      "type" : "password",
+      "value" : "bezwaar-adviseur",
+      "temporary" : false
+    } ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ROLE_USER", "default-roles-valtimo", "ROLE_BEZWAAR_ADVISEUR" ],
     "groups" : [ ]
   } ],
   "scopeMappings" : [ {

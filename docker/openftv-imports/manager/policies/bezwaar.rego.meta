@@ -1,0 +1,5 @@
+id: "bezwaar"
+language: "rego"
+metadata:
+  description: "Shared context for the bezwaar policies"
+  tags: ["bezwaar"]

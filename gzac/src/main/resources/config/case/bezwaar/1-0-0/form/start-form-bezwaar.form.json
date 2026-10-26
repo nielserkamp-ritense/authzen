@@ -1,0 +1,316 @@
+{
+    "display": "form",
+    "components": [
+        {
+            "key": "aanvrager",
+            "type": "panel",
+            "input": false,
+            "title": "Aanvrager",
+            "collapsible": false,
+            "tableView": false,
+            "components": [
+                {
+                    "key": "columns-aanhef",
+                    "type": "columns",
+                    "input": false,
+                    "tableView": false,
+                    "columns": [
+                        {
+                            "components": [
+                                {
+                                    "key": "aanhef",
+                                    "type": "textfield",
+                                    "input": true,
+                                    "label": "Aanhef",
+                                    "tableView": true,
+                                    "validate": {
+                                        "required": false
+                                    }
+                                }
+                            ],
+                            "width": 4,
+                            "size": "md"
+                        },
+                        {
+                            "components": [
+                                {
+                                    "key": "voornaam",
+                                    "type": "textfield",
+                                    "input": true,
+                                    "label": "Voornaam",
+                                    "tableView": true,
+                                    "validate": {
+                                        "required": true
+                                    }
+                                }
+                            ],
+                            "width": 4,
+                            "size": "md"
+                        },
+                        {
+                            "components": [
+                                {
+                                    "key": "achternaam",
+                                    "type": "textfield",
+                                    "input": true,
+                                    "label": "Achternaam",
+                                    "tableView": true,
+                                    "validate": {
+                                        "required": true
+                                    }
+                                }
+                            ],
+                            "width": 4,
+                            "size": "md"
+                        }
+                    ]
+                },
+                {
+                    "key": "bsn",
+                    "type": "textfield",
+                    "input": true,
+                    "label": "Burgerservicenummer",
+                    "tableView": true,
+                    "validate": {
+                        "required": false
+                    }
+                },
+                {
+                    "key": "columns-straatnaam",
+                    "type": "columns",
+                    "input": false,
+                    "tableView": false,
+                    "columns": [
+                        {
+                            "components": [
+                                {
+                                    "key": "straatnaam",
+                                    "type": "textfield",
+                                    "input": true,
+                                    "label": "Straatnaam",
+                                    "tableView": true,
+                                    "validate": {
+                                        "required": false
+                                    }
+                                }
+                            ],
+                            "width": 4,
+                            "size": "md"
+                        },
+                        {
+                            "components": [
+                                {
+                                    "key": "huisnummer",
+                                    "type": "textfield",
+                                    "input": true,
+                                    "label": "Huisnummer",
+                                    "tableView": true,
+                                    "validate": {
+                                        "required": false
+                                    }
+                                }
+                            ],
+                            "width": 4,
+                            "size": "md"
+                        },
+                        {
+                            "components": [
+                                {
+                                    "key": "toevoeging",
+                                    "type": "textfield",
+                                    "input": true,
+                                    "label": "Toevoeging",
+                                    "tableView": true,
+                                    "validate": {
+                                        "required": false
+                                    }
+                                }
+                            ],
+                            "width": 4,
+                            "size": "md"
+                        }
+                    ]
+                },
+                {
+                    "key": "columns-postcode",
+                    "type": "columns",
+                    "input": false,
+                    "tableView": false,
+                    "columns": [
+                        {
+                            "components": [
+                                {
+                                    "key": "postcode",
+                                    "type": "textfield",
+                                    "input": true,
+                                    "label": "Postcode",
+                                    "tableView": true,
+                                    "validate": {
+                                        "required": false
+                                    }
+                                }
+                            ],
+                            "width": 6,
+                            "size": "md"
+                        },
+                        {
+                            "components": [
+                                {
+                                    "key": "plaats",
+                                    "type": "textfield",
+                                    "input": true,
+                                    "label": "Plaats",
+                                    "tableView": true,
+                                    "validate": {
+                                        "required": false
+                                    }
+                                }
+                            ],
+                            "width": 6,
+                            "size": "md"
+                        }
+                    ]
+                },
+                {
+                    "key": "columns-telefoonnummer",
+                    "type": "columns",
+                    "input": false,
+                    "tableView": false,
+                    "columns": [
+                        {
+                            "components": [
+                                {
+                                    "key": "telefoonnummer",
+                                    "type": "textfield",
+                                    "input": true,
+                                    "label": "Telefoonnummer",
+                                    "tableView": true,
+                                    "validate": {
+                                        "required": false
+                                    }
+                                }
+                            ],
+                            "width": 6,
+                            "size": "md"
+                        },
+                        {
+                            "components": [
+                                {
+                                    "key": "e-mailadres",
+                                    "type": "email",
+                                    "input": true,
+                                    "label": "E-mailadres",
+                                    "tableView": true,
+                                    "validate": {
+                                        "required": false
+                                    }
+                                }
+                            ],
+                            "width": 6,
+                            "size": "md"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "key": "besluitPanel",
+            "type": "panel",
+            "input": false,
+            "title": "Besluit waartegen bezwaar wordt gemaakt",
+            "collapsible": false,
+            "tableView": false,
+            "components": [
+                {
+                    "key": "columns-zaaknummer",
+                    "type": "columns",
+                    "input": false,
+                    "tableView": false,
+                    "columns": [
+                        {
+                            "components": [
+                                {
+                                    "key": "zaaknummer",
+                                    "type": "textfield",
+                                    "input": true,
+                                    "label": "Zaaknummer van het besluit",
+                                    "tableView": true,
+                                    "validate": {
+                                        "required": true
+                                    }
+                                }
+                            ],
+                            "width": 6,
+                            "size": "md"
+                        },
+                        {
+                            "components": [
+                                {
+                                    "key": "datumBesluit",
+                                    "type": "textfield",
+                                    "input": true,
+                                    "label": "Datum besluit",
+                                    "tableView": true,
+                                    "validate": {
+                                        "required": false
+                                    },
+                                    "placeholder": "dd-mm-jjjj"
+                                }
+                            ],
+                            "width": 6,
+                            "size": "md"
+                        }
+                    ]
+                },
+                {
+                    "key": "naamBeslisser",
+                    "type": "textfield",
+                    "input": true,
+                    "label": "Naam beslisser",
+                    "tableView": true,
+                    "validate": {
+                        "required": false
+                    }
+                },
+                {
+                    "key": "besluit",
+                    "type": "textarea",
+                    "input": true,
+                    "label": "Inhoud van het besluit",
+                    "tableView": true,
+                    "validate": {
+                        "required": false
+                    }
+                }
+            ]
+        },
+        {
+            "key": "bezwaarPanel",
+            "type": "panel",
+            "input": false,
+            "title": "Bezwaar",
+            "collapsible": false,
+            "tableView": false,
+            "components": [
+                {
+                    "key": "bezwaar",
+                    "type": "textarea",
+                    "input": true,
+                    "label": "Reden van het bezwaar",
+                    "tableView": true,
+                    "validate": {
+                        "required": true
+                    }
+                }
+            ]
+        },
+        {
+            "key": "submit",
+            "type": "button",
+            "input": true,
+            "label": "Opslaan",
+            "tableView": false,
+            "disableOnInvalid": true
+        }
+    ]
+}

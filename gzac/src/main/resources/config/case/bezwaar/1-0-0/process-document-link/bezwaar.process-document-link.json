@@ -1,0 +1,22 @@
+[
+    {
+        "processDefinitionKey": "bezwaar",
+        "canInitializeDocument": true,
+        "startableByUser": true
+    },
+    {
+        "processDefinitionKey": "change-name",
+        "canInitializeDocument": false,
+        "startableByUser": true
+    },
+    {
+        "processDefinitionKey": "patch-zaak",
+        "canInitializeDocument": false,
+        "startableByUser": true
+    },
+    {
+        "processDefinitionKey": "afsluiten-bezwaar",
+        "canInitializeDocument": false,
+        "startableByUser": true
+    }
+]
