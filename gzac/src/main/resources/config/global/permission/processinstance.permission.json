@@ -1,7 +1,0 @@
-[
-    {
-        "resourceType": "com.ritense.valtimo.operaton.domain.OperatonExecution",
-        "action": "create",
-        "roleKey": "ROLE_ADMIN"
-    }
-]

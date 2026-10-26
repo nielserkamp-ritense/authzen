@@ -1,7 +1,0 @@
-[
-    {
-        "resourceType": "com.ritense.valtimo.operaton.domain.OperatonTimer",
-        "action": "complete",
-        "roleKey": "ROLE_ADMIN"
-    }
-]

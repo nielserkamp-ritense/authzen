@@ -426,7 +426,6 @@ To undo, edit the lines back and publish again, or run `./run.sh --reload-polici
 - **Unassigning a ToDo as its assignee shows an error, but it works.** Valtimo reloads the ToDo after the change with the user's own rights, which the user no longer has, and then answers 400. To hand a ToDo back without the error, assign it to its creator.
 - **A refused assign or unassign returns 400, not 403**, like a refused form submission. Nothing changes.
 - **Whether a user can be assigned a ToDo only depends on it being a ToDo.** Valtimo checks the user it is assigned to with that user's roles, but with the current user's placeholders, so a creator or assignee rule can't be used there.
-- **The Valtimo permission files in `gzac/src/main/resources/config/global/permission/` are not used for decisions.** GZAC still imports them, but with AuthZEN on, every decision comes from the OpenFTV policies.
 - **The OpenFTV manager doesn't enforce its roles.** Only the management UI does: `author-user` edits and publishes, `admin-user` manages settings, `auditor-user` reads. The manager API lets any logged-in user, and calls without a token, change and publish policies. For example, `author-user` can publish although the manager's Cedar policy `publish_admin_only.cedar` allows only admin. The scripts rely on token-less access.
 - **If the PDP is unreachable, everything is denied**, also for admin. Each request waits for the PDP timeout first (about 3 seconds).
 
