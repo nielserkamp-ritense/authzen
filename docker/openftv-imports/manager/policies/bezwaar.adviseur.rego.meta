@@ -1,0 +1,5 @@
+id: "bezwaar-adviseur"
+language: "rego"
+metadata:
+  description: "bezwaar-adviseur-permission"
+  tags: ["bezwaar"]

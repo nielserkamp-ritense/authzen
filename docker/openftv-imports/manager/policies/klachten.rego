@@ -109,7 +109,8 @@ coordinator_rights := array.concat(case_rights, [
 	{"type": note, "actions": ["view", "view_list", "create", "modify", "delete"], "on": "part"},
 	{"type": zaak_document, "actions": ["view", "view_list", "create", "modify", "delete"], "on": "part"},
 	{"type": widget, "actions": ["view"], "on": "started_on"},
-	{"type": user_action, "actions": ["create"], "on": "anything"},
+	{"type": user_action, "actions": ["create"], "on": "started_on", "of": "all"},
+	{"type": user_action, "actions": ["create"], "on": "starting"},
 	{"type": upload, "actions": ["view", "view_list", "create", "modify", "delete"], "on": "anything"},
 ])
 
