@@ -9818,7 +9818,6 @@ COPY public.notificaties_api_inbound_event (id, idempotence_key, payload, status
 --
 
 COPY public.object_management_configuration (id, title, objecttypen_api_plugin_configuration_id, objecten_api_plugin_configuration_id, objecttype_id, show_data_in_menu, form_definition_view, form_definition_edit, object_type_version, suppress_outbox) FROM stdin;
-29400564-d25f-491c-abb2-afc42894ac9d	Bezwaar	4021bb75-18c8-4ca5-8658-b9f9c728bba0	b6d83348-97e7-4660-bd35-2e5fcc9629b4	007f0b7d-c6f7-4269-85e1-62003310230b	f	\N	\N	1	f
 d8257077-ec44-44d3-9d2e-e8c87fa6fd09	Bomen	4021bb75-18c8-4ca5-8658-b9f9c728bba0	b6d83348-97e7-4660-bd35-2e5fcc9629b4	feeaa795-d212-4fa2-bb38-2c34996e5702	t	boom.summary	boom.editform	2	f
 16c69c86-0c5d-4d57-b4ac-0add8271a142	Taak	4021bb75-18c8-4ca5-8658-b9f9c728bba0	b6d83348-97e7-4660-bd35-2e5fcc9629b4	3e852115-277a-4570-873a-9a64be3aeb34	f	\N	\N	1	f
 \.
@@ -10309,7 +10308,6 @@ Documenten API Preview	{"pdfConversionUrl": "http://gzac-gotenberg:3000/", "docu
 Notificaties API	{"url": "http://host.docker.internal:8002/api/v1/", "authHeader": "12345", "callbackUrl": "http://localhost:8080/api/v1/notificatiesapi/callback", "authenticationPluginConfiguration": "df36cd33-d0dd-429a-a8ad-e16f307ac434"}	notificatiesapi	bb1c601b-b257-497e-bab0-c21d339335d7
 Objecten API	{"url": "http://host.docker.internal:8010/api/v2/", "authenticationPluginConfiguration": "21a006f9-7833-4cdf-a6b7-1927705dd543"}	objectenapi	b6d83348-97e7-4660-bd35-2e5fcc9629b4
 Objecttypen API	{"url": "http://host.docker.internal:8011/api/v2/", "authenticationPluginConfiguration": "acb0687a-075e-4435-923b-e6cb01d4d5db"}	objecttypenapi	4021bb75-18c8-4ca5-8658-b9f9c728bba0
-Verzoek bezwaar	{"rsin": "051845623", "processToStart": "create-zaakdossier", "verzoekProperties": [{"type": "bezwaar", "mapping": [{"source": "/zaakobjecten/0/objecttype", "target": "doc:/zaakobjecten/0/objecttype"}], "copyStrategy": "specified", "caseDefinitionKey": "bezwaar", "objectManagementId": "29400564-d25f-491c-abb2-afc42894ac9d", "initiatorRoltypeUrl": "http://host.docker.internal:8001/catalogi/api/v1/roltypen/1c359a1b-c38d-47b8-bed5-994db88ead61", "processDefinitionKey": "bezwaar", "initiatorRolDescription": "Initiator"}], "notificatiesApiPluginConfiguration": "bb1c601b-b257-497e-bab0-c21d339335d7"}	verzoek	87bea80a-61da-46c1-b5fb-353d90751082
 Portaaltaak	{"completeTaakProcess": "process-completed-portaaltaak", "objectManagementConfigurationId": "16c69c86-0c5d-4d57-b4ac-0add8271a142", "notificatiesApiPluginConfiguration": "bb1c601b-b257-497e-bab0-c21d339335d7"}	portaaltaak	d65113e0-a9cb-4904-93e1-5e8b1206e625
 Object Management	{}	object-management	a2523269-4072-4710-91ce-f70ef2202158
 OpenZaak Authentication	{"clientId": "valtimo_client", "clientSecret": "{AES/GCM/NoPadding}VAWLx1VJHcP4kIXeRn4IgRXkgCVMOe5j7Vcguuu8WrsPYesF4iIUXlCZt+d9JyQOshpHjX1mtYwc25UskoKLd0pE"}	openzaak	b609a0a3-886e-4b3d-ae0d-c01effb311ee
