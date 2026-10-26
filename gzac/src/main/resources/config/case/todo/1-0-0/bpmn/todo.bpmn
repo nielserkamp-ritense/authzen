@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+    xmlns:camunda="http://camunda.org/schema/1.0/bpmn"
+    xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+    xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_todo" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.39.0">
+    <bpmn:process id="todo" name="ToDo" isExecutable="true" camunda:versionTag="CD:todo:1.0.0">
+        <bpmn:startEvent id="start-todo" name="ToDo aangemaakt">
+            <bpmn:outgoing>Flow_start</bpmn:outgoing>
+        </bpmn:startEvent>
+        <bpmn:sequenceFlow id="Flow_start" sourceRef="start-todo" targetRef="set-status-to-open" />
+        <bpmn:serviceTask id="set-status-to-open" name="Set status to &#39;open&#39;" camunda:expression="${documentDelegateService.setInternalStatus(execution,&#39;open&#39;)}">
+            <bpmn:incoming>Flow_start</bpmn:incoming>
+            <bpmn:outgoing>Flow_open</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:sequenceFlow id="Flow_open" sourceRef="set-status-to-open" targetRef="oppakken" />
+        <!-- No candidate group: who may do the tasks follows from the ToDo's creator and assignee (todo.rego). -->
+        <bpmn:userTask id="oppakken" name="Oppakken">
+            <bpmn:incoming>Flow_open</bpmn:incoming>
+            <bpmn:outgoing>Flow_oppakken</bpmn:outgoing>
+        </bpmn:userTask>
+        <bpmn:sequenceFlow id="Flow_oppakken" sourceRef="oppakken" targetRef="set-status-to-in-behandeling" />
+        <bpmn:serviceTask id="set-status-to-in-behandeling" name="Set status to &#39;in-behandeling&#39;" camunda:expression="${documentDelegateService.setInternalStatus(execution,&#39;in-behandeling&#39;)}">
+            <bpmn:incoming>Flow_oppakken</bpmn:incoming>
+            <bpmn:outgoing>Flow_in_behandeling</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:sequenceFlow id="Flow_in_behandeling" sourceRef="set-status-to-in-behandeling" targetRef="afronden" />
+        <bpmn:userTask id="afronden" name="Afronden">
+            <bpmn:incoming>Flow_in_behandeling</bpmn:incoming>
+            <bpmn:outgoing>Flow_afronden</bpmn:outgoing>
+        </bpmn:userTask>
+        <bpmn:sequenceFlow id="Flow_afronden" sourceRef="afronden" targetRef="set-status-to-afgerond" />
+        <bpmn:serviceTask id="set-status-to-afgerond" name="Set status to &#39;afgerond&#39;" camunda:expression="${documentDelegateService.setInternalStatus(execution,&#39;afgerond&#39;)}">
+            <bpmn:incoming>Flow_afronden</bpmn:incoming>
+            <bpmn:outgoing>Flow_end</bpmn:outgoing>
+        </bpmn:serviceTask>
+        <bpmn:sequenceFlow id="Flow_end" sourceRef="set-status-to-afgerond" targetRef="end-todo" />
+        <bpmn:endEvent id="end-todo" name="ToDo afgerond">
+            <bpmn:incoming>Flow_end</bpmn:incoming>
+        </bpmn:endEvent>
+    </bpmn:process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_todo">
+        <bpmndi:BPMNPlane id="BPMNPlane_todo" bpmnElement="todo">
+            <bpmndi:BPMNShape id="start-todo_di" bpmnElement="start-todo">
+                <dc:Bounds x="152" y="102" width="36" height="36" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="set-status-to-open_di" bpmnElement="set-status-to-open">
+                <dc:Bounds x="240" y="80" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="oppakken_di" bpmnElement="oppakken">
+                <dc:Bounds x="390" y="80" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="set-status-to-in-behandeling_di" bpmnElement="set-status-to-in-behandeling">
+                <dc:Bounds x="540" y="80" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="afronden_di" bpmnElement="afronden">
+                <dc:Bounds x="690" y="80" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="set-status-to-afgerond_di" bpmnElement="set-status-to-afgerond">
+                <dc:Bounds x="840" y="80" width="100" height="80" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape id="end-todo_di" bpmnElement="end-todo">
+                <dc:Bounds x="992" y="102" width="36" height="36" />
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge id="Flow_start_di" bpmnElement="Flow_start">
+                <di:waypoint x="188" y="120" />
+                <di:waypoint x="240" y="120" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_open_di" bpmnElement="Flow_open">
+                <di:waypoint x="340" y="120" />
+                <di:waypoint x="390" y="120" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_oppakken_di" bpmnElement="Flow_oppakken">
+                <di:waypoint x="490" y="120" />
+                <di:waypoint x="540" y="120" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_in_behandeling_di" bpmnElement="Flow_in_behandeling">
+                <di:waypoint x="640" y="120" />
+                <di:waypoint x="690" y="120" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_afronden_di" bpmnElement="Flow_afronden">
+                <di:waypoint x="790" y="120" />
+                <di:waypoint x="840" y="120" />
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge id="Flow_end_di" bpmnElement="Flow_end">
+                <di:waypoint x="940" y="120" />
+                <di:waypoint x="992" y="120" />
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,37 @@
+{
+    "display": "form",
+    "components": [
+        {
+            "key": "titel",
+            "type": "textfield",
+            "input": true,
+            "label": "Titel",
+            "tableView": true,
+            "disabled": true
+        },
+        {
+            "key": "omschrijving",
+            "type": "textarea",
+            "input": true,
+            "label": "Omschrijving",
+            "tableView": true,
+            "disabled": true
+        },
+        {
+            "key": "deadline",
+            "type": "textfield",
+            "input": true,
+            "label": "Deadline",
+            "tableView": true,
+            "disabled": true
+        },
+        {
+            "key": "submit",
+            "type": "button",
+            "input": true,
+            "label": "Oppakken",
+            "tableView": false,
+            "disableOnInvalid": true
+        }
+    ]
+}

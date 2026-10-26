@@ -1,0 +1,27 @@
+{
+    "$id": "todo.schema",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "ToDo",
+    "type": "object",
+    "properties": {
+        "titel": {
+            "type": "string",
+            "description": "Wat moet er gebeuren"
+        },
+        "omschrijving": {
+            "type": "string",
+            "description": "Toelichting bij de ToDo"
+        },
+        "deadline": {
+            "type": "string",
+            "description": "Uiterste datum"
+        },
+        "toelichtingAfronden": {
+            "type": "string",
+            "description": "Toelichting bij het afronden"
+        }
+    },
+    "required": [
+        "titel"
+    ]
+}

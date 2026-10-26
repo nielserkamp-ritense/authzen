@@ -1,0 +1,36 @@
+{
+    "display": "form",
+    "components": [
+        {
+            "key": "titel",
+            "type": "textfield",
+            "input": true,
+            "label": "Titel",
+            "tableView": true,
+            "disabled": true
+        },
+        {
+            "key": "omschrijving",
+            "type": "textarea",
+            "input": true,
+            "label": "Omschrijving",
+            "tableView": true,
+            "disabled": true
+        },
+        {
+            "key": "toelichtingAfronden",
+            "type": "textarea",
+            "input": true,
+            "label": "Toelichting",
+            "tableView": true
+        },
+        {
+            "key": "submit",
+            "type": "button",
+            "input": true,
+            "label": "Afronden",
+            "tableView": false,
+            "disableOnInvalid": true
+        }
+    ]
+}

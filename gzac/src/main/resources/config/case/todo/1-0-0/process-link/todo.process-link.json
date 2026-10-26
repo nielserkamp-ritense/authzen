@@ -1,0 +1,20 @@
+[
+    {
+        "activityId": "start-todo",
+        "activityType": "bpmn:StartEvent:start",
+        "processLinkType": "form",
+        "formDefinitionName": "todo.start"
+    },
+    {
+        "activityId": "oppakken",
+        "activityType": "bpmn:UserTask:create",
+        "processLinkType": "form",
+        "formDefinitionName": "todo.oppakken"
+    },
+    {
+        "activityId": "afronden",
+        "activityType": "bpmn:UserTask:create",
+        "processLinkType": "form",
+        "formDefinitionName": "todo.afronden"
+    }
+]

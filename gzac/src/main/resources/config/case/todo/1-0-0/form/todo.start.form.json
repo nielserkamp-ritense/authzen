@@ -1,0 +1,47 @@
+{
+    "display": "form",
+    "components": [
+        {
+            "key": "titel",
+            "type": "textfield",
+            "input": true,
+            "label": "Titel",
+            "tableView": true,
+            "validate": {
+                "required": true
+            }
+        },
+        {
+            "key": "omschrijving",
+            "type": "textarea",
+            "input": true,
+            "label": "Omschrijving",
+            "tableView": true
+        },
+        {
+            "key": "deadline",
+            "type": "datetime",
+            "input": true,
+            "label": "Deadline",
+            "tableView": true,
+            "format": "dd-MM-yyyy",
+            "enableTime": false,
+            "datePicker": {
+                "disableWeekends": false
+            },
+            "widget": {
+                "type": "calendar",
+                "enableTime": false,
+                "format": "dd-MM-yyyy"
+            }
+        },
+        {
+            "key": "submit",
+            "type": "button",
+            "input": true,
+            "label": "ToDo aanmaken",
+            "tableView": false,
+            "disableOnInvalid": true
+        }
+    ]
+}

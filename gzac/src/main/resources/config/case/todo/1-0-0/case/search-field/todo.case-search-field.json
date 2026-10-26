@@ -1,0 +1,20 @@
+{
+    "searchFields": [
+        {
+            "key": "titel",
+            "path": "doc:titel",
+            "dataType": "text",
+            "fieldType": "single",
+            "matchType": "like",
+            "title": "Titel"
+        },
+        {
+            "key": "assigneeFullName",
+            "path": "case:assigneeFullName",
+            "dataType": "text",
+            "fieldType": "single",
+            "matchType": "like",
+            "title": "Toegewezen aan"
+        }
+    ]
+}

@@ -1,0 +1,61 @@
+[
+    {
+        "key": "titel",
+        "path": "doc:titel",
+        "displayType": {
+            "type": "text",
+            "displayTypeParameters": {}
+        },
+        "sortable": true,
+        "order": 0,
+        "title": "Titel",
+        "exportable": true
+    },
+    {
+        "key": "createdBy",
+        "path": "case:createdBy",
+        "displayType": {
+            "type": "text",
+            "displayTypeParameters": {}
+        },
+        "sortable": true,
+        "order": 1,
+        "exportable": true
+    },
+    {
+        "key": "assigneeFullName",
+        "path": "case:assigneeFullName",
+        "displayType": {
+            "type": "text",
+            "displayTypeParameters": {}
+        },
+        "sortable": true,
+        "order": 2,
+        "exportable": true
+    },
+    {
+        "key": "createdOn",
+        "path": "case:createdOn",
+        "displayType": {
+            "type": "date",
+            "displayTypeParameters": {
+                "dateFormat": null
+            }
+        },
+        "sortable": true,
+        "defaultSort": "DESC",
+        "order": 3,
+        "exportable": true
+    },
+    {
+        "key": "status",
+        "path": "case:internalStatus",
+        "displayType": {
+            "type": "tags",
+            "displayTypeParameters": {}
+        },
+        "sortable": true,
+        "order": 4,
+        "exportable": false
+    }
+]

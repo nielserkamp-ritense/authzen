@@ -1,0 +1,54 @@
+[
+    {
+        "key": "widgets",
+        "widgets": [
+            {
+                "type": "fields",
+                "key": "todo",
+                "title": "ToDo",
+                "width": 2,
+                "highContrast": true,
+                "properties": {
+                    "columns": [
+                        [
+                            {
+                                "key": "titel",
+                                "title": "Titel",
+                                "value": "doc:/titel",
+                                "displayProperties": {
+                                    "type": "text"
+                                }
+                            },
+                            {
+                                "key": "deadline",
+                                "title": "Deadline",
+                                "value": "doc:/deadline",
+                                "displayProperties": {
+                                    "type": "text"
+                                }
+                            }
+                        ],
+                        [
+                            {
+                                "key": "omschrijving",
+                                "title": "Omschrijving",
+                                "value": "doc:/omschrijving",
+                                "displayProperties": {
+                                    "type": "text"
+                                }
+                            },
+                            {
+                                "key": "toelichtingAfronden",
+                                "title": "Toelichting afronden",
+                                "value": "doc:/toelichtingAfronden",
+                                "displayProperties": {
+                                    "type": "text"
+                                }
+                            }
+                        ]
+                    ]
+                }
+            }
+        ]
+    }
+]
