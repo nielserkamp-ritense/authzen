@@ -98,9 +98,14 @@ services:
       - MANAGER_BUNDLE_RECURSE=true
       - MANAGER_BUNDLE_SEND_TIMEOUT=60s
       - MANAGER_ADL_PG_URL=postgres://user:password@openftv-database:5432/openftv_adl?sslmode=disable
+      - MANAGER_OIDC_JWKS_URL=http://openftv-keycloak:8080/realms/openftv/protocol/openid-connect/certs  # validate the frontend's bearer tokens.
+      - MANAGER_OIDC_ISSUER=http://localhost:8088/realms/openftv  # issuer as seen by the browser.
+      - MANAGER_OIDC_AUDIENCE=openftv
     depends_on:
       openftv-database:
         condition: service_healthy
+      openftv-keycloak:
+        condition: service_healthy  # the JWKS is fetched at startup.
     volumes:
       - ./openftv-imports/manager:/tmp/data
     healthcheck:
@@ -357,11 +362,11 @@ services:
       test: [ "CMD", "python", "-c", "import requests; exit(requests.head('http://localhost:8000/admin/').status_code not in [200, 302])" ]
       interval: 30s
       timeout: 5s
-      retries: 3
+      retries: 5
       # This should allow for enough time for migrations to run before the max
       # retries have passed. This healthcheck in turn allows other containers
       # to wait for the database migrations.
-      start_period: 30s
+      start_period: 120s
     extra_hosts:
       - "host.docker.internal:host-gateway"
 

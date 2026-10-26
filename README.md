@@ -44,7 +44,7 @@ Use `--reset` after pulling changes to seed data or the Keycloak realm. For Open
 | GZAC frontend | http://localhost | see [Demo accounts](#demo-accounts) |
 | GZAC backend | http://localhost:8080 (debug port 5005) | |
 | GZAC Keycloak | http://localhost:8081/auth | `admin` / `admin` |
-| OpenFTV management UI | http://localhost:8180 | `admin-user`, `author-user`, `auditor-user` / `password` |
+| OpenFTV management UI | http://localhost:8180 | `author-user` (edit and publish policies), `admin-user` (settings only), `auditor-user` (read only) / `password` |
 | OpenFTV Keycloak | http://localhost:8088 | `admin` / `admin` |
 | OpenFTV manager API | http://localhost:9000 | no token needed; policy ids are UUIDs, the file name is in `metadata.title` |
 | OpenFTV PDP (AuthZEN) | http://localhost:8443/.well-known/authzen-configuration | |
@@ -240,7 +240,7 @@ The demo moment: change a role's rights in the OpenFTV manager and show the effe
 **Grant: SZW also handles DSO complaints**
 
 1. In GZAC (http://localhost), log in as `klachten-behandelaar-szw`. Show the case list: only SZW complaints. Open a DSO complaint URL: no access.
-2. In the OpenFTV management UI (http://localhost:8180), log in as `admin-user` / `password`.
+2. In the OpenFTV management UI (http://localhost:8180), log in as `author-user` / `password`. Only the author role can edit and publish policies; `admin-user` sees them read only.
 3. Open the policy `klachten.eerstlijnsklachten.klachtenbehandelaar-szw`. It only says which complaints SZW handles:
    ```rego
    klachten_scopes["ROLE_KLACHTEN_KLACHTBEHANDELAAR_SZW"] := {
@@ -288,6 +288,7 @@ To undo, edit the lines back and publish again, or run `./run.sh --reload-polici
 - **A denied form submission returns 400, not 403.** Valtimo's form-submission handler turns the `AccessDeniedException` into a generic 400 with a reference ID. Nothing is started.
 - **`ROLE_USER` still grants generic access.** Every demo user also has `ROLE_USER` (`valtimo.rego`). For klachten users that gives the user list, object-management configuration and the user dashboard, but no klachten data. Widget data on a klachten case is excluded there and granted per klachten role instead.
 - **The Valtimo permission files in `gzac/src/main/resources/config/global/permission/` are not used for decisions.** GZAC still imports them, but with AuthZEN on, every decision comes from the OpenFTV policies.
+- **The OpenFTV manager doesn't enforce its roles.** Only the management UI does: `author-user` edits and publishes, `admin-user` manages settings, `auditor-user` reads. The manager API lets any logged-in user, and calls without a token, change and publish policies. For example, `author-user` can publish although the manager's Cedar policy `publish_admin_only.cedar` allows only admin. The scripts rely on token-less access.
 - **If the PDP is unreachable, everything is denied**, also for admin. Each request waits for the PDP timeout first (about 3 seconds).
 
 ## Troubleshooting
