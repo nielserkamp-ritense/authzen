@@ -2,7 +2,8 @@
 Shared code for the klachten scripts: GZAC/Keycloak/Open Zaak access, the form data per task and the
 engine that walks a complaint through the process as the demo user of each task.
 
-Used by klachten-walkthrough.py and klachten-authz-check.py. Only the standard library is used.
+Used by klachten-walkthrough.py and klachten-authz-check.py. The GZAC, Open Zaak and start-form helpers
+are also used by the bezwaar scripts. Only the standard library is used.
 """
 
 import argparse
@@ -649,17 +650,23 @@ TASKS = {
 
 # ---- engine -------------------------------------------------------------------------------------
 
-def start_link(user, process_key):
-    links = api_ok("GET", f"/api/v1/case-definition/{CASE}/case-process-link", user)
-    pd = next((l for l in links if l["processDefinitionKey"] == process_key), None)
-    if not pd:
-        raise StepError(f"{user} cannot see process {process_key} on case {CASE}")
-    return pd["id"]["processDefinitionId"]
+def start_link(user, process_key, document_id=None, case=CASE):
+    """The process definition id of a process the user may start: a user action on a case (the case's
+    startable items, checked against that case, as the frontend does), or a new case."""
+    if document_id:
+        items = api_ok("GET", f"/api/v1/case/startable-item?caseDocumentId={document_id}", user)
+        pd_id = next((i["processDefinitionId"] for i in items if i["key"] == process_key), None)
+    else:
+        links = api_ok("GET", f"/api/v1/case-definition/{case}/case-process-link", user)
+        pd_id = next((l["id"]["processDefinitionId"] for l in links if l["processDefinitionKey"] == process_key), None)
+    if not pd_id:
+        raise StepError(f"{user} cannot see process {process_key} on " + (f"case {document_id}" if document_id else case))
+    return pd_id
 
 
-def submit_start_form(user, process_key, data, document_id=None):
-    pd_id = start_link(user, process_key)
-    query = f"documentId={document_id}" if document_id else f"documentDefinitionName={CASE}"
+def submit_start_form(user, process_key, data, document_id=None, case=CASE):
+    pd_id = start_link(user, process_key, document_id, case)
+    query = f"documentId={document_id}" if document_id else f"documentDefinitionName={case}"
     form = api_ok("GET", f"/api/v1/process-definition/{pd_id}/start-form?{query}", user)
     body = api_ok("POST", f"/api/v1/process-link/{form['processLinkId']}/form/submission?{query}", user,
                   merge(prefilled_data(form["properties"]["prefilledForm"]), data))
@@ -811,6 +818,16 @@ def check_end_state(ctx, report, since):
     if ctx.terugkoppeling:
         types = zaak_document_types(zaak["url"]) if zaak else []
         checks.append(("terugkoppeling document 'Bericht' linked to zaak", "Bericht" in types, types))
+    errors = unexpected_backend_errors(report, since)
+    checks.append(("no ERROR lines in backend log", not errors, len(errors)))
+    for name, passed, actual in checks:
+        (report.ok if passed else report.fail)(f"{name}" + ("" if passed else f" (got: {actual})"))
+    for line in errors[:5]:
+        print(f"     {short(line.splitlines()[0], 300)}")
+
+
+def unexpected_backend_errors(report, since):
+    """Backend ERROR entries since the given time, without the known Valtimo noise (reported as warnings)."""
     errors = []
     for error in backend_errors(since):
         noise = next((why for key, why in KNOWN_BACKEND_NOISE.items() if key in error), None)
@@ -818,8 +835,4 @@ def check_end_state(ctx, report, since):
             report.warn(f"known Valtimo log noise: {noise}")
         else:
             errors.append(error)
-    checks.append(("no ERROR lines in backend log", not errors, len(errors)))
-    for name, passed, actual in checks:
-        (report.ok if passed else report.fail)(f"{name}" + ("" if passed else f" (got: {actual})"))
-    for line in errors[:5]:
-        print(f"     {short(line.splitlines()[0], 300)}")
+    return errors
