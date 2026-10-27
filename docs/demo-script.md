@@ -14,7 +14,7 @@ In deze demo bepaalt niet GZAC zelf wie wat mag, maar een aparte policy-engine (
    scripts/demo-prepare.sh
    ```
 
-   Dit start alles schoon op (±5 minuten), zet de demogegevens klaar en controleert of elke gebruiker ziet wat dit draaiboek belooft. Aan het eind staat `✅ demo ready` en een lijst met de demozaken en hun URL's.
+   Dit start alles schoon op (3 à 5 minuten), zet de demogegevens klaar en controleert of elke gebruiker ziet wat dit draaiboek belooft. Aan het eind staat `✅ demo ready` en een lijst met de demozaken en hun URL's.
 2. Open **één privévenster (of browserprofiel) per gebruiker**. Keycloak onthoudt per browser maar één ingelogde gebruiker. Log vooraf in op http://localhost; het wachtwoord is gelijk aan de gebruikersnaam.
 
    | Venster | Gebruiker | Wat staat klaar |
