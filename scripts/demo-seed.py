@@ -22,7 +22,7 @@ import pathlib
 import sys
 import time
 
-from klachten_api import Report, StepError, api, psql, route_args, run_route
+from klachten_api import Report, StepError, api, open_tasks, psql, route_args, run_route
 
 
 def load(name, file):
@@ -122,13 +122,20 @@ def sees_nothing_of(user, case):
     return status != 200 or body.get("totalElements", 0) == 0
 
 
+def sees_task(user, name):
+    tasks = {t[0] for t in open_tasks(find(name))}
+    return bool(tasks & kc.paged_ids("POST", "/api/v3/task?filter=ALL", user, {}))
+
+
 CLAIMS = [
     ("klachten-behandelaar-szw lists 'Demo SZW'", lambda: listed("klachten-behandelaar-szw", KLACHTEN, "Demo SZW"), True),
+    ("klachten-behandelaar-szw has a task on 'Demo SZW'", lambda: sees_task("klachten-behandelaar-szw", "Demo SZW"), True),
     ("klachten-behandelaar-szw doesn't list 'Demo DSO'", lambda: listed("klachten-behandelaar-szw", KLACHTEN, "Demo DSO"), False),
     ("klachten-behandelaar-szw can't open 'Demo DSO' by URL", lambda: opens("klachten-behandelaar-szw", "Demo DSO"), False),
     ("klachten-kcc lists 'Demo SZW' and 'Demo DSO'",
      lambda: listed("klachten-kcc", KLACHTEN, "Demo SZW") and listed("klachten-kcc", KLACHTEN, "Demo DSO"), True),
     ("klachten-kcc can't add a note (read only)", lambda: may_add_note("klachten-kcc", "Demo SZW"), False),
+    ("klachten-kcc has no actions on 'Demo SZW'", lambda: actions("klachten-kcc", "Demo SZW"), []),
     ("bezwaar-behandelaar's actions on 'Demo open'", lambda: actions("bezwaar-behandelaar", "Demo open"),
      ["afsluiten-bezwaar", "change-name", "patch-zaak"]),
     ("bezwaar-behandelaar has no actions on 'Demo afgerond'", lambda: actions("bezwaar-behandelaar", "Demo afgerond"), []),
@@ -139,7 +146,8 @@ CLAIMS = [
     ("todo-anna lists 'Boodschappen bestellen' and 'Rapport nalezen'",
      lambda: listed(tw.ANNA, tw.CASE, "Boodschappen bestellen") and listed(tw.ANNA, tw.CASE, "Rapport nalezen"), True),
     ("todo-anna doesn't list 'Presentatie voorbereiden'", lambda: listed(tw.ANNA, tw.CASE, "Presentatie voorbereiden"), False),
-    ("todo-anna can't change 'Rapport nalezen' (assigned to bram)", lambda: may_add_note(tw.ANNA, "Rapport nalezen"), False),
+    ("todo-anna opens 'Rapport nalezen' (assigned to bram)", lambda: opens(tw.ANNA, "Rapport nalezen"), True),
+    ("todo-anna can't change 'Rapport nalezen'", lambda: may_add_note(tw.ANNA, "Rapport nalezen"), False),
     ("todo-bram lists 'Presentatie voorbereiden' and 'Rapport nalezen'",
      lambda: listed(tw.BRAM, tw.CASE, "Presentatie voorbereiden") and listed(tw.BRAM, tw.CASE, "Rapport nalezen"), True),
     ("todo-bram doesn't list 'Boodschappen bestellen'", lambda: listed(tw.BRAM, tw.CASE, "Boodschappen bestellen"), False),
