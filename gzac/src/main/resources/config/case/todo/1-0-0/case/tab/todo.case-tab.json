@@ -1,0 +1,28 @@
+[
+    {
+        "key": "widgets",
+        "name": "ToDo",
+        "type": "widgets",
+        "contentKey": "-",
+        "showTasks": true
+    },
+    {
+        "name": "Summary",
+        "key": "summary",
+        "type": "standard",
+        "contentKey": "summary"
+    },
+    {
+        "name": "Progress",
+        "key": "progress",
+        "type": "standard",
+        "contentKey": "progress",
+        "showTasks": true
+    },
+    {
+        "name": "Notes",
+        "key": "notes",
+        "type": "standard",
+        "contentKey": "notes"
+    }
+]

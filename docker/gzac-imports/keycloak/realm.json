@@ -1143,6 +1143,36 @@
     "requiredActions" : [ ],
     "realmRoles" : [ "ROLE_USER", "default-roles-valtimo", "ROLE_BEZWAAR_ADVISEUR" ],
     "groups" : [ ]
+  }, {
+    "username" : "todo-anna",
+    "firstName" : "Anna",
+    "lastName" : "ToDo Demo",
+    "email" : "todo-anna@example.com",
+    "emailVerified" : true,
+    "enabled" : true,
+    "credentials" : [ {
+      "type" : "password",
+      "value" : "todo-anna",
+      "temporary" : false
+    } ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ROLE_USER", "default-roles-valtimo" ],
+    "groups" : [ ]
+  }, {
+    "username" : "todo-bram",
+    "firstName" : "Bram",
+    "lastName" : "ToDo Demo",
+    "email" : "todo-bram@example.com",
+    "emailVerified" : true,
+    "enabled" : true,
+    "credentials" : [ {
+      "type" : "password",
+      "value" : "todo-bram",
+      "temporary" : false
+    } ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "ROLE_USER", "default-roles-valtimo" ],
+    "groups" : [ ]
   } ],
   "scopeMappings" : [ {
     "clientScope" : "offline_access",

@@ -1,0 +1,7 @@
+[
+    {
+        "processDefinitionKey": "todo",
+        "canInitializeDocument": true,
+        "startableByUser": true
+    }
+]

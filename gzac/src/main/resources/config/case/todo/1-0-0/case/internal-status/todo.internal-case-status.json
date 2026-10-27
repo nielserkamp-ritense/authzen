@@ -1,0 +1,23 @@
+[
+    {
+        "key": "open",
+        "title": "Open",
+        "retentionPeriodInDays": -1,
+        "visibleInCaseListByDefault": true,
+        "color": "BLUE"
+    },
+    {
+        "key": "in-behandeling",
+        "title": "In behandeling",
+        "retentionPeriodInDays": -1,
+        "visibleInCaseListByDefault": true,
+        "color": "PURPLE"
+    },
+    {
+        "key": "afgerond",
+        "title": "Afgerond",
+        "retentionPeriodInDays": -1,
+        "visibleInCaseListByDefault": true,
+        "color": "GRAY"
+    }
+]

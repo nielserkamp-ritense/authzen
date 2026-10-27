@@ -1,0 +1,5 @@
+id: "todo"
+language: "rego"
+metadata:
+  description: "ToDo rights for every logged-in user, by relation to the ToDo"
+  tags: ["todo"]

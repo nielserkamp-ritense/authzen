@@ -1,6 +1,6 @@
 # AuthZEN + GZAC proof of concept
 
-A local demo of GZAC (Valtimo) with fully externalized authorization. GZAC asks an [OpenFTV](https://gitlab.com/digilab.overheid.nl/ecosystem/ftv/open-ftv) policy decision point (PDP) through the [AuthZEN](https://openid.net/wg/authzen/) API instead of using its built-in permissions. The demo has two zaak-based processes: the klachten (complaints) process of Gemeente Den Haag with one role per afdeling, and a bezwaar process with a behandelaar and a juridisch adviseur. Each has its own policy.
+A local demo of GZAC (Valtimo) with fully externalized authorization. GZAC asks an [OpenFTV](https://gitlab.com/digilab.overheid.nl/ecosystem/ftv/open-ftv) policy decision point (PDP) through the [AuthZEN](https://openid.net/wg/authzen/) API instead of using its built-in permissions. The demo has three processes, each with its own policy: two zaak-based ones, the klachten (complaints) process of Gemeente Den Haag with one role per afdeling and a bezwaar process with a behandelaar and a juridisch adviseur, and a ToDo without a zaak, where access follows the user's relation to the ToDo (creator or assignee) instead of a role.
 
 ## Prerequisites
 
@@ -76,12 +76,14 @@ All demo users log in to GZAC at http://localhost. The password is the same as t
 | `klachten-coordinator-vth` | `ROLE_KLACHTEN_KLACHTENCOORDINATOR_VTH` | Klachtencoördinator VTH |
 | `bezwaar-behandelaar` | `ROLE_BEZWAAR_BEHANDELAAR` | Bezwaarbehandelaar: creates and handles bezwaren |
 | `bezwaar-adviseur` | `ROLE_BEZWAAR_ADVISEUR` | Juridisch adviseur: reads bezwaren, adds notes and documents |
+| `todo-anna` | `ROLE_USER` only | ToDo demo user |
+| `todo-bram` | `ROLE_USER` only | ToDo demo user |
 
 Generic accounts: `admin` / `admin`, `developer` / `developer` and `user` / `user`.
 
 ## Roles and rights
 
-Klachten and bezwaar roles don't see each other's cases. `ROLE_USER`, which every demo user has, gives no rights on any case: only generic things such as the dashboard, the user list and tasks of the user's own group or team (`valtimo.rego`).
+Klachten and bezwaar roles don't see each other's cases. `ROLE_USER`, which every demo user has, gives generic things such as the dashboard, the user list and tasks of the user's own group or team (`valtimo.rego`), and the ToDo rights (`todo.rego`), but no rights on a klachten or bezwaar case.
 
 ### Klachten
 
@@ -117,6 +119,21 @@ Every bezwaar decision comes from `bezwaar.rego` and the role files `bezwaar.*.r
 
 `scripts/bezwaar-authz-check.py` checks this table (see [Bezwaar walkthrough and check](#bezwaar-walkthrough-and-check)).
 
+### ToDo
+
+Every ToDo decision comes from `todo.rego`, for `ROLE_USER`, so for every logged-in user. It doesn't look at a role or a zaak, but at the user's relation to the ToDo:
+
+| The user is | Unassigned ToDo | Assigned to its creator | Assigned to someone else |
+|---|---|---|---|
+| Its creator | sees and changes it | sees and changes it | sees it (read only) |
+| Its assignee | – | (the creator) | sees and changes it |
+| Anyone else | nothing | nothing | nothing |
+
+- "Changes" covers editing it, adding notes, claiming and completing its tasks, and assigning or unassigning it. Anyone may create a ToDo.
+- The tasks have no candidate group: who may do them follows from the ToDo.
+- Admin sees every ToDo through its generic rights.
+- `scripts/todo-authz-check.py` checks this table (see [ToDo walkthrough and check](#todo-walkthrough-and-check)).
+
 ### Policies
 
 All policies are in `docker/openftv-imports/manager/policies/`, in one Rego package (`authz`). The manager loads each file as a separate policy, with the tags from its `.meta` file.
@@ -127,6 +144,7 @@ All policies are in `docker/openftv-imports/manager/policies/`, in one Rego pack
 | `klachten.rego` | The rights per kind of klachten role, and the rules that turn every scope into permissions |
 | `bezwaar.*.rego` | One per bezwaar role: its kind of rights and the user actions (`acties`) it may start |
 | `bezwaar.rego` | The rights per kind of bezwaar role, the afgerond rule, and the rules that turn every scope into permissions |
+| `todo.rego` | The ToDo rights of `ROLE_USER`, as a table of permissions on the creator and assignee |
 | `valtimo.rego` | Rights for `ROLE_ADMIN` (everything), and the generic non-case rights of `ROLE_USER`, as a table of permissions |
 | `authz.rego` | Shared helpers, resource types, and the response GZAC reads (`allow` and `context.filter`) |
 
@@ -152,7 +170,18 @@ bezwaar_scopes["ROLE_BEZWAAR_BEHANDELAAR"] := {
 }
 ```
 
-The klachten files are tagged `klachten`, the bezwaar files `bezwaar`, and `valtimo.rego` `valtimo`. The PDP bundle (`docker/openftv-imports/manager/bundles/pdp1.yaml`) takes all three tags.
+`todo.rego` compares the ToDo with the current user. GZAC stores the creator's **email** in `createdBy` and the assignee's **username** in `assigneeId`, so the conditions use the placeholders `${currentUserEmail}` and `${currentUsername}`:
+
+```rego
+creator := field("createdBy", "==", "${currentUserEmail}")
+assignee := field("assigneeId", "==", "${currentUsername}")
+unassigned := field("assigneeId", "==", null)
+
+viewer := [[is_todo, creator], [is_todo, assignee]]                  # each list is one permission (AND);
+editor := [[is_todo, creator, unassigned], [is_todo, assignee]]      # the permissions together are OR
+```
+
+The klachten files are tagged `klachten`, the bezwaar files `bezwaar`, `todo.rego` `todo`, and `valtimo.rego` `valtimo`. The PDP bundle (`docker/openftv-imports/manager/bundles/pdp1.yaml`) takes all four tags.
 
 After changing a policy file, check it and load it:
 
@@ -184,7 +213,7 @@ To move to a newer release:
 2. In this repo: `git add open-ftv` to point the submodule at it.
 3. Compare the `openftv-*` env in `docker/docker-compose.yaml` with the flags in `open-ftv/apps/{pdp,manager,management-interface}/config/config.go`. Each flag `x-y` is read from `PDP_X_Y` or `MANAGER_X_Y`, and an env var without a flag is ignored without a warning.
 4. Set `OPA_IMAGE` in `scripts/policy-check.py` to the `open-policy-agent/opa` version in `open-ftv/go.mod`.
-5. Check it: `./run.sh --reset -d`, `scripts/policy-check.py`, `scripts/policy-filter-dump.py --compare` against a dump from before the update, `scripts/klachten-authz-check.py`, `scripts/klachten-walkthrough.py`, `scripts/bezwaar-authz-check.py`, `scripts/bezwaar-walkthrough.py`, and the [live policy change](#live-policy-change).
+5. Check it: `./run.sh --reset -d`, `scripts/policy-check.py`, `scripts/policy-filter-dump.py --compare` against a dump from before the update, `scripts/klachten-authz-check.py`, `scripts/klachten-walkthrough.py`, `scripts/bezwaar-authz-check.py`, `scripts/bezwaar-walkthrough.py`, `scripts/todo-authz-check.py`, `scripts/todo-walkthrough.py`, and the [live policy change](#live-policy-change).
 
 ### Logs and decisions
 
@@ -196,7 +225,7 @@ Where the seed data lives:
 
 | Path | Contents |
 |---|---|
-| `gzac/src/main/resources/config/` | The case definitions `eerstelijns-klachten` and `bezwaar` (BPMN, forms, tabs, zaaktype link), plugin configurations and roles. GZAC deploys them on startup. |
+| `gzac/src/main/resources/config/` | The case definitions `eerstelijns-klachten`, `bezwaar` (both with a zaaktype link) and `todo` (without), with their BPMN, forms and tabs, plus plugin configurations and roles. GZAC deploys them on startup. |
 | `docker/gzac-imports/` | Keycloak realm with users, and the Open Zaak, Objecten, Objecttypen and Open Notificaties database seeds |
 | `docker/gzac-imports/gzac/choice-fields.sql` | GZAC choice fields (diensten, autorisatiegroepen, sectoren/afdelingen, producten, thema's, oordeel, behoorlijkheidsnormen) |
 | `docker/openftv-imports/manager/policies/` | Rego policies, see [Policies](#policies) |
@@ -293,6 +322,34 @@ scripts/bezwaar-authz-check.py --user bezwaar-adviseur --check actions --verbose
 
 After a live policy change, `--grant USER=CHECK[,CHECK]` expects those checks to be allowed on the open bezwaar, e.g. `--grant bezwaar-adviseur=actions,afsluiten`.
 
+## ToDo walkthrough and check
+
+The ToDo case (`gzac/src/main/resources/config/case/todo/`) has no zaak, so it has no documents tab. Its process:
+
+1. Anyone creates a ToDo with the start form (titel, omschrijving, deadline). Status "Open".
+2. Task "Oppakken", then status "In behandeling".
+3. Task "Afronden", then status "Afgerond".
+
+The creator can assign the ToDo to a colleague in the case header. The open task then moves to that colleague.
+
+`scripts/todo-walkthrough.py` walks this through the GZAC API: `todo-anna` creates a ToDo and picks it up, assigns it to `todo-bram`, and bram completes it. It checks along the way that bram doesn't see it before it is assigned to him, and that anna can still read it but no longer change it. At the end it checks the status, that there is no zaak, Operaton incidents, and ERROR lines in the backend log.
+
+```bash
+scripts/todo-walkthrough.py
+scripts/todo-walkthrough.py --seed      # leave three demo ToDos for a walkthrough in the UI
+```
+
+`--seed` leaves "Boodschappen bestellen" (anna's, unassigned), "Rapport nalezen" (anna's, assigned to bram) and "Presentatie voorbereiden" (bram's). Run it after a fresh `./run.sh --reset`, so the lists only show these.
+
+`scripts/todo-authz-check.py` checks the [ToDo table](#todo) for `todo-anna`, `todo-bram`, `user` and `klachten-kcc` (about 10 seconds). Every run seeds three ToDos by anna, each with a note: `unassigned`, `self-assigned` (to anna) and `assigned` (to bram). For each user × seed it checks the list, open, notes, the widget, the open task (list, open, claim), adding a note, assigning the ToDo to themselves, and (once) creating a ToDo. Claims and assignments that succeed are undone right away.
+
+```bash
+scripts/todo-authz-check.py
+scripts/todo-authz-check.py --user todo-anna --verbose
+```
+
+After a live policy change, `--grant USER=SEED:CHECK[,CHECK]` expects those checks to be allowed, e.g. `--grant todo-anna=assigned:note-create,claim,assign`.
+
 ## Live policy change
 
 The demo moment: change a role's rights in the OpenFTV manager and show the effect in GZAC, without a release or a restart. A change is active about a second after "Publiceren"; there is no cache in GZAC or the PDP.
@@ -324,12 +381,19 @@ The demo moment: change a role's rights in the OpenFTV manager and show the effe
 2. In the manager, edit `bezwaar.adviseur`: change `"acties": [],` to `"acties": ["afsluiten-bezwaar"],`. Opslaan, then Publiceren.
 3. Refresh GZAC: the adviseur now has the user action "Afsluiten bezwaar", and only that one. On an afgerond bezwaar it still has nothing: the afgerond rule is separate.
 
+**Grant: the creator keeps changing a ToDo after assigning it**
+
+1. Run `scripts/todo-walkthrough.py --seed`. Log in to GZAC as `todo-anna` and open "Rapport nalezen", which she assigned to bram: she can read it, but not add a note or do its task.
+2. In the manager, edit `todo`: change `editor := [[is_todo, creator, unassigned], [is_todo, assignee]]` to `editor := [[is_todo, creator], [is_todo, assignee]]`. Opslaan, then Publiceren.
+3. Refresh GZAC: anna can change the ToDo again, although it is still assigned to bram.
+
 **Prove it and undo it**
 
 ```bash
 scripts/klachten-authz-check.py --user klachten-behandelaar-szw --grant klachten-behandelaar-szw=DSO
 scripts/klachten-authz-check.py --user klachten-kcc --revoke klachten-kcc
 scripts/bezwaar-authz-check.py --user bezwaar-adviseur --grant bezwaar-adviseur=actions,afsluiten
+scripts/todo-authz-check.py --user todo-anna --grant todo-anna=assigned:note-create,claim,assign
 ```
 
 To undo, edit the lines back and publish again, or run `./run.sh --reload-policies` to reset every policy to the files in git (about 30 seconds). The "Versies" panel in the manager can't be used to undo: it only records versions of policies with status "accepted" when they are published, and the UI has no way to set that status (only the API: `PATCH /v1/policy/{id}/status`).
@@ -357,8 +421,11 @@ To undo, edit the lines back and publish again, or run `./run.sh --reload-polici
 - **The "Zaak bijwerken" form keeps the dev defaults** for geometry and betalingsindicatie, so they are sent to Open Zaak too.
 - **Upstream endpoints that skip authorization.** Valtimo serves some endpoints without checking the case, so no policy can close them. A logged-in user who knows a process instance ID can read its variables (`POST /api/v1/process-instance/{id}/variables`) and its state, history and BPMN (`GET /api/v1/process/{id}`, `/history`, `/activities`, `/xml`). The authorization check reports them. The tab list and the case's process links are readable too, but they are configuration only.
 - **A denied form submission returns 400, not 403.** Valtimo's form-submission handler turns the `AccessDeniedException` into a generic 400 with a reference ID. Nothing is started.
-- **`ROLE_USER` still grants generic access.** Every demo user also has `ROLE_USER` (`valtimo.rego`). That gives the user list, object-management configuration, the user dashboard and tasks of the user's own group or team, but nothing on a case: case definitions, cases, notes, zaak documents, widgets and user actions come only from the klachten and bezwaar policies.
-- **The Valtimo permission files in `gzac/src/main/resources/config/global/permission/` are not used for decisions.** GZAC still imports them, but with AuthZEN on, every decision comes from the OpenFTV policies.
+- **`ROLE_USER` still grants generic access.** Every demo user also has `ROLE_USER` (`valtimo.rego`). That gives the user list, object-management configuration, the user dashboard and tasks of the user's own group or team, but nothing on a klachten or bezwaar case: those rights come only from the klachten and bezwaar policies. The ToDo rights are also on `ROLE_USER` (`todo.rego`).
+- **Admin sees every ToDo.** The ToDo rules are for `ROLE_USER`; admin keeps its generic rights on every case.
+- **Unassigning a ToDo as its assignee shows an error, but it works.** Valtimo reloads the ToDo after the change with the user's own rights, which the user no longer has, and then answers 400. To hand a ToDo back without the error, assign it to its creator.
+- **A refused assign or unassign returns 400, not 403**, like a refused form submission. Nothing changes.
+- **Whether a user can be assigned a ToDo only depends on it being a ToDo.** Valtimo checks the user it is assigned to with that user's roles, but with the current user's placeholders, so a creator or assignee rule can't be used there.
 - **The OpenFTV manager doesn't enforce its roles.** Only the management UI does: `author-user` edits and publishes, `admin-user` manages settings, `auditor-user` reads. The manager API lets any logged-in user, and calls without a token, change and publish policies. For example, `author-user` can publish although the manager's Cedar policy `publish_admin_only.cedar` allows only admin. The scripts rely on token-less access.
 - **If the PDP is unreachable, everything is denied**, also for admin. Each request waits for the PDP timeout first (about 3 seconds).
 
