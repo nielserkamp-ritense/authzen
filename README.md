@@ -34,6 +34,7 @@ The first run builds the GZAC backend (including Valtimo) and the OpenFTV images
 | `./run.sh --stop` | Stop the stack. Containers and data are kept; `./run.sh` resumes. |
 | `./run.sh --down` | Remove all containers, networks and volumes. Nothing persists. |
 | `./run.sh --reset` | `--down`, then start fresh. Combine with `-d` to run in the background. |
+| `./run.sh --cache` | Start GZAC with the [decision cache](#decision-cache) on. Combine with `-d` or `--reset`. Without the flag the cache is off. |
 | `./run.sh --reload-policies` | Reload the OpenFTV policies from `docker/openftv-imports/manager/policies`. Only the OpenFTV database and manager are recreated, so GZAC data is kept. The PDP picks up the policies within about 30 seconds. |
 | `./run.sh --help` | Show usage. |
 
@@ -221,7 +222,26 @@ To move to a newer release:
 
 - **PDP log:** `docker logs authzen_openftv_pdp` shows warnings and errors only (`PDP_LOG_LEVEL: warn`). At `info` the PDP logs every single decision.
 - **Manager log:** `docker logs authzen_openftv_manager` (JSON). It shows the seeding and every publication ("bundle-runner").
-- **Decision log:** the PDP stores every request it answers, in the OpenFTV database `openftv_adl` (table `decision`, the full request in `body`). The management UI shows it under "Logboek". It is emptied by `--reload-policies` and `--reset`.
+- **Decision log:** the PDP stores every request it answers, in the OpenFTV database `openftv_adl` (table `decision`, the full request in `body`). The management UI shows it under "Logboek". It is emptied by `--reload-policies` and `--reset`. With the [decision cache](#decision-cache) on, it only shows the questions that reached the PDP.
+
+### Decision cache
+
+GZAC can keep the PDP's answers for a while, so a page that asks the same question many times only asks the PDP once. It is **off by default**, and the demo runs without it. `./run.sh --cache` turns it on, and `AUTHZEN_CACHE_TTL` (e.g. `AUTHZEN_CACHE_TTL=30s ./run.sh -d --cache`) changes how long an answer is kept. The default is 60 seconds.
+
+- **What is cached:** the answer to an identical AuthZEN request: the same subject (user with roles and teams), resource, action and context. Users never share an answer, and a changed role set is a new question.
+- **What isn't cached:** a failed call (PDP unreachable, request not mappable). The next call asks the PDP again.
+- **For a batch,** only the questions that aren't cached go to the PDP.
+- **The trade-off:** a policy change takes effect only when the cached answers have expired, so up to the TTL after "Publiceren". `--reload-policies` doesn't clear the cache. Restarting GZAC does (`./run.sh -d`, which also turns the cache off again).
+- **Settings:** `valtimo.authorization.authzen.cache.enabled`, `.ttl` and `.max-size` (default 10 000 answers), in the `authorization-authzen` module of the `valtimo` fork.
+
+Measured locally with `scripts/demo-seed.py --check`, run twice in a row:
+
+| | PDP calls, 1st run | PDP calls, 2nd run | Time per run |
+|---|---|---|---|
+| Cache off | 61 | 61 | ±5 s |
+| Cache on | 29 | 4 | ±4 s |
+
+With the cache on, the live change of SZW to DSO showed after 26 seconds instead of half a second. Here the PDP runs on the same machine, so the time saved is small. The saving in calls matters most when the PDP is remote or busy.
 
 Where the seed data lives:
 
@@ -354,7 +374,7 @@ After a live policy change, `--grant USER=SEED:CHECK[,CHECK]` expects those chec
 
 ## Live policy change
 
-The demo moment: change a role's rights in the OpenFTV manager and show the effect in GZAC, without a release or a restart. A change is active about a second after "Publiceren"; there is no cache in GZAC or the PDP.
+The demo moment: change a role's rights in the OpenFTV manager and show the effect in GZAC, without a release or a restart. A change is active about a second after "Publiceren", because by default there is no cache in GZAC or the PDP. With the optional [decision cache](#decision-cache) on (`./run.sh --cache`), it takes up to a minute, so give the demo without it.
 
 **Grant: SZW also handles DSO complaints**
 
@@ -429,6 +449,7 @@ To undo, edit the lines back and publish again, or run `./run.sh --reload-polici
 - **A refused assign or unassign returns 400, not 403**, like a refused form submission. Nothing changes.
 - **Whether a user can be assigned a ToDo only depends on it being a ToDo.** Valtimo checks the user it is assigned to with that user's roles, but with the current user's placeholders, so a creator or assignee rule can't be used there.
 - **The OpenFTV manager doesn't enforce its roles.** Only the management UI does: `author-user` edits and publishes, `admin-user` manages settings, `auditor-user` reads. The manager API lets any logged-in user, and calls without a token, change and publish policies. For example, `author-user` can publish although the manager's Cedar policy `publish_admin_only.cedar` allows only admin. The scripts rely on token-less access.
+- **With the decision cache on, a policy change is delayed by up to the TTL,** and only restarting GZAC clears the cache. That's why it is off by default.
 - **If the PDP is unreachable, everything is denied**, also for admin. Each request waits for the PDP timeout first (about 3 seconds).
 
 ## Troubleshooting

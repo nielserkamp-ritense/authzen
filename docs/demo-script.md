@@ -36,6 +36,7 @@ In deze demo bepaalt niet GZAC zelf wie wat mag, maar een aparte policy-engine (
    ```
 
    Staat er geen `✅ demo ready`? Draai dan `scripts/demo-prepare.sh` opnieuw.
+5. De demo draait zonder cache, en dat is de standaard. Start niet met `./run.sh --cache`: dan duurt de live wijziging tot een minuut in plaats van een seconde.
 
 ## Draaiboek
 
