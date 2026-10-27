@@ -3,4 +3,4 @@
 	url = https://github.com/nielserkamp-ritense/valtimo.git
 [submodule "open-ftv"]
 	path = open-ftv
-	url = https://github.com/nielserkamp-ritense/open-ftv.git
+	url = https://gitlab.com/digilab.overheid.nl/ecosystem/ftv/open-ftv.git

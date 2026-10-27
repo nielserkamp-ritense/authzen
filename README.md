@@ -207,11 +207,11 @@ GZAC frontend ──> GZAC backend ──AuthZEN──> OpenFTV PDP <──bundl
 
 ### OpenFTV version
 
-The demo runs on OpenFTV **v0.5.2** (release of 2026-10-09). The `open-ftv` submodule points to the branch `poc/authzen-v0.5.2` of the fork [nielserkamp-ritense/open-ftv](https://github.com/nielserkamp-ritense/open-ftv). That branch is the upstream tag without changes. Upstream is [gitlab.com/digilab.overheid.nl/ecosystem/ftv/open-ftv](https://gitlab.com/digilab.overheid.nl/ecosystem/ftv/open-ftv); its release notes are in the annotated tags.
+The demo runs on OpenFTV **v0.5.2** (release of 2026-10-09). The `open-ftv` submodule points to that release tag in the upstream repository [gitlab.com/digilab.overheid.nl/ecosystem/ftv/open-ftv](https://gitlab.com/digilab.overheid.nl/ecosystem/ftv/open-ftv), without changes. The release notes are in the annotated tags.
 
 To move to a newer release:
 
-1. In `open-ftv`: add upstream as a remote (`git remote add upstream <url>`), `git fetch upstream --tags`, create the branch `poc/authzen-<tag>` from the tag, and push it to the fork.
+1. In `open-ftv`: `git fetch --tags` and `git checkout <tag>` (e.g. `v0.6.0`).
 2. In this repo: `git add open-ftv` to point the submodule at it.
 3. Compare the `openftv-*` env in `docker/docker-compose.yaml` with the flags in `open-ftv/apps/{pdp,manager,management-interface}/config/config.go`. Each flag `x-y` is read from `PDP_X_Y` or `MANAGER_X_Y`, and an env var without a flag is ignored without a warning.
 4. Set `OPA_IMAGE` in `scripts/policy-check.py` to the `open-policy-agent/opa` version in `open-ftv/go.mod`.
