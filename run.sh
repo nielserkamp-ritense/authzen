@@ -18,6 +18,8 @@ Usage: ./run.sh [option]
   --stop         Stop the stack. Containers and data are kept; ./run.sh resumes.
   --down         Remove containers, networks and volumes. Nothing persists.
   --reset        Same as --down, then start the stack fresh (combine with -d to detach).
+  --cache        Start GZAC with the AuthZEN decision cache on: PDP answers are reused for 60 seconds, so a
+                 policy change takes up to a minute to show. Off without this flag. Combine with -d or --reset.
   --reload-policies
                  Reload the OpenFTV policies from docker/openftv-imports/manager/policies. Only the OpenFTV
                  database and manager are recreated; GZAC state is kept. The PDP picks them up within ~30 seconds.
@@ -52,16 +54,21 @@ Demo stack started in the background. Main URLs:
 Follow the backend logs with:
   docker compose -f docker/docker-compose.yaml --profile gzac logs -f gzac-backend
 EOF
+    if $cache; then
+        echo "AuthZEN decision cache is ON: a policy change takes up to a minute to show in GZAC."
+    fi
 }
 
 detach=false
 reset=false
+cache=false
 action=up
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
         -d|--detach) detach=true ;;
         --reset) reset=true ;;
+        --cache) cache=true ;;
         --stop) action=stop ;;
         --down) action=down ;;
         --reload-policies) action=reload-policies ;;
@@ -72,6 +79,9 @@ while [[ $# -gt 0 ]]; do
 done
 
 check_prerequisites
+
+# Always set, so a value left in the shell can't switch the cache on (see docker-compose.yaml).
+export AUTHZEN_CACHE_ENABLED=$cache
 
 case "$action" in
     stop)
