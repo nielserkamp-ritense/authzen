@@ -23,6 +23,8 @@ For an existing clone without submodules, run `git submodule update --init` firs
 
 The first run builds the GZAC backend (including Valtimo) and the OpenFTV images. This takes about 8 minutes. Later runs reuse the Docker cache. The stack is ready when GZAC opens at http://localhost.
 
+**Giving the demo:** follow the 10-minute script in [`docs/demo-script.md`](docs/demo-script.md) (Dutch). `scripts/demo-prepare.sh` resets the stack, seeds the demo cases and checks that every user sees what the script says; `scripts/demo-seed.py --check` repeats the check just before presenting.
+
 ## Commands
 
 | Command | What it does |
