@@ -15,19 +15,7 @@ In deze demo bepaalt niet GZAC zelf wie wat mag, maar een aparte policy-engine (
    ```
 
    Dit start alles schoon op (3 à 5 minuten), zet de demogegevens klaar en controleert of elke gebruiker ziet wat dit draaiboek belooft. Aan het eind staat `✅ demo ready` en een lijst met de demozaken en hun URL's.
-2. Open **één privévenster (of browserprofiel) per gebruiker**. Keycloak onthoudt per browser maar één ingelogde gebruiker. Log vooraf in op http://localhost; het wachtwoord is gelijk aan de gebruikersnaam.
-
-   | Venster | Gebruiker | Wat staat klaar |
-   |---|---|---|
-   | 1 · SZW | `klachten-behandelaar-szw` | Zaaklijst klachten |
-   | 2 · KCC | `klachten-kcc` | Zaaklijst klachten |
-   | 3 · Behandelaar | `bezwaar-behandelaar` | Bezwaar "Demo open" |
-   | 4 · Adviseur | `bezwaar-adviseur` | Bezwaar "Demo open" |
-   | 5 · Anna | `todo-anna` | Zaaklijst ToDo |
-   | 6 · Bram | `todo-bram` | Zaaklijst ToDo |
-   | 7 · Beheer | `author-user` / `password` op http://localhost:8180 | Policy `klachten.eerstlijnsklachten.klachtenbehandelaar-szw` geopend |
-
-   Gebruik in de beheeromgeving `author-user`. Met `admin-user` kun je policies niet bewerken.
+2. Open **één privévenster (of browserprofiel) per gebruiker** en log vooraf in. Keycloak onthoudt per browser maar één ingelogde gebruiker. Per onderdeel van het draaiboek staat welk venster, welke URL en welke gebruiker je nodig hebt.
 3. Kopieer de URL van **"Demo DSO"** uit de uitvoer van stap 1. Die heb je nodig in venster 1.
 4. Vlak voor je begint:
 
@@ -48,6 +36,9 @@ Laat eventueel het plaatje uit de README zien (*How it fits together*).
 
 ### 1:00–3:30 · Klachten: één rol per afdeling
 
+- Venster 1 · SZW: http://localhost, `klachten-behandelaar-szw` / `klachten-behandelaar-szw`
+- Venster 2 · KCC: http://localhost, `klachten-kcc` / `klachten-kcc`
+
 | Venster | Doen | Laten zien |
 |---|---|---|
 | 1 · SZW | Toon de zaaklijst klachten. | Wel **"Demo SZW"**, niet **"Demo DSO"**. |
@@ -59,9 +50,12 @@ Laat eventueel het plaatje uit de README zien (*How it fits together*).
 
 ### 3:30–5:30 · Live wijziging: SZW krijgt ook DSO
 
+- Venster 7 · Beheer: http://localhost:8180, `author-user` / `password` (niet `admin-user`: daarmee kun je policies niet bewerken)
+- Venster 1 · SZW: http://localhost, `klachten-behandelaar-szw` / `klachten-behandelaar-szw`
+
 | Venster | Doen | Laten zien |
 |---|---|---|
-| 7 · Beheer | Toon de policy van SZW: `"diensten": ["SZW"]`. Klik **Bewerken**, maak er `"diensten": ["SZW", "DSO"],` van en klik **Opslaan**. | De regel zegt alleen welke klachten SZW behandelt. GZAC verandert nog niets. |
+| 7 · Beheer | Open de policy `klachten.eerstlijnsklachten.klachtenbehandelaar-szw` en toon `"diensten": ["SZW"]`. Klik **Bewerken**, maak er `"diensten": ["SZW", "DSO"],` van en klik **Opslaan**. | De regel zegt alleen welke klachten SZW behandelt. GZAC verandert nog niets. |
 | 7 · Beheer | Ga naar **Publicaties** en klik **Publiceren**. Wacht tot de publicatie klaar is (een paar seconden). | |
 | 1 · SZW | Vernieuw de zaaklijst. | **"Demo DSO"** staat er nu ook bij, en is te openen. |
 
@@ -70,6 +64,9 @@ Laat eventueel het plaatje uit de README zien (*How it fits together*).
 Let op met typfouten. Een policy die niet compileert, wordt toch "gepubliceerd", en dan ziet niemand meer klachten. Twijfel je, controleer dan eerst met `scripts/policy-check.py --manager`.
 
 ### 5:30–7:30 · Bezwaar: ander zaaktype, andere rollen
+
+- Venster 3 · Behandelaar: http://localhost, `bezwaar-behandelaar` / `bezwaar-behandelaar`
+- Venster 4 · Adviseur: http://localhost, `bezwaar-adviseur` / `bezwaar-adviseur`
 
 | Venster | Doen | Laten zien |
 |---|---|---|
@@ -81,6 +78,9 @@ Let op met typfouten. Een policy die niet compileert, wordt toch "gepubliceerd",
 
 ### 7:30–9:00 · ToDo: geen zaak, maar je relatie met de ToDo
 
+- Venster 5 · Anna: http://localhost, `todo-anna` / `todo-anna`
+- Venster 6 · Bram: http://localhost, `todo-bram` / `todo-bram`
+
 | Venster | Doen | Laten zien |
 |---|---|---|
 | 5 · Anna | Toon de zaaklijst ToDo. | **"Boodschappen bestellen"** en **"Rapport nalezen"**, niet bram's "Presentatie voorbereiden". |
@@ -90,6 +90,8 @@ Let op met typfouten. Een policy die niet compileert, wordt toch "gepubliceerd",
 > Hier speelt geen rol en geen zaak. Wie de ToDo maakte en aan wie hij is toegewezen, bepaalt de rechten. Hetzelfde mechanisme, een ander soort regel.
 
 ### 9:00–10:00 · Logboek en afsluiting
+
+- Venster 7 · Beheer: http://localhost:8180, `author-user` / `password` (niet `admin-user`: daarmee kun je policies niet bewerken)
 
 | Venster | Doen | Laten zien |
 |---|---|---|
