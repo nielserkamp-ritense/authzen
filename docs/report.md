@@ -5,7 +5,7 @@
 In deze proof of concept (PoC) is de volledige autorisatie van GZAC (PBAC) vervangen door een externe Policy Decision Point (PDP) van OpenFTV, die GZAC bevraagt via de AuthZEN-standaard. De belangrijkste bevindingen:
 
 - **Vervanging van PBAC:** dat werkt, met een kanttekening ("Ja, maar"). AuthZEN kan alle PBAC-vragen beantwoorden, maar de policies moeten antwoorden geven in de vorm die Valtimo verwacht. Daarvoor is kennis van de interne werking van Valtimo nodig.
-- **Performance:** voldoende voor dagelijks gebruik. De demo-controle duurt zonder cache ±5 s en met cache ±4 s. Met de optionele decision cache daalt het aantal PDP-calls van 61 naar 4 bij een herhaalde run.
+- **Performance:** voldoende voor dagelijks gebruik. Zonder cache is een klachten-API-call gemiddeld 10 tot 100 ms trager dan met de standaard PBAC (ruim 2× zo traag), omdat elke PDP-call ±10 ms kost. Met de optionele decision cache is AuthZEN even snel als PBAC.
 - **Beheer:** wijzigingen in policies zijn ongeveer één seconde na publicatie actief, zonder release of herstart van GZAC.
 - **Gedeelde policies:** de huidige policies en AuthZEN-responses zijn specifiek voor GZAC. Om policies over meerdere applicaties te delen is een gemeenschappelijke response-definitie nodig. Daarvoor staat een voorstel in dit rapport.
 
@@ -176,7 +176,35 @@ De kanttekeningen:
 
 ### 2. Wat is de impact op de performance van GZAC?
 
-**Klein, en met een cache nog kleiner.** In de standaardsituatie haalt PBAC de permissies uit de database. Met AuthZEN wordt dat een HTTP-call naar de PDP. Draait de PDP dicht bij GZAC (dezelfde machine of hetzelfde cluster), dan is de extra netwerklatency klein.
+**Merkbaar zonder cache, verwaarloosbaar met cache.** In de standaardsituatie haalt PBAC de permissies uit de database. Met AuthZEN wordt dat een HTTP-call naar de PDP. Draait de PDP dicht bij GZAC (dezelfde machine of hetzelfde cluster), dan is de extra netwerklatency klein, maar elke call telt op.
+
+#### Snelheidsmeting klachten-API
+
+De klachten-API-calls van GZAC zijn in drie varianten gemeten, op dezelfde stack en dezelfde data (28 klachten):
+
+- **PBAC:** AuthZEN uit (`VALTIMO_AUTHORIZATION_AUTHZEN_ENABLED=false`), met de Valtimo-permissies (JSON) van vóór de overstap naar AuthZEN;
+- **AuthZEN:** zonder cache, de standaard van de demo;
+- **AuthZEN + cache:** met de decision cache aan (TTL 60 s).
+
+Per variant is GZAC herstart. Per gebruiker zijn eerst 5 warming-up-rondes gedaan en daarna 30 rondes langs alle calls, achter elkaar (geen gelijktijdige gebruikers). De tabel toont de mediaan in ms, gemiddeld over `admin`, `klachten-ibpost`, `klachten-behandelaar-szw` en `klachten-coordinator`:
+
+| Call | PDP-calls | PBAC | AuthZEN | AuthZEN + cache |
+|---|---|---|---|---|
+| Zaaklijst (`POST /api/v1/case/{case}/search`) | 3 | 32 | 60 | 31 |
+| Takenlijst (`POST /api/v3/task`) | 1 | 24 | 32 | 22 |
+| Klacht openen (`GET /api/v1/document/{id}`) | 1 | 7 | 18 | 7 |
+| Notities | 1 | 7 | 18 | 7 |
+| Zaakdocumenten (`GET /api/v2/zaken-api/document/{id}/files`) | 10 | 51 | 151 | 46 |
+| Widget | 2 | 11 | 31 | 11 |
+| Taak openen (`GET /api/v1/task/{id}`) | 2 | 17 | 42 | 19 |
+| **Totaal** | 20 | **149** | **352** | **143** |
+
+- **Elke PDP-call kost ±10 ms.** De extra tijd zonder cache is vrijwel precies het aantal PDP-calls × 10 ms. GZAC stelt de vragen na elkaar, ook bij één verzoek met meerdere calls. Zaakdocumenten doet er 10 (één per document), dus deze call wordt het meest trager (+100 ms).
+- **Met cache is AuthZEN even snel als PBAC.** Na de eerste call gaan er geen vragen meer naar de PDP. Het verschil met PBAC valt binnen de meetruis.
+- **Voor een gebruiker** is een scherm met een paar calls zonder cache ±0,1 tot 0,2 s trager. Dat is merkbaar maar acceptabel. Bij een PDP op afstand (bijv. 30 ms per call) loopt dit snel op: zaakdocumenten zou dan ±0,3 s langer duren.
+- **Kanttekening bij de vergelijking:** de oude PBAC-permissies wijken op een paar punten af van de policies (KCC mag de klacht en de zaakdocumenten niet openen, de SZW-behandelaar ziet meer taken). Daarom telt `klachten-kcc` niet mee in de tabel. De gemeten calls gaven bij de andere gebruikers hetzelfde resultaat.
+
+#### Demo-controle
 
 GZAC kan de antwoorden van de PDP optioneel cachen (`./run.sh --cache`, standaard **uit**, TTL standaard 60 s). Lokaal gemeten met `scripts/demo-seed.py --check`, twee keer achter elkaar uitgevoerd:
 
@@ -189,8 +217,37 @@ Opmerkingen bij deze meting:
 
 - De PDP draait in deze opstelling op dezelfde machine. De tijdwinst van de cache is daarom klein. De besparing in calls is vooral van belang als de PDP op afstand draait of zwaar belast is.
 - De cache heeft een prijs: een policy-wijziging is pas actief als de gecachte antwoorden verlopen zijn. In de demo duurde dat 26 seconden in plaats van een halve seconde.
-- Dit is een functionele controle, geen belastingtest. Een meting onder realistische belasting (meerdere gelijktijdige gebruikers, PDP op afstand) is nog nodig voor een definitief oordeel.
+- Beide metingen zijn geen belastingtest. Een meting onder realistische belasting (meerdere gelijktijdige gebruikers, PDP op afstand) is nog nodig voor een definitief oordeel.
 - Is de PDP onbereikbaar, dan wordt alles geweigerd, ook voor beheerders, en wacht elk verzoek eerst op de timeout (±3 s). De beschikbaarheid van de PDP wordt daarmee een voorwaarde voor de beschikbaarheid van GZAC.
+
+#### Waarom kost een PDP-call ±10 ms?
+
+Het ligt niet aan de hoeveelheid calls. Het is vast werk dat de PDP bij elke vraag doet. Gemeten met dezelfde request die GZAC stuurt, rechtstreeks naar de PDP:
+
+| Meting | Resultaat |
+|---|---|
+| Eén call naar de PDP | ±9 ms, waarvan 0,08 ms voor de verbinding |
+| 100 calls direct achter elkaar | mediaan 9,2 ms |
+| 15 calls met 0,5 s ertussen | mediaan 15 ms (trager, dus geen effect van belasting) |
+| Call met een leeg antwoord (weigering, 42 bytes) | toch 6 ms |
+| Alleen de Rego-evaluatie (`opa eval`, dezelfde policies) | gemiddeld ±3 ms, maximaal ±4,6 ms |
+| Decision log | niet in het pad van het verzoek: OpenFTV schrijft het in batches weg |
+
+De ±10 ms per call bestaat uit:
+
+1. **Evaluatie van de policy (±3–5 ms).** De policies berekenen de permissies van alle rollen, niet alleen die van de gebruiker. Voor één vraag van `klachten-kcc` wordt de controle op het resourcetype 609 keer uitgevoerd, en elke klachten-filterregel 336 keer. Het antwoord bevat 22 permissies voor 18 rollen (19 KB). GZAC gooit daarna alles weg wat niet bij de rollen van de gebruiker hoort.
+2. **Vaste overhead van de PDP (±4–6 ms).** Het omzetten van de AuthZEN-request naar de OPA-input, de OpenTelemetry-span voor het decision log en het opbouwen van het JSON-antwoord. Daarom kost ook een leeg antwoord 6 ms.
+3. **GZAC (±1 ms).** Netwerk en het inlezen van het grote antwoord.
+
+GZAC stelt de vragen na elkaar, dus de tijd telt op: zaakdocumenten stelt er 10 en wordt ±100 ms trager.
+
+Mogelijke verbeteringen (nog niet getest):
+
+- **Alleen de rollen van de gebruiker evalueren.** Een controle op de rol (`has_role(role)`) in de `filter`-regels verkleint zowel het rekenwerk als het antwoord.
+- **Vragen bundelen.** OpenFTV heeft een batch-endpoint (`/authzen/v1/evaluations`). Als de 10 vragen van zaakdocumenten in één request gaan, wordt de vaste overhead één keer betaald in plaats van tien keer. Nog uit te zoeken is waarom GZAC ze hier los stelt.
+- **De decision cache aanzetten.** Dan is AuthZEN even snel als PBAC (zie de meting hierboven), met als prijs dat policy-wijzigingen later actief worden.
+- **Verbetering van de PDP.** Optimalistaties aanbrengen in de PDP zelf, aangezien een empty call nog steeds 6ms is. 
+- **Verbtering in Rego eval.** De Rego eval zou verbeterd kunnen worden er worden veel dynamische tabellen gemaakt die impact hebben op de eval.
 
 ### 3. Wat zijn de voor- en nadelen van AuthZEN?
 
@@ -239,7 +296,7 @@ flowchart TB
 
 ## Conclusie
 
-De PoC laat zien dat AuthZEN met een OpenFTV-PDP de volledige PBAC-laag van GZAC kan vervangen. De performance lijkt voldoende voor dagelijks gebruik, zeker met de optionele decision cache. Policies zijn centraal te beheren en wijzigingen zijn direct actief.
+De PoC laat zien dat AuthZEN met een OpenFTV-PDP de volledige PBAC-laag van GZAC kan vervangen. De performance lijkt voldoende voor dagelijks gebruik: zonder cache kost elke PDP-call ±10 ms extra, met de optionele decision cache is AuthZEN even snel als PBAC. Policies zijn centraal te beheren en wijzigingen zijn direct actief.
 
 De belangrijkste open vraag is hoe policies over meerdere applicaties gedeeld kunnen worden. De huidige responses zijn sterk gekoppeld aan de interne structuur van Valtimo. Zonder een gemeenschappelijke response-definitie blijft het delen van policies beperkt. AuthZEN is daarmee een kansrijke richting voor de toekomst, op voorwaarde dat zo'n standaard er komt.
 
